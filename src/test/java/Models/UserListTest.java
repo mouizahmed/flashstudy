@@ -3,6 +3,9 @@ package Models;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,82 +19,101 @@ class UserListTest {
 	}
 
 	@Test
-	void testAddUser() {
-		User user = new User("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
-		userDatabase.addUser(user);
+	void testAddUser() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
-		User actual = userDatabase.getUser("mouizahmed");
-		assertEquals(user, actual);
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
+		
+		
+		
+		assertNotNull(userDatabase.getUser("mouizahmed"));
 		
 	}
 	
 	@Test
-	void testAddUser_InvalidEmail() {
-		User user = new User("mouizahmed", "mouizahmed1", "12345678", "12345678");
+	void testSearchExactUser() {
+		assertNull(userDatabase.getUser("mouizahmed"));
+	}
+	
+	@Test
+	void testAddUser_InvalidEmail() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
-		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser(user));
+		
+		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser("mouizahmed", "mouizahmed1", "12345678", "12345678"));
 		
 		
 	}
 	
 	@Test 
-	void testAddUser_PasswordsDontMatch() {
-		User user = new User("mouizahmed", "mouizahmed1@gmail.com", "12345678", "123456789");
+	void testAddUser_PasswordsDontMatch() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
 		
-		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser(user));
+		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "123456789"));
 		
 	}
 	
 	@Test
-	void testAddUser_InvalidPasswordLength() {
-		User user = new User("mouizahmed", "mouizahmed1@gmail.com", "123456", "123456");
+	void testAddUser_InvalidPasswordLength() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
 		
-		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser(user));
+		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "123456", "123456"));
 	}
 	
 	@Test
-	void testAddUser_DuplicateUsername() {
-		User user1 = new User("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
-		User user2 = new User("mouizahmed", "mouiza@my.yorku.ca", "12345678!", "12345678!");
+	void testAddUser_DuplicateUsername() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
 		
-		userDatabase.addUser(user1);
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
 		
-		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser(user2));
+		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser("mouizahmed", "mouiza@my.yorku.ca", "12345678!", "12345678!"));
 	}
 	
 	@Test
-	void testAddUser_DuplicateEmail() {
-		User user1 = new User("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
-		User user2 = new User("mouiz", "mouizahmed1@gmail.com", "12345678", "12345678");
+	void testAddUser_DuplicateEmail() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
 		
-		userDatabase.addUser(user1);
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
 		
-		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser(user2));
+		assertThrows(IllegalArgumentException.class, ()-> userDatabase.addUser("mouiz", "mouizahmed1@gmail.com", "12345678", "12345678"));
 	}
 	
 	@Test 
-	void testLogin1() {
-		User user1 = new User("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
-		userDatabase.addUser(user1);
+	void testLogin1() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
 		
 		userDatabase.login("mouizahmed", "12345678");
 		
 		User currentUser = userDatabase.getCurrentUser();
 		
-		assertEquals(user1, currentUser);
+		assertEquals(userDatabase.getUser("mouizahmed"), currentUser);
 		
-		//System.out.println(getUser.getPassword());
+
 	}
 	
 	@Test
-	void testLogin2() {
-		User user1 = new User("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
-		userDatabase.addUser(user1);
+	void testLogin3() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
 		
-		//userDatabase.login("mouizahmed", "12345678fsse");
-		
+		assertThrows(IllegalArgumentException.class, ()-> userDatabase.login("mouizahmed123", "12345678"));
+	}
+	
+	@Test
+	void testLogin2() throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
 		
 		assertThrows(IllegalArgumentException.class, ()-> userDatabase.login("mouizahmed", "12345678fsse"));
+	}
+	
+	@Test
+	void testLogOut() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
+		
+		userDatabase.login("mouizahmed", "12345678");
+		userDatabase.logout();
+		assertEquals(userDatabase.getCurrentUser(), null);
+		
 	}
 
 }
