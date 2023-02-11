@@ -1,6 +1,9 @@
 package Models;
 
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+
 
 public class User {
 
@@ -8,42 +11,27 @@ public class User {
 	private String email; 
 	private ArrayList<Deck> userDeckList = new ArrayList<>();;
 	private String password;
-	private String confirmPassword;
+	private LocalDate regDate;
+
 	
-	public User(String username, String email, String password, String confirmPassword) {
+	public User(String username, String email, String password, LocalDate regDate) {
 		this.username = username;
-		this.email = email;
+		this.email = email;	
 		this.password = password;
-		this.confirmPassword = confirmPassword;
+		this.regDate = regDate;
 	}
 	
 	public String getUsername() {
 		return this.username;
 	}
 	
+	public String getPassword() {
+		return this.password;
+	}
+	
 	public String getEmail() {
 		return this.email;
 	}
-	
-	public boolean checkPassword(String password) {
-		if (this.password.equals(password)) {
-			return true;
-		} else return false;
-	}
-	
-	public boolean confirmPassword() {
-		if (this.password != this.confirmPassword) {
-			return false;
-		} else return true;
-	}
-	
-	public boolean passwordLength() {
-		if (this.password.length() < 8) {
-			return false;
-		} else return true;
-	}
-	
-	
 	
 	public ArrayList<Deck> userDeckList() {
 		return this.userDeckList;
