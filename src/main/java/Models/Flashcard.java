@@ -5,10 +5,10 @@ public class Flashcard {
 	public String question;
 	public String answer;
 	public int flashcardID;
-	public int deckID;
+	public String deckID;
 	public String createdBy;
 	
-	public Flashcard(String question, String answer, int flashcardID, int deckID, String createdBy) {
+	public Flashcard(String question, String answer, int flashcardID, String deckID, String createdBy) {
 		this.question = question;
 		this.answer = answer;
 		this.flashcardID = flashcardID;
@@ -37,5 +37,10 @@ public class Flashcard {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
+	}
+	
+	public String getDeckID() {
+		return deckID;
+
 	}
 }
