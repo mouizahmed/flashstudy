@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class FlashCardBuilder {
+public class FlashCardBuilder extends JPanel {
     private JTextArea question;
     private JTextArea answer;
     private ArrayList<Flashcard> cardList;
