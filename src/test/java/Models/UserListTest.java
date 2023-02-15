@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,6 @@ class UserListTest {
 	void testAddUser() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
 		userDatabase.addUser("mouizahmed", "mouizahmed1@gmail.com", "12345678", "12345678");
-		
-		
 		
 		assertNotNull(userDatabase.getUser("mouizahmed"));
 		
