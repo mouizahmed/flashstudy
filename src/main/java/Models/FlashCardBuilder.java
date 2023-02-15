@@ -1,6 +1,8 @@
 package Models;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class FlashCardBuilder {
@@ -45,6 +47,28 @@ public class FlashCardBuilder {
         JLabel ansLabel = new JLabel("Answer");
 
 
+        //Menu bar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu flashcardMenu = new JMenu("Flashcard");
+        JMenuItem newFlashCardDeck = new JMenuItem("New Deck");
+        JMenuItem SaveDeck = new JMenuItem("Save Deck");
+
+        flashcardMenu.add(newFlashCardDeck);
+        flashcardMenu.add(SaveDeck);
+
+
+        menuBar.add(flashcardMenu);
+
+
+        //event listeners
+        newFlashCardDeck.addActionListener(new newFlashCardDeckListener());
+        SaveDeck.addActionListener(new SaveDeckListener());
+
+        //add menu to Jframebar
+
+        frame.setJMenuBar(menuBar);
+
+
         //mainPanel
 
         mainPanel.add(quesLabel);
@@ -52,6 +76,7 @@ public class FlashCardBuilder {
         mainPanel.add(ansLabel);
         mainPanel.add(answer);
         mainPanel.add(next);
+        next.addActionListener(new nextFlashcardListener());
 
 
         //Frame
@@ -74,6 +99,32 @@ public class FlashCardBuilder {
                 new FlashCardBuilder();
             }
         });
+    }
+
+
+    class nextFlashcardListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+//            System.out.println("Button Working!!!!!");
+
+        }
+    }
+
+    class newFlashCardDeckListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("New deck button working");
+        }
+    }
+
+    class SaveDeckListener implements  ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Save deck button working");
+        }
     }
 
 }
