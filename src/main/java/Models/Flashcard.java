@@ -15,7 +15,6 @@ public class Flashcard {
 		this.deckID = deckID;
 		this.createdBy = createdBy;
 	}
-<<<<<<< HEAD
 
 	public Flashcard(String question, String answer){
 		this.question = question;
@@ -38,10 +37,10 @@ public class Flashcard {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
-=======
+	}
 	
 	public String getDeckID() {
 		return deckID;
->>>>>>> refs/remotes/origin/mouiz-dev
+
 	}
 }
