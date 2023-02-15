@@ -5,16 +5,17 @@ public class Flashcard {
 	public String question;
 	public String answer;
 	public int flashcardID;
-	public int deckID;
+	public String deckID;
 	public String createdBy;
 	
-	public Flashcard(String question, String answer, int flashcardID, int deckID, String createdBy) {
+	public Flashcard(String question, String answer, int flashcardID, String deckID, String createdBy) {
 		this.question = question;
 		this.answer = answer;
 		this.flashcardID = flashcardID;
 		this.deckID = deckID;
 		this.createdBy = createdBy;
 	}
+<<<<<<< HEAD
 
 	public Flashcard(String question, String answer){
 		this.question = question;
@@ -37,5 +38,10 @@ public class Flashcard {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
+=======
+	
+	public String getDeckID() {
+		return deckID;
+>>>>>>> refs/remotes/origin/mouiz-dev
 	}
 }

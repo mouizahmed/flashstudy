@@ -192,13 +192,13 @@ public static ArrayList<Deck> getAllDecks() {
 			while (rs.next()) {
 				//System.out.println("h");
 				ArrayList<Flashcard> userFlashcards = new ArrayList<>();
-				Deck deck = new Deck(rs.getInt("id"), rs.getString("deckTitle"), userFlashcards, rs.getString("createdBy"));
+				//Deck deck = new Deck(rs.getInt("id"), rs.getString("deckTitle"), userFlashcards, rs.getString("createdBy"));
 				stmt = conn.createStatement();
 				sql = "SELECT * from Flashcards";
 				rs1 = stmt.executeQuery(sql);
 				
 				while(rs1.next()) {
-					Flashcard flashcard = new Flashcard(rs1.getString("question"), rs1.getString("answer"), rs1.getInt("id"), rs1.getInt("deckID"), rs1.getString("createdBy"));
+					//Flashcard flashcard = new Flashcard(rs1.getString("question"), rs1.getString("answer"), rs1.getInt("id"), rs1.getInt("deckID"), rs1.getString("createdBy"));
 					if (flashcard.deckID == deck.deckID) {
 						deck.addFlashcard(flashcard);
 					}
