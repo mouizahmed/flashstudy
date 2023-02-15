@@ -68,6 +68,12 @@ public class FlashCardBuilder {
 
         frame.setJMenuBar(menuBar);
 
+        // Initiating Card
+        cardList = new ArrayList<Flashcard>();
+
+
+        System.out.println("Number of flashcard is : " + cardList.size());
+
 
         //mainPanel
 
@@ -106,7 +112,14 @@ public class FlashCardBuilder {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-//            System.out.println("Button Working!!!!!");
+            System.out.println("Next Button Working");
+            //creating a new flashcard
+            Flashcard card = new Flashcard(question.getText(),answer.getText());
+            cardList.add(card);
+            System.out.println("Number of flashcard is : " + cardList.size());
+            clearCard();            //Clears the card after clicking next
+
+
 
         }
     }
@@ -125,6 +138,14 @@ public class FlashCardBuilder {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Save deck button working");
         }
+    }
+
+    private void clearCard(){
+        //clears Jtext in question and answer
+
+        question.setText("");
+        answer.setText("");
+        question.requestFocus();
     }
 
 }
