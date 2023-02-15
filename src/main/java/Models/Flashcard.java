@@ -15,4 +15,27 @@ public class Flashcard {
 		this.deckID = deckID;
 		this.createdBy = createdBy;
 	}
+
+	public Flashcard(String question, String answer){
+		this.question = question;
+		this.answer = answer;
+	}
+
+	//Setters and Getters
+	
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 }
