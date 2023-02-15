@@ -122,7 +122,7 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 			
 		boolean registered = false;
 		try {
-			registered = MiddleTier.createNewUser(name.getText(), email.getText(), password.getText());
+			registered = MiddleTier.createNewUser(name.getText(), email.getText(), password.getText(), confirmPassword.getText());
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
