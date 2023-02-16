@@ -1,13 +1,11 @@
-package Views;
-import Models.Flashcard;
-
+package Models;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class FlashCardBuilder extends JPanel {
+public class FlashCardBuilder {
     private JTextArea question;
     private JTextArea answer;
     private ArrayList<Flashcard> cardList;

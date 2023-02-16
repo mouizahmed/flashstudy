@@ -11,26 +11,24 @@ public class WelcomePage extends JPanel implements ItemListener, ActionListener 
 	
 	JButton login;
 	JButton register;
-	JLabel welcomeMsg;
-	JPanel title = new JPanel();
 	JPanel buttons = new JPanel();
 	JPanel main;
 	CardLayout card;
+	private JLabel lblWelcomeToFlashstudy;
 	
 	public WelcomePage(JPanel main, CardLayout card) {
 		this.main = main;
 		this.card = card;
-		this.add(title);
+		
+		lblWelcomeToFlashstudy = new JLabel("Welcome to FlashStudy!");
+		lblWelcomeToFlashstudy.setAlignmentX(Component.CENTER_ALIGNMENT);
+		add(lblWelcomeToFlashstudy);
 		this.add(buttons);
 		initialize();
 	}
 	
 	
 	private void initialize() {
-		//window = new JFrame("Flash Study");
-		//welcomePage = new JPanel();
-		welcomeMsg = new JLabel("Welcome to Flash Study!");
-		title.add(welcomeMsg);
 		
 		login = new JButton("Login");
 		login.addActionListener(this);
