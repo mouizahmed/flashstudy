@@ -1,5 +1,8 @@
-package Models;
+package Views;
 import javax.swing.*;
+
+import Models.Flashcard;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

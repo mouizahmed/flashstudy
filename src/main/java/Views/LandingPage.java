@@ -10,9 +10,9 @@ import javax.swing.border.EmptyBorder;
 public class LandingPage extends JPanel implements ActionListener {
 
 	String username;
-	JButton add = new JButton("Add new Flashcard");
-	JButton browse = new JButton("Browse Other Flashcards");
-	JButton profile = new JButton("View Your Flashcards");
+	JButton add = new JButton("New Deck");
+	JButton browse = new JButton("Home");
+	JButton profile = new JButton("Profile");
 	JPanel buttons = new JPanel();
 	JPanel title = new JPanel();
 	
@@ -36,7 +36,15 @@ public class LandingPage extends JPanel implements ActionListener {
 		title.add(titleMsg);
 		
 		buttons.add(browse);
+		add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		buttons.add(add);
+		profile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		buttons.add(profile);
 		
 		BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
