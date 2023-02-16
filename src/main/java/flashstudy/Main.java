@@ -39,7 +39,8 @@ public class Main {
 		main.setVisible(true);
 		
 		
-		MiddleTier app = new MiddleTier();
+		//MiddleTier app = new MiddleTier();
+		
 		
 	}
 }
