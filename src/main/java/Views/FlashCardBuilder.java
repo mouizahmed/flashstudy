@@ -1,7 +1,7 @@
 package Views;
-import Models.Flashcard;
-
 import javax.swing.*;
+
+import Models.Flashcard;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -99,15 +99,15 @@ public class FlashCardBuilder {
     }
 
 
-//    public static void main(String[] args) {
-//
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                new FlashCardBuilder();
-//            }
-//        });
-//    }
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new FlashCardBuilder();
+            }
+        });
+    }
 
 
     class nextFlashcardListener implements ActionListener{
@@ -143,6 +143,7 @@ public class FlashCardBuilder {
     }
 
     private void clearCard(){
+
         //clears Jtext in question and answer
 
         question.setText("");

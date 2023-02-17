@@ -1,9 +1,20 @@
 package flashstudy;
 
-import Views.WelcomePage;
+import java.awt.CardLayout;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.text.*;
+
+import Controller.Controller;
+import Controller.MiddleTier;
+import Views.CreateDeckPage;
+import Views.LandingPage;
+import Views.LoginPage;
+import Views.RegisterPage;
+import Views.WelcomePage;
 
 
 
@@ -19,11 +30,22 @@ public class Main {
 		CardLayout card = new CardLayout();
 		container.setLayout(card);
 		// container.setVisible(true);
-
-		WelcomePage welcomePage = new WelcomePage(container, card);
-		container.add(welcomePage, "1");
 		
+		Controller controller = new Controller(container, card);
+		WelcomePage welcomePage = new WelcomePage(controller);
+		container.add(welcomePage, "welcomePage");
 		
+		LoginPage loginPage = new LoginPage(controller);
+		container.add(loginPage, "loginPage");
+		
+		RegisterPage registerPage = new RegisterPage(controller);
+		container.add(registerPage, "registerPage");
+		
+		LandingPage landingPage = new LandingPage(controller);
+		container.add(landingPage, "landingPage");
+		
+		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
+		container.add(createDeckPage, "createDeckPage");
 		
 		card.show(container, "1");
 		welcomePage.setVisible(true);
