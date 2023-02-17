@@ -135,7 +135,7 @@ public class MiddleTier {
 	}
 		
 	
-	public static boolean createNewUser(String username, String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static boolean createNewUser(String username, String email, String password, String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		boolean created = false;
 		String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
 		        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
@@ -151,6 +151,8 @@ public class MiddleTier {
 				throw new IllegalArgumentException("Please enter a valid email address");
 			} else if (password.length() < 8) {
 				throw new IllegalArgumentException("Please enter a password that has 8 or more characters!");
+			} else if (!password.equals(confirmPassword)) {
+				throw new IllegalArgumentException("Passwords do not match.");
 			}
 			
 			String cryptedPassword = encryptPassword(password);
@@ -190,19 +192,19 @@ public static ArrayList<Deck> getAllDecks() {
 			while (rs.next()) {
 				//System.out.println("h");
 				ArrayList<Flashcard> userFlashcards = new ArrayList<>();
-				Deck deck = new Deck(rs.getInt("id"), rs.getString("deckTitle"), userFlashcards, rs.getString("createdBy"));
+				//Deck deck = new Deck(rs.getInt("id"), rs.getString("deckTitle"), userFlashcards, rs.getString("createdBy"));
 				stmt = conn.createStatement();
 				sql = "SELECT * from Flashcards";
 				rs1 = stmt.executeQuery(sql);
 				
 				while(rs1.next()) {
-					Flashcard flashcard = new Flashcard(rs1.getString("question"), rs1.getString("answer"), rs1.getInt("id"), rs1.getInt("deckID"), rs1.getString("createdBy"));
-					if (flashcard.deckID == deck.deckID) {
-						deck.addFlashcard(flashcard);
-					}
+					//Flashcard flashcard = new Flashcard(rs1.getString("question"), rs1.getString("answer"), rs1.getInt("id"), rs1.getInt("deckID"), rs1.getString("createdBy"));
+//					if (flashcard.deckID == deck.deckID) {
+//						deck.addFlashcard(flashcard);
+//					}
 				}
 				
-				userDecks.add(deck);
+				//userDecks.add(deck);
 			}
 			
 		} catch (Exception e) {
@@ -227,19 +229,19 @@ public static ArrayList<Deck> getAllDecks() {
 			while (rs.next()) {
 				//System.out.println("h");
 				ArrayList<Flashcard> userFlashcards = new ArrayList<>();
-				Deck deck = new Deck(rs.getInt("id"), rs.getString("deckTitle"), userFlashcards, rs.getString("createdBy"));
+				//Deck deck = new Deck(rs.getInt("id"), rs.getString("deckTitle"), userFlashcards, rs.getString("createdBy"));
 				stmt = conn.createStatement();
 				sql = "SELECT * from Flashcards WHERE createdBy='" + username + "'";
 				rs1 = stmt.executeQuery(sql);
 				
 				while(rs1.next()) {
-					Flashcard flashcard = new Flashcard(rs1.getString("question"), rs1.getString("answer"), rs1.getInt("id"), rs1.getInt("deckID"), rs1.getString("createdBy"));
-					if (flashcard.deckID == deck.deckID) {
-						deck.addFlashcard(flashcard);
-					}
+					//Flashcard flashcard = new Flashcard(rs1.getString("question"), rs1.getString("answer"), rs1.getInt("id"), rs1.getInt("deckID"), rs1.getString("createdBy"));
+//					if (flashcard.deckID == deck.deckID) {
+//						deck.addFlashcard(flashcard);
+//					}
 				}
 				
-				userDecks.add(deck);
+				//userDecks.add(deck);
 			}
 			
 		} catch (Exception e) {

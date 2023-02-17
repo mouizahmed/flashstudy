@@ -1,28 +1,57 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Deck {
 	
-	public String title;
-	public int deckID;
-	public ArrayList<Flashcard> flashcards;
+	public String deckTitle;
+	public String deckID;
+	public ArrayList<Flashcard> flashcards = new ArrayList<>();
 	public String createdBy;
+	public boolean publicDeck;
 	
-	public Deck(int deckID, String title, ArrayList<Flashcard> flashcards, String createdBy) {
-		this.title = title;
-		this.deckID = deckID;
+	public Deck(String deckTitle, ArrayList<Flashcard> flashcards, String createdBy, boolean publickDeck) {
+		this.deckTitle = deckTitle;
+		this.deckID = UUID.randomUUID().toString();
 		this.flashcards = flashcards;
 		this.createdBy = createdBy;
 	}
+		
+	public String getDeckID() {
+		return deckID;
+	}
 	
 	public void addFlashcard(Flashcard flashcard) {
-		flashcards.add(flashcard);
-		
+//		if (!flashcard.getDeckID().equals(this.getDeckID())) {
+//			throw new IllegalArgumentException("Flashcard ID does not match Deck ID");
+//		} else {
+//			flashcards.add(flashcard);
+//		}
+		this.flashcards.add(flashcard);
+	}
+	
+	public void setFlashcards(ArrayList<Flashcard> flashcards) {
+		this.flashcards = flashcards;
+	}
+	
+	public void setDeckTitle(String deckTitle) {
+		this.deckTitle = deckTitle;
+	}
+	
+	public String getDeckTitle() {
+		return this.deckTitle;
+	}
+	
+	public void setPublicDeck(boolean publicDeck) {
+		this.publicDeck = publicDeck;
+	}
+	
+	public boolean getPublicity() {
+		return this.publicDeck;
 	}
 	
 	public ArrayList<Flashcard> getAllFlashcards() {
-		
 		return flashcards;
 	}
 	
