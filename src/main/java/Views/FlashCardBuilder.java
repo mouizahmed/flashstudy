@@ -143,6 +143,7 @@ public class FlashCardBuilder {
     }
 
     private void clearCard(){
+
         //clears Jtext in question and answer
 
         question.setText("");
