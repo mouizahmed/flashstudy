@@ -18,12 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import Controller.Controller;
 import Controller.MiddleTier;
+import javax.swing.JPasswordField;
 
 public class RegisterPage extends JPanel implements ItemListener, ActionListener {
 	
 	JPanel main;
 	CardLayout card;
+	private Controller controller;
 	
 	JPanel title = new JPanel();
 	JLabel RegisterMsg = new JLabel("Register");
@@ -42,19 +45,20 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 	
 	JPanel passwordPanel = new JPanel();
 	JLabel passwordLabel = new JLabel("Password");
-	JTextField password = new JTextField();
 	
 	JPanel confirmPasswordPanel = new JPanel();
 	JLabel confirmPasswordLabel = new JLabel("Confirm Password");
-	JTextField confirmPassword = new JTextField();
 	
 	WelcomePage welcomePage;
+	private final JPasswordField password = new JPasswordField();
+	private final JPasswordField confirmPassword = new JPasswordField();
 	
-	public RegisterPage(WelcomePage welcomePage, JPanel main, CardLayout card) {
+	public RegisterPage(Controller controller) {
 		
-		this.welcomePage = welcomePage;
-		this.main = main;
-		this.card = card;
+		this.controller = controller;
+//		this.welcomePage = welcomePage;
+//		this.main = main;
+//		this.card = card;
 		initialize();
 		
 	}
@@ -74,16 +78,14 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 		emailPanel.add(email);
 		
 		passwordPanel.add(passwordLabel);
-		password.setPreferredSize(new Dimension(100, 20));
-		passwordPanel.add(password);
 		
 		confirmPasswordPanel.add(confirmPasswordLabel);
-		confirmPassword.setPreferredSize(new Dimension(100, 20));
-		confirmPasswordPanel.add(confirmPassword);
 		
 		this.add(namePanel);
 		this.add(emailPanel);
 		this.add(passwordPanel);
+		password.setPreferredSize(new Dimension(100, 20));
+		passwordPanel.add(password);
 		this.add(confirmPasswordPanel);
 		
 		
@@ -105,7 +107,9 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 		name.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
 		confirmPasswordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		confirmPassword.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		confirmPassword.setPreferredSize(new Dimension(100, 20));
+		
+		confirmPasswordPanel.add(confirmPassword);
 		
 	}
 
@@ -113,25 +117,26 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == back) {
-			//WelcomePage welcomePage = new WelcomePage();
-			this.setVisible(false);
-			welcomePage.setVisible(true);
+			controller.welcomePage();
 		} else if (e.getSource() == submit) {
-			LandingPage landingPage = new LandingPage(main, card, name.getText());
+			System.out.println(String.valueOf(password.getPassword()));
+			controller.createNewUser(name.getText(), email.getText(), String.valueOf(password.getPassword()), String.valueOf(confirmPassword.getPassword()));
+			
+			//LandingPage landingPage = new LandingPage(main, card, name.getText());
 			
 			
-		boolean registered = false;
-		try {
-			registered = MiddleTier.createNewUser(name.getText(), email.getText(), password.getText(), confirmPassword.getText());
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-			
-			if (registered == true) {
-				main.add(landingPage, "landing");
-				card.show(main, "landing");
-			}
+//		boolean registered = false;
+//		try {
+//			registered = MiddleTier.createNewUser(name.getText(), email.getText(), password.getText(), confirmPassword.getText());
+//		} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//			
+//			if (registered == true) {
+//				main.add(landingPage, "landing");
+//				card.show(main, "landing");
+//			}
 		}
 	}
 
