@@ -64,6 +64,11 @@ public class OpenDeckPage extends JPanel {
 		panel_1.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Create Session");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.session(deck.getAllFlashcards());
+			}
+		});
 		panel_1.add(btnNewButton_2);
 		
 		

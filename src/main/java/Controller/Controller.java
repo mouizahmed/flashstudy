@@ -17,6 +17,7 @@ import Views.CreateDeckPage;
 import Views.LoginPage;
 import Views.OpenDeckPage;
 import Views.RegisterPage;
+import Views.SessionPlayer;
 
 /**
  * Controller without MySQL connection
@@ -74,6 +75,10 @@ public class Controller {
 		this.welcomePage();
 	}
 	
+	public void previous() {
+		card.previous(main);
+	}
+	
 	public void welcomePage() {
 		System.out.println("WELCOME!");
 		card.show(main, "welcomePage");
@@ -122,6 +127,9 @@ public class Controller {
 		deckDatabase.addDeck(deck);
 		
 		System.out.println(deckDatabase.getAllPublicDecks());
+		
+		deckPage(deck);
+		
 		//System.out.println("U " + userDatabase.getCurrentUser().userDeckList().get(0).getPublicity());
 	}
 	
@@ -134,6 +142,13 @@ public class Controller {
 		main.add(deckPage, "deckPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "deckPage" + num);
+	}
+	
+	public void session(ArrayList<Flashcard> flashcards) {
+		SessionPlayer sessionPage = new SessionPlayer(flashcards, this);
+		main.add(sessionPage, "sessionPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "sessionPage" + num);
 	}
 	
 }
