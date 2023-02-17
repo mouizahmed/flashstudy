@@ -3,6 +3,8 @@ package Views;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import Controller.Controller;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.text.*;
@@ -15,10 +17,12 @@ public class WelcomePage extends JPanel implements ItemListener, ActionListener 
 	JPanel main;
 	CardLayout card;
 	private JLabel lblWelcomeToFlashstudy;
+	private Controller controller;
 	
-	public WelcomePage(JPanel main, CardLayout card) {
-		this.main = main;
-		this.card = card;
+	public WelcomePage(Controller controller) {
+//		this.main = main;
+//		this.card = card;
+		this.controller = controller;
 		
 		lblWelcomeToFlashstudy = new JLabel("Welcome to FlashStudy!");
 		lblWelcomeToFlashstudy.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -56,27 +60,17 @@ public class WelcomePage extends JPanel implements ItemListener, ActionListener 
 		
 		
 	}
-
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		//System.out.println(e.getSource());
 		if (e.getSource() == login) {
-			System.out.println("LOGIN!");
-			//this.setVisible(false);
-			LoginPage loginPage = new LoginPage(this, main, card);
-			main.add(loginPage, "login");
-			card.show(main, "login");
-			
-			//loginPage.setVisible(true);
-		} else {
-			System.out.println("REGISTER!");
-			//this.setVisible(false);
-			RegisterPage registerPage = new RegisterPage(this, main, card);
-			main.add(registerPage, "register");
-			card.show(main, "register");
+			controller.loginPage();
+		} else if (e.getSource() == register) {
+			controller.registerPage();
 		}
+		
 	}
 
 
