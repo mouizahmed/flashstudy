@@ -1,4 +1,6 @@
-package Models;
+package Views;
+import Models.Flashcard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -97,15 +99,15 @@ public class FlashCardBuilder {
     }
 
 
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new FlashCardBuilder();
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                new FlashCardBuilder();
+//            }
+//        });
+//    }
 
 
     class nextFlashcardListener implements ActionListener{

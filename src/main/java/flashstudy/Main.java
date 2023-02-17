@@ -1,15 +1,9 @@
 package flashstudy;
 
-import java.awt.CardLayout;
-import java.util.ArrayList;
+import Views.WelcomePage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.text.*;
-
-import Controller.MiddleTier;
-import Views.WelcomePage;
 
 
 
@@ -25,7 +19,7 @@ public class Main {
 		CardLayout card = new CardLayout();
 		container.setLayout(card);
 		// container.setVisible(true);
-		
+
 		WelcomePage welcomePage = new WelcomePage(container, card);
 		container.add(welcomePage, "1");
 		
