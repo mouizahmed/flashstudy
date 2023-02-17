@@ -4,6 +4,7 @@ package Controller;
 import java.awt.CardLayout;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -11,7 +12,10 @@ import Models.Deck;
 import Models.DeckList;
 import Models.Flashcard;
 import Models.UserList;
+import Views.BrowsePublicDeckPage;
+import Views.CreateDeckPage;
 import Views.LoginPage;
+import Views.OpenDeckPage;
 import Views.RegisterPage;
 
 /**
@@ -76,15 +80,8 @@ public class Controller {
 	}
 	
 	public void loginPage() {
-		
-			System.out.println("LOGIN!");
-			//this.setVisible(false);
-			//LoginPage loginPage = new LoginPage(main, card);
-			//main.add(loginPage, "login");
-			card.show(main, "loginPage");
-			
-			//loginPage.setVisible(true);
-		
+		System.out.println("LOGIN!");
+		card.show(main, "loginPage");
 	}
 	
 	public void registerPage() {
@@ -99,20 +96,44 @@ public class Controller {
 	
 	public void createDeckPage() {
 		System.out.println("CREATE NEW DECK!");
-		card.show(main, "createDeckPage");
+		CreateDeckPage createDeckPage = new CreateDeckPage(this);
+		System.out.println(main.getComponentCount());
+		main.add(createDeckPage, "createDeckPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "createDeckPage" + num);
 	}
 	
-//	public void registerPage() {
-//		
-//			System.out.println("REGISTER!");
-//			//this.setVisible(false);
-//			RegisterPage registerPage = new RegisterPage(main, card);
-//			main.add(registerPage, "register");
-//			card.show(main, "register");
-//		
-//	}
+	public void browse() {
+		System.out.println("Browse");
+		BrowsePublicDeckPage browsePublicDeckPage = new BrowsePublicDeckPage(this);
+		main.add(browsePublicDeckPage, "browsePublicDeckPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "browsePublicDeckPage" + num);
+	}
 	
+	public Flashcard createFlashcard(String question, String answer) {
+		Flashcard flashcard = new Flashcard(question, answer, userDatabase.getCurrentUser().getUsername());
+		return flashcard;
+	}
 	
+	public void createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck) {
+		Deck deck = new Deck(deckTitle, flashcards, userDatabase.getCurrentUser().getUsername(), publicDeck);
+		userDatabase.getCurrentUser().addDeck(deck);
+		deckDatabase.addDeck(deck);
+		
+		System.out.println(deckDatabase.getAllPublicDecks());
+		//System.out.println("U " + userDatabase.getCurrentUser().userDeckList().get(0).getPublicity());
+	}
 	
+	public ArrayList<Deck> searchPublicDecks(String deckTitle) {
+		return deckDatabase.searchPublicDeck(deckTitle);
+	}
+	
+	public void deckPage(Deck deck) {
+		OpenDeckPage deckPage = new OpenDeckPage(deck, this);
+		main.add(deckPage, "deckPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "deckPage" + num);
+	}
 	
 }

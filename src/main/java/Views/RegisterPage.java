@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import Controller.Controller;
 import Controller.MiddleTier;
 import javax.swing.JPasswordField;
+import java.awt.GridLayout;
 
 public class RegisterPage extends JPanel implements ItemListener, ActionListener {
 	
@@ -67,17 +68,21 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 	
 		title.add(RegisterMsg);
 		this.add(title);
+		namePanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		
 		namePanel.add(nameLabel);
 		name.setPreferredSize(new Dimension(100, 20));
 		namePanel.add(name);
+		emailPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		emailPanel.add(emailLabel);
 		email.setPreferredSize(new Dimension(100, 20));
 		emailPanel.add(email);
+		passwordPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		passwordPanel.add(passwordLabel);
+		confirmPasswordPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		confirmPasswordPanel.add(confirmPasswordLabel);
 		
@@ -95,6 +100,7 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 		
 		back.addActionListener(this);
 		submit.addActionListener(this);
+		buttons.setLayout(new GridLayout(0, 2, 0, 0));
 		buttons.add(back);
 		buttons.add(submit);
 		this.add(buttons);
@@ -102,8 +108,6 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 		BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(boxlayout);
 		this.setBorder(new EmptyBorder(new Insets(100, 100, 100, 100)));
-		
-		nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		name.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
 		confirmPasswordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);

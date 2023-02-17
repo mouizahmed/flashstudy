@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import Controller.Controller;
 import Controller.MiddleTier;
 import javax.swing.JPasswordField;
+import java.awt.GridLayout;
 
 public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 	
@@ -58,10 +59,12 @@ public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 		
 		title.add(loginMsg);
 		this.add(title);
+		namePanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		namePanel.add(nameLabel);
 		name.setPreferredSize(new Dimension(100, 20));
 		namePanel.add(name);
+		passwordPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		passwordPanel.add(passwordLabel);
 		

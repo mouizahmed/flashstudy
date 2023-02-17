@@ -14,21 +14,31 @@ import java.awt.SystemColor;
 import javax.swing.border.EtchedBorder;
 
 import Controller.Controller;
+import Models.Flashcard;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.Component;
 
 public class CreateDeckPage extends JPanel {
-	private JTextField txtTitle;
-	private JTextField txtSchool;
-	private JTextField txtFaculty;
-	private JTextField txtCourse;
+	private JTextField deckTitle;
+	private JTextField school;
+	private JTextField faculty;
+	private JTextField course;
 	private Controller controller;
+	private boolean publicity = true;
+	private ArrayList<Flashcard> flashcards;
+	private int flashcardNum = 0;
+	private int initialDynamicSize = 500;
+	private JPanel flashcardContainer = new JPanel();
+	private JPanel dynamicPanel = new JPanel(new FlowLayout());
 
 	/**
 	 * Create the panel.
@@ -38,6 +48,7 @@ public class CreateDeckPage extends JPanel {
 		setSize(new Dimension(750, 500));
 		setPreferredSize(new Dimension(750, 500));
 		this.controller = controller;
+		flashcards = new ArrayList<>();
 		initialize();
 
 	}
@@ -73,84 +84,126 @@ public class CreateDeckPage extends JPanel {
 		title.setBounds(10, 11, 130, 16);
 		panel_1.add(title);
 		
-		txtTitle = new JTextField();
-		txtTitle.setText("Title*");
-		txtTitle.setBounds(10, 36, 363, 20);
-		panel_1.add(txtTitle);
-		txtTitle.setColumns(10);
+		deckTitle = new JTextField();
+		deckTitle.setText("Title*");
+		deckTitle.setBounds(10, 36, 363, 20);
+		panel_1.add(deckTitle);
+		deckTitle.setColumns(10);
 		
-		JTextArea txtrDescription = new JTextArea();
-		txtrDescription.setText("Description");
-		txtrDescription.setBounds(10, 67, 363, 53);
-		panel_1.add(txtrDescription);
+		JTextArea deckDescription = new JTextArea();
+		deckDescription.setText("Description");
+		deckDescription.setBounds(10, 67, 363, 53);
+		panel_1.add(deckDescription);
 		
-		txtSchool = new JTextField();
-		txtSchool.setText("School");
-		txtSchool.setColumns(10);
-		txtSchool.setBounds(383, 36, 343, 20);
-		panel_1.add(txtSchool);
+		school = new JTextField();
+		school.setText("School");
+		school.setColumns(10);
+		school.setBounds(383, 36, 343, 20);
+		panel_1.add(school);
 		
-		txtFaculty = new JTextField();
-		txtFaculty.setText("Faculty");
-		txtFaculty.setColumns(10);
-		txtFaculty.setBounds(383, 69, 343, 20);
-		panel_1.add(txtFaculty);
+		faculty = new JTextField();
+		faculty.setText("Faculty");
+		faculty.setColumns(10);
+		faculty.setBounds(383, 69, 343, 20);
+		panel_1.add(faculty);
 		
-		txtCourse = new JTextField();
-		txtCourse.setText("Course");
-		txtCourse.setColumns(10);
-		txtCourse.setBounds(383, 100, 343, 20);
-		panel_1.add(txtCourse);
+		course = new JTextField();
+		course.setText("Course");
+		course.setColumns(10);
+		course.setBounds(383, 100, 343, 20);
+		panel_1.add(course);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Public");
-		rdbtnNewRadioButton.setBounds(383, 11, 60, 24);
-		panel_1.add(rdbtnNewRadioButton);
-		
-		JRadioButton rdbtnPrivate = new JRadioButton("Private");
-		rdbtnPrivate.setBounds(447, 11, 65, 24);
-		panel_1.add(rdbtnPrivate);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(10, 197, 717, 113);
-		add(panel_2);
-		panel_2.setLayout(null);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		textArea.setBackground(Color.WHITE);
-		textArea.setBounds(10, 11, 347, 54);
-		panel_2.add(textArea);
-		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		textArea_1.setBackground(Color.WHITE);
-		textArea_1.setBounds(373, 11, 332, 54);
-		panel_2.add(textArea_1);
-		
-		JButton btnNewButton_1 = new JButton("Delete");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JRadioButton publicDeck = new JRadioButton("Public");
+		publicDeck.setSelected(true);
+		publicDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (publicDeck.isSelected()) {
+					publicity = true;
+				}
 			}
 		});
-		btnNewButton_1.setBounds(517, 78, 89, 23);
-		panel_2.add(btnNewButton_1);
+		publicDeck.setBounds(383, 11, 60, 24);
+		panel_1.add(publicDeck);
 		
-		JButton btnNewButton_1_2 = new JButton("Save");
-		btnNewButton_1_2.setBounds(616, 78, 89, 23);
-		panel_2.add(btnNewButton_1_2);
+		JRadioButton privateDeck = new JRadioButton("Private");
+		privateDeck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (privateDeck.isSelected()) {
+					publicity = false;
+				}
+			}
+		});
+		privateDeck.setBounds(447, 11, 65, 24);
+		panel_1.add(privateDeck);
+		
+		ButtonGroup privacy = new ButtonGroup();
+		privacy.add(publicDeck);
+		privacy.add(privateDeck);
+		flashcardContainer.setMaximumSize(new Dimension(728, 32767));
+		flashcardContainer.setPreferredSize(new Dimension(220, 150));
+		
+		/// FLASHCARD PLACEHOLDER
+		
+		flashcardContainer.setBounds(0, 198, 738, 120);
+		add(flashcardContainer);
+		
+		dynamicPanel.setPreferredSize(new Dimension(150, 500));
+		
+		JScrollPane scrollPane = new JScrollPane(dynamicPanel);
+		scrollPane.setMinimumSize(new Dimension(720, 110));
+		scrollPane.setPreferredSize(new Dimension(728, 150));
+		flashcardContainer.add(scrollPane);
+		
+		
 		
 		JButton btnCreateDeck = new JButton("Create Deck");
 		btnCreateDeck.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCreateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				controller.createDeck(deckTitle.getText(), flashcards, publicity);
 			}
 		});
-		btnCreateDeck.setBounds(324, 409, 104, 26);
+		btnCreateDeck.setBounds(316, 435, 104, 26);
 		add(btnCreateDeck);
 		
-		JButton btnNewButton_1_1 = new JButton("Add Card");
-		btnNewButton_1_1.setBounds(20, 320, 695, 77);
-		add(btnNewButton_1_1);
+		JButton addFlashcard = new JButton("Add Card");
+		addFlashcard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addFlashcard();
+			}
+		});
+		addFlashcard.setBounds(12, 346, 695, 77);
+		add(addFlashcard);
+		
+		
+	}
+	
+
+	
+	private void addFlashcard() {
+		System.out.println("add");
+		flashcardNum += 1;
+		System.out.println(flashcards.size());
+		if (flashcardNum % 3 == 0) {
+			
+			dynamicPanel.setPreferredSize(new Dimension(150, initialDynamicSize += 500));
+		}
+		FlashcardPanel flashcardPanel = new FlashcardPanel(flashcards, controller);
+		dynamicPanel.add(flashcardPanel);
+		//JLabel someLabel = new JLabel("Some new Label");
+		//flashcardContainer.add(someLabel);
+		
+		 //JPanel newPanel = new JPanel();
+         //newPanel.setPreferredSize(new Dimension(50, 50));
+         //newPanel.setBackground(Color.YELLOW);
+         
+         //flashcardContainer.add(flashcardPanel);
+		
+		dynamicPanel.revalidate();
+		dynamicPanel.repaint();
+		
+//		revalidate();
+//		repaint();
+		
 	}
 }
