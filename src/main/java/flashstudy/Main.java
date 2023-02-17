@@ -10,6 +10,7 @@ import java.text.*;
 
 import Controller.Controller;
 import Controller.MiddleTier;
+import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
 import Views.LandingPage;
 import Views.LoginPage;
@@ -44,9 +45,14 @@ public class Main {
 		LandingPage landingPage = new LandingPage(controller);
 		container.add(landingPage, "landingPage");
 		
-		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
-		container.add(createDeckPage, "createDeckPage");
+//		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
+//		container.add(createDeckPage, "createDeckPage");
 		
+//		BrowsePublicDeckPage browsePublicDeckPage = new BrowsePublicDeckPage(controller);
+//		container.add(browsePublicDeckPage, "browsePublicDeckPage");
+		
+		
+
 		card.show(container, "1");
 		welcomePage.setVisible(true);
 		

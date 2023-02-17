@@ -16,18 +16,19 @@ public class DeckList implements DeckDatabase {
 		this.userDatabase = userDatabase;
 	}
 	
+	
 	@Override
-	public void addDeck(String title, ArrayList<Flashcard> flashcards, String createdBy, boolean publicDeck) {
+	public void addDeck(Deck deck) {
 		// TODO Auto-generated method stub
 		// !deckMap.containsKey(deck.getDeckTitle())
 		// NEED TO CHECK IF DECK CREATEDBY HAS A USER WITHIN DATABASE
 		
-		if (userDatabase.getCurrentUser().getUsername().equals(createdBy)) {
-			if (!deckMap.containsKey(title)) {
-				deckMap.put(title, new ArrayList<Deck>());
+		if (userDatabase.getCurrentUser().getUsername().equals(deck.createdBy)) {
+			if (!deckMap.containsKey(deck.getDeckTitle())) {
+				deckMap.put(deck.getDeckTitle(), new ArrayList<Deck>());
 			}
 			
-			deckMap.get(title).add(new Deck(title, flashcards, createdBy, publicDeck));
+			deckMap.get(deck.getDeckTitle()).add(deck);
 				
 		} else {
 			throw new IllegalArgumentException("User does not exist or isn't logged in to create that deck!");
@@ -105,6 +106,21 @@ public class DeckList implements DeckDatabase {
 	@Override
 	public ArrayList<Deck> getAllCurrentUserDecks() {
 		return userDatabase.getCurrentUser().userDeckList();
+	}
+
+
+	@Override
+	public ArrayList<Deck> searchPublicDeck(String deckTitle) {
+		ArrayList<Deck> publicDecks = getAllPublicDecks();
+		ArrayList<Deck> results = new ArrayList<>();
+		// TODO Auto-generated method stub
+		for (int i = 0; i < publicDecks.size(); i++) {
+			if (publicDecks.get(i).getDeckTitle().equals(deckTitle)) {
+				results.add(publicDecks.get(i));
+			}
+		}
+		
+		return results;
 	}
 
 }

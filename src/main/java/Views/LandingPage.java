@@ -39,6 +39,11 @@ public class LandingPage extends JPanel implements ActionListener {
 	private void initialize() {
 		titleMsg = new JLabel("Welcome " + username + "!");
 		title.add(titleMsg);
+		browse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.browse();
+			}
+		});
 		
 		buttons.add(browse);
 		add.addActionListener(new ActionListener() {

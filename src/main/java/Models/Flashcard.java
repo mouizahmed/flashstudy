@@ -1,22 +1,23 @@
 package Models;
 
+import java.util.UUID;
+
 public class Flashcard {
 
 	public String question;
 	public String answer;
-	public int flashcardID;
+	public String flashcardID;
 	public String deckID;
 	public String createdBy;
 	
-	public Flashcard(String question, String answer, int flashcardID, String deckID, String createdBy) {
+	public Flashcard(String question, String answer, String createdBy) {
 		this.question = question;
 		this.answer = answer;
-		this.flashcardID = flashcardID;
-		this.deckID = deckID;
 		this.createdBy = createdBy;
+		this.flashcardID = UUID.randomUUID().toString();
 	}
 
-	public Flashcard(String question, String answer){
+	public Flashcard(String question, String answer) {
 		this.question = question;
 		this.answer = answer;
 	}
