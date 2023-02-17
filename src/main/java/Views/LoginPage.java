@@ -18,16 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import Controller.Controller;
 import Controller.MiddleTier;
-import javax.swing.JPasswordField;
-import java.awt.GridLayout;
 
 public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 	
 	JPanel main;
 	CardLayout card;
-	Controller controller;
 	
 	JPanel title = new JPanel();
 	JLabel loginMsg = new JLabel("Login");
@@ -42,15 +38,14 @@ public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 	
 	JPanel passwordPanel = new JPanel();
 	JLabel passwordLabel = new JLabel("Password");
+	JTextField password = new JTextField();
 	
 	WelcomePage welcomePage;
-	private final JPasswordField password = new JPasswordField();
 	
-	public LoginPage(Controller controller) {
-		this.controller = controller;
-		//this.welcomePage = welcomePage;
-//		this.main = main;
-//		this.card = card;
+	public LoginPage(WelcomePage welcomePage, JPanel main, CardLayout card) {
+		this.welcomePage = welcomePage;
+		this.main = main;
+		this.card = card;
 		initialize();
 	}
 	
@@ -59,20 +54,17 @@ public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 		
 		title.add(loginMsg);
 		this.add(title);
-		namePanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		namePanel.add(nameLabel);
 		name.setPreferredSize(new Dimension(100, 20));
 		namePanel.add(name);
-		passwordPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		passwordPanel.add(passwordLabel);
+		password.setPreferredSize(new Dimension(100, 20));
+		passwordPanel.add(password);
 		
 		this.add(namePanel);
 		this.add(passwordPanel);
-		password.setColumns(12);
-		
-		passwordPanel.add(password);
 	
 		back.addActionListener(this);
 		submit.addActionListener(this);
@@ -93,24 +85,20 @@ public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 		// TODO Auto-generated method stub
 		if (e.getSource() == back) {
 			//WelcomePage welcomePage = new WelcomePage();
-//			this.setVisible(false);
-//			welcomePage.setVisible(true);
-			controller.welcomePage();
+			this.setVisible(false);
+			welcomePage.setVisible(true);
 		} else if (e.getSource() == submit) {
-			
-			controller.login(name.getText(), String.valueOf(password.getPassword()));
-			
-			//LandingPage landingPage = new LandingPage(main, card, name.getText());
+			LandingPage landingPage = new LandingPage(main, card, name.getText());
 			
 			
-//			boolean loggedIn = false;
-//			
-//			loggedIn = MiddleTier.login(name.getText(), password.getText());
-//			
-//			if (loggedIn == true) {
-//				main.add(landingPage, "landing");
-//				card.show(main, "landing");
-//			}
+			boolean loggedIn = false;
+			
+			loggedIn = MiddleTier.login(name.getText(), password.getText());
+			
+			if (loggedIn == true) {
+				main.add(landingPage, "landing");
+				card.show(main, "landing");
+			}
 		}
 		
 	}
