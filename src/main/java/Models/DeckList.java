@@ -115,7 +115,7 @@ public class DeckList implements DeckDatabase {
 		ArrayList<Deck> results = new ArrayList<>();
 		// TODO Auto-generated method stub
 		for (int i = 0; i < publicDecks.size(); i++) {
-			if (publicDecks.get(i).getDeckTitle().equals(deckTitle)) {
+			if (publicDecks.get(i).getDeckTitle().equalsIgnoreCase(deckTitle)) {
 				results.add(publicDecks.get(i));
 			}
 		}
