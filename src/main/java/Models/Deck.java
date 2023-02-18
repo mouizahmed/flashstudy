@@ -11,11 +11,12 @@ public class Deck {
 	public String createdBy;
 	public boolean publicDeck;
 	
-	public Deck(String deckTitle, ArrayList<Flashcard> flashcards, String createdBy, boolean publickDeck) {
+	public Deck(String deckTitle, ArrayList<Flashcard> flashcards, String createdBy, boolean publicDeck) {
 		this.deckTitle = deckTitle;
 		this.deckID = UUID.randomUUID().toString();
 		this.flashcards = flashcards;
 		this.createdBy = createdBy;
+		this.publicDeck = publicDeck;
 	}
 		
 	public String getDeckID() {

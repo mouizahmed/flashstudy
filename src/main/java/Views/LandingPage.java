@@ -7,12 +7,15 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class LandingPage extends JPanel implements ActionListener {
+import Controller.Controller;
 
+public class LandingPage extends JPanel implements ActionListener {
+	
+	private Controller controller;
 	String username;
 	JButton add = new JButton("New Deck");
-	JButton browse = new JButton("Home");
-	JButton profile = new JButton("Profile");
+	JButton browse = new JButton("Browse");
+	JButton logout = new JButton("Logout");
 	JPanel buttons = new JPanel();
 	JPanel title = new JPanel();
 	
@@ -21,10 +24,12 @@ public class LandingPage extends JPanel implements ActionListener {
 	JPanel main;
 	CardLayout card;
 	
-	public LandingPage(JPanel main, CardLayout card, String username) {
-		this.main = main;
-		this.card = card;
-		this.username = username;
+	public LandingPage(Controller controller) {
+		
+		this.controller = controller;
+//		this.main = main;
+//		this.card = card;
+//		this.username = username;
 		
 		this.add(title);
 		this.add(buttons);
@@ -34,18 +39,25 @@ public class LandingPage extends JPanel implements ActionListener {
 	private void initialize() {
 		titleMsg = new JLabel("Welcome " + username + "!");
 		title.add(titleMsg);
+		browse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.browse();
+			}
+		});
 		
 		buttons.add(browse);
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				controller.createDeckPage();
 			}
 		});
 		buttons.add(add);
-		profile.addActionListener(new ActionListener() {
+		logout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				controller.logout();
 			}
 		});
-		buttons.add(profile);
+		buttons.add(logout);
 		
 		BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(boxlayout);
@@ -58,6 +70,7 @@ public class LandingPage extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
 		
 	}
 

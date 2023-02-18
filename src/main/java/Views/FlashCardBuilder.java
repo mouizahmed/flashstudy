@@ -2,7 +2,6 @@ package Views;
 import javax.swing.*;
 
 import Models.Flashcard;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 public class FlashCardBuilder {
     private JTextArea question;
     private JTextArea answer;
-    private JComboBox difficultyLevel;
     private ArrayList<Flashcard> cardList;
     private JFrame frame;
 
@@ -145,6 +143,7 @@ public class FlashCardBuilder {
     }
 
     private void clearCard(){
+
         //clears Jtext in question and answer
 
         question.setText("");
