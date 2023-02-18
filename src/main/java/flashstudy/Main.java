@@ -8,12 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.*;
 
-import Controller.Controller;
 import Controller.MiddleTier;
-import Views.CreateDeckPage;
-import Views.LandingPage;
-import Views.LoginPage;
-import Views.RegisterPage;
 import Views.WelcomePage;
 
 
@@ -31,21 +26,10 @@ public class Main {
 		container.setLayout(card);
 		// container.setVisible(true);
 		
-		Controller controller = new Controller(container, card);
-		WelcomePage welcomePage = new WelcomePage(controller);
-		container.add(welcomePage, "welcomePage");
+		WelcomePage welcomePage = new WelcomePage(container, card);
+		container.add(welcomePage, "1");
 		
-		LoginPage loginPage = new LoginPage(controller);
-		container.add(loginPage, "loginPage");
 		
-		RegisterPage registerPage = new RegisterPage(controller);
-		container.add(registerPage, "registerPage");
-		
-		LandingPage landingPage = new LandingPage(controller);
-		container.add(landingPage, "landingPage");
-		
-		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
-		container.add(createDeckPage, "createDeckPage");
 		
 		card.show(container, "1");
 		welcomePage.setVisible(true);
@@ -55,7 +39,7 @@ public class Main {
 		main.setVisible(true);
 		
 		
-		//MiddleTier app = new MiddleTier();
+		MiddleTier app = new MiddleTier();
 		
 		
 	}

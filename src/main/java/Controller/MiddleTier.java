@@ -6,12 +6,7 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -38,7 +33,8 @@ public class MiddleTier {
 	public MiddleTier() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/flashstudy", "root", "password");
+			//conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/flashstudy", "root", "password");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/flashstudy", "root", "admin");
 			if (conn != null) {
 				initialize();
 				System.out.println("Connected to Database");
@@ -215,7 +211,26 @@ public static ArrayList<Deck> getAllDecks() {
 		return userDecks;
 		
 	}
-	
+
+	public static ArrayList<Flashcard> getOtherFlashCards(String createdBy, int deckID){
+		ArrayList<Flashcard> otherFlashCards = new ArrayList<>();
+		sql = "SELECT question, answer FROM flashcards WHERE createdBy = ? AND deckID = ?";
+		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, createdBy);
+			stmt.setInt(2, deckID);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					String question = rs.getString("question");
+					String answer = rs.getString("answer");
+					Flashcard flashcard = new Flashcard(question, answer);
+					otherFlashCards.add(flashcard);
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return otherFlashCards;
+	}
 	
 	public static ArrayList<Deck> getUserDecks(String username) {
 		

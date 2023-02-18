@@ -41,7 +41,6 @@ public class UserList implements UserDatabase {
 			LocalDate currentDate = LocalDate.now();
 			User user = new User(username, email, cryptedPassword, currentDate);
 			users.put(user.getUsername(), user);
-			this.login(username, password);
 		} else if (existingUserByUsername != null){
 			throw new IllegalArgumentException("Username already exists");
 		} else if (existingUserByEmail != null) {
