@@ -30,12 +30,16 @@ public class Controller {
 	private DeckList deckDatabase;
 	private JPanel main;
 	private CardLayout card;
+	private JDBC mysql_database;
 	
 	public Controller(JPanel main, CardLayout card) {
 		userDatabase = new UserList();
 		deckDatabase = new DeckList(userDatabase);
 		this.main = main;
 		this.card = card;
+		
+		this.mysql_database = new JDBC();
+		
 	}
 	
 	
