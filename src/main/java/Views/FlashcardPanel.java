@@ -23,15 +23,17 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	private ArrayList<Flashcard> flashcards;
 	private Controller controller;
 	private Flashcard flashcard;
+	private String deckID;
 	/**
 	 * Create the panel.
 	 */
 	
 	
 	
-	public FlashcardPanel(ArrayList<Flashcard> flashcards, Controller controller) {
+	public FlashcardPanel(ArrayList<Flashcard> flashcards, Controller controller, String deckID) {
 		this.flashcards = flashcards;
 		this.controller = controller;
+		this.deckID = deckID;
 		initialize();
 	}
 	
@@ -67,7 +69,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		this.add(deleteFlashcard);
 		saveFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				flashcard = controller.createFlashcard(flashcardQuestion.getText(), flashcardAnswer.getText());
+				flashcard = controller.createFlashcard(flashcardQuestion.getText(), flashcardAnswer.getText(), deckID);
 				flashcards.add(flashcard);
 				setBackground(new Color(51, 204, 255));
 				

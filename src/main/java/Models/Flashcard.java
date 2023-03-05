@@ -10,10 +10,11 @@ public class Flashcard {
 	public String deckID;
 	public String createdBy;
 	
-	public Flashcard(String question, String answer, String createdBy) {
+	public Flashcard(String question, String answer, String createdBy, String deckID) {
 		this.question = question;
 		this.answer = answer;
 		this.createdBy = createdBy;
+		this.deckID = deckID;
 		this.flashcardID = UUID.randomUUID().toString();
 	}
 

@@ -9,7 +9,6 @@ import java.awt.event.*;
 import java.text.*;
 
 import Controller.Controller;
-import Controller.MiddleTier;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
 import Views.LandingPage;
