@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import Controller.Controller;
-import Controller.MiddleTier;
 import javax.swing.JPasswordField;
 import java.awt.GridLayout;
 

@@ -29,6 +29,7 @@ import java.awt.Component;
 
 public class CreateDeckPage extends JPanel {
 	private JTextField deckTitle;
+	private String deckID;
 	private JTextField school;
 	private JTextField faculty;
 	private JTextField course;
@@ -43,12 +44,13 @@ public class CreateDeckPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CreateDeckPage(Controller controller) {
+	public CreateDeckPage(Controller controller, String deckID) {
 		setMinimumSize(new Dimension(750, 500));
 		setSize(new Dimension(750, 500));
 		setPreferredSize(new Dimension(750, 500));
 		this.controller = controller;
 		flashcards = new ArrayList<>();
+		this.deckID = deckID;
 		initialize();
 
 	}
@@ -160,7 +162,7 @@ public class CreateDeckPage extends JPanel {
 		btnCreateDeck.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCreateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createDeck(deckTitle.getText(), flashcards, publicity);
+				controller.createDeck(deckTitle.getText(), flashcards, publicity, deckID);
 			}
 		});
 		btnCreateDeck.setBounds(316, 435, 104, 26);
@@ -188,7 +190,7 @@ public class CreateDeckPage extends JPanel {
 			
 			dynamicPanel.setPreferredSize(new Dimension(150, initialDynamicSize += 500));
 		}
-		FlashcardPanel flashcardPanel = new FlashcardPanel(flashcards, controller);
+		FlashcardPanel flashcardPanel = new FlashcardPanel(flashcards, controller, deckID);
 		dynamicPanel.add(flashcardPanel);
 		//JLabel someLabel = new JLabel("Some new Label");
 		//flashcardContainer.add(someLabel);
