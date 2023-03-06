@@ -28,13 +28,9 @@ public class JDBC {
 	private static String sql;
 	private static String sql2;
 	private static String query1;
-	private UserList userDatabase;
-	private DeckList deckDatabase;
 	private PasswordUtilities passwordUtilities = new PasswordUtilities();
 
 	public JDBC() {
-		userDatabase = new UserList();
-		deckDatabase = new DeckList(userDatabase);
 		String url = "jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_957a5ec054245a7?reconnect=true";
 		String user = "b94e112144658f";
 		String password = "7af4eb5c";
