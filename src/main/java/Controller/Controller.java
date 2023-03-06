@@ -12,11 +12,9 @@ import java.util.regex.Pattern;
 import javax.swing.JPanel;
 
 import Models.Deck;
-import Models.DeckList;
 import Models.Flashcard;
 import Models.JDBC;
 import Models.User;
-import Models.UserList;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
 import Views.LoginPage;
