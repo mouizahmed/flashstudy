@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public interface UserDatabase {
-	void addUser(String username, String email, String password, String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException;
+	User addUser(String username, String email, String password, String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException;
 	User getUser(String username);
 	void login(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
 	void logout();

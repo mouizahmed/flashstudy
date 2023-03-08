@@ -1,0 +1,254 @@
+[33mcommit d5f1e8e9ae23037fccf020dc78ce9aa93e775774[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: souravC01 <114119117+souravC01@users.noreply.github.com>
+Date:   Fri Feb 17 00:01:32 2023 -0500
+
+    Email Sender Class Added(Need to fix dependencies)
+
+[33mcommit 0a00b2bf3166e859bd7955c753ba869401a66aa3[m
+Merge: 01d4643 363fdfc
+Author: ojastaneja7 <ojastaneja7@gmail.com>
+Date:   Thu Feb 16 22:39:08 2023 -0500
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 363fdfc2ea16129a165cb46593000e3beed43bb3[m
+Author: souravC01 <114119117+souravC01@users.noreply.github.com>
+Date:   Thu Feb 16 22:30:25 2023 -0500
+
+    Added description
+
+[33mcommit 5c106c51dfd5de161f477cc183cedc1fd0434c1c[m
+Merge: 2352e70 bfae845
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 22:29:02 2023 -0500
+
+    Merge pull request #8 from mouizahmed/mouiz-dev
+    
+    Mouiz dev
+
+[33mcommit bfae84534d7c1ba200209c8aa248802dacd7a9c3[m
+Merge: 2d63386 9e5939c
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 22:27:29 2023 -0500
+
+    Merge branch 'mouiz-dev' of https://github.com/mouizahmed/flashstudy.git into mouiz-dev
+
+[33mcommit 01d4643dc3cc9f778626c42e513a789fe4eb4479[m[33m ([m[1;31morigin/ojas-dev[m[33m)[m
+Author: ojastaneja7 <ojastaneja7@gmail.com>
+Date:   Thu Feb 16 22:26:29 2023 -0500
+
+    Fixed some errors
+
+[33mcommit 2d63386e684b542a91ec28bb056e7e16b727b833[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 22:26:10 2023 -0500
+
+    login gui + logic + controller
+
+[33mcommit 4bc9cd633635bf9dee2f7f992bba277ed647ae5e[m
+Author: ojastaneja7 <ojastaneja7@gmail.com>
+Date:   Thu Feb 16 22:14:45 2023 -0500
+
+    Created Quiz Player Constructor along with the UI implementation for the users to Practice Quiz.
+
+[33mcommit 2c54be760d822cb1b5aa26b21ea7c02741b18e72[m
+Author: ojastaneja7 <ojastaneja7@gmail.com>
+Date:   Thu Feb 16 22:10:14 2023 -0500
+
+    Created Quiz Player Class
+
+[33mcommit 2352e7087202abb9c54e49cd1e01d8ac35c8b2ac[m
+Author: souravC01 <114119117+souravC01@users.noreply.github.com>
+Date:   Thu Feb 16 20:42:21 2023 -0500
+
+    Update README.md
+
+[33mcommit 69a12327f5078f7555d4f52c67779ed3f32aacec[m
+Merge: 79c20f7 61ddfdd
+Author: ojastaneja7 <ojastaneja7@gmail.com>
+Date:   Thu Feb 16 20:00:05 2023 -0500
+
+    Merge remote-tracking branch 'origin/master' into ojas-dev
+    
+    # Conflicts:
+    #       .idea/misc.xml
+    #       pom.xml
+
+[33mcommit 61ddfdd691d74193226cb4927f730acd5a54c85b[m
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 18:52:53 2023 -0500
+
+    Update README.md
+
+[33mcommit 26abb18ae92756db6ccc29c17640f48d5a5c65fd[m
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 18:52:36 2023 -0500
+
+    Update README.md
+
+[33mcommit 861828a6453231af881c4daa75dc498ce7d58bf9[m
+Merge: dec2ffb 9e5939c
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 18:52:08 2023 -0500
+
+    Merge pull request #7 from mouizahmed/mouiz-dev
+    
+    Create README.md
+
+[33mcommit 9e5939c0b320bcd87407e9d4abf11e9097525c41[m
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 18:51:57 2023 -0500
+
+    Create README.md
+
+[33mcommit 79c20f706b5e2085ae202420cfb3b101219d1dff[m
+Author: ojastaneja7 <ojastaneja7@gmail.com>
+Date:   Thu Feb 16 18:42:58 2023 -0500
+
+    Creating a branch
+
+[33mcommit dec2ffbaeced5972ff2f7ea96279d0a2081f4fea[m
+Merge: 4212e80 846621d
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 17:11:20 2023 -0500
+
+    Merge pull request #6 from mouizahmed/mouiz-dev
+    
+    added changes to deck database model + some gui changes
+
+[33mcommit 846621d9a7a85b45beb5fe835f02cb15f9496698[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Thu Feb 16 17:09:49 2023 -0500
+
+    added changes to deck database model + some gui changes
+
+[33mcommit 4212e80bc08135f76365331e103d8db9e94b7882[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 15 00:42:04 2023 -0500
+
+    fixed merge
+
+[33mcommit 244a13fe8ceb00392cdb283339b78927236a701e[m
+Merge: ce68bf9 190e8d5
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 15 00:41:05 2023 -0500
+
+    Merge remote-tracking branch 'origin/mouiz-dev'
+    
+    Conflicts:
+            src/main/java/Models/Flashcard.java
+
+[33mcommit 190e8d55a3ea00baf0c195ee6bd31c88fc875d85[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 15 00:36:20 2023 -0500
+
+    worked on flashcard database (not finished)
+
+[33mcommit ce68bf958681191d6b4e1d76cb0903d5f7c8f133[m
+Merge: d34937b 323d833
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 15 00:33:49 2023 -0500
+
+    Merge pull request #5 from mouizahmed/Sourav-DEV
+    
+    Sourav dev
+
+[33mcommit 323d8332e8b7ebd0dff861faf0290640ae2eff7d[m
+Merge: 7f94941 d34937b
+Author: sourav <sourav.chandhok@outlook.com>
+Date:   Wed Feb 15 00:24:14 2023 -0500
+
+    Merge branch 'master' of https://github.com/mouizahmed/flashstudy into Sourav-DEV
+
+[33mcommit 7f94941395c6b64ffaff2391bb8478b1ff02c5ff[m
+Author: sourav <sourav.chandhok@outlook.com>
+Date:   Tue Feb 14 22:20:11 2023 -0500
+
+    Flashcard class added with FlashcardBuilder (Clears on clicking next and creates a new Flashcard)
+
+[33mcommit 55b60f6098a8dc5d73c05a1585b617268b639f54[m
+Author: sourav <sourav.chandhok@outlook.com>
+Date:   Tue Feb 14 20:30:09 2023 -0500
+
+    Menu Bar added (new deck/Save Deck)
+
+[33mcommit 3899711da1ef5bbe749919ec6639ae4ced1ad0cb[m
+Author: sourav <sourav.chandhok@outlook.com>
+Date:   Tue Feb 14 20:03:32 2023 -0500
+
+    Jframe Added for Building Flashcard (Q/A)
+
+[33mcommit d34937b0e8150ca056d674d6bfbb5db12aa5db74[m[33m ([m[1;31morigin/fardad-dev[m[33m)[m
+Merge: 6e85df4 a94bd60
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Fri Feb 10 20:20:19 2023 -0500
+
+    Merge pull request #4 from mouizahmed/mouiz-dev
+    
+    changes to user system + tests
+
+[33mcommit a94bd60176f4a079e73c9aa97f9e8a1ba2d34a5c[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Fri Feb 10 20:15:52 2023 -0500
+
+    changes to user system + tests
+
+[33mcommit 6e85df4d6e5fb203af89676891e9d0d4d964c0d6[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Fri Feb 10 00:14:18 2023 -0500
+
+    added stub user database + unit tests
+
+[33mcommit 09270700ea2134b4e9210362c2ce9e5f4e11edc5[m
+Merge: 2e642ef a7cfa5e
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 8 18:36:56 2023 -0500
+
+    Merge pull request #2 from mouizahmed/master
+    
+    pull
+
+[33mcommit a7cfa5ee06e90a4d48f91e87989143cc088d38fa[m
+Merge: 6243cfb 2e642ef
+Author: Mouiz Ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 8 12:07:20 2023 -0500
+
+    Merge pull request #1 from mouizahmed/mouiz-dev
+    
+    added mysql lib file
+
+[33mcommit 2e642ef8962472f446e948b311a2051ffa4f76a6[m
+Author: admin <mouizahmed1@gmail.com>
+Date:   Wed Feb 8 12:03:40 2023 -0500
+
+    added mysql lib file
+
+[33mcommit 6243cfb60e4410562e43787bedfa216dcf7bebb0[m
+Author: Fardad Rashidian <90567374+fardadfr@users.noreply.github.com>
+Date:   Wed Feb 8 11:55:39 2023 -0500
+
+    Delete test
+
+[33mcommit 341426e5c8194492efbd55785b24f451f9fa1b99[m
+Author: Fardad Rashidian <90567374+fardadfr@users.noreply.github.com>
+Date:   Wed Feb 8 11:55:21 2023 -0500
+
+    Create test
+
+[33mcommit 24c425294c1e087f2ee6d60bf1707ae109232d5d[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 8 09:44:36 2023 -0500
+
+    added sample test
+
+[33mcommit 8a146244088b2ccb2a7ed47593001aa220ba5df8[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 8 09:11:50 2023 -0500
+
+    maven setup 2
+
+[33mcommit 421450fc60d6687f5df0a9324c88bb87ca70cb62[m
+Author: mouiz ahmed <mouiza@my.yorku.ca>
+Date:   Wed Feb 8 09:08:35 2023 -0500
+
+    maven setup

@@ -20,11 +20,11 @@ public class UserList implements UserDatabase {
 	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	
 	@Override
-	public void addUser(String username, String email, String password, String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public User addUser(String username, String email, String password, String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		// TODO Auto-generated method stub
 		User existingUserByUsername = getUser(username);
 		User existingUserByEmail = getUserByEmail(email);
-		
+		User user = null;
 		
 		if (existingUserByUsername == null && existingUserByEmail == null) {
 			if (!password.equals(confirmPassword)) {
@@ -39,13 +39,18 @@ public class UserList implements UserDatabase {
 			
 			String cryptedPassword = encryptPassword(password);
 			LocalDate currentDate = LocalDate.now();
-			User user = new User(username, email, cryptedPassword, currentDate);
+			user = new User(username, email, cryptedPassword, currentDate);
 			users.put(user.getUsername(), user);
+			this.login(username, password);
+			
+			
 		} else if (existingUserByUsername != null){
 			throw new IllegalArgumentException("Username already exists");
 		} else if (existingUserByEmail != null) {
 			throw new IllegalArgumentException("Email already exists");
 		}
+		
+		return user;
 		
 	}
 

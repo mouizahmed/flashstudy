@@ -58,8 +58,8 @@ public class EmailSender {
         }, reminderDate);
     }
 
-    public static void main(String[] args) {
-        sendEmail("sourav.chandok@gmail.com","testing flashcard","This is a test");
-    }
+//     public static void main(String[] args) {
+//         sendEmail("sourav.chandok@gmail.com","testing flashcard","This is a test");
+//     }
 
 }
