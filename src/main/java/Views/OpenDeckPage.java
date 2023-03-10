@@ -56,7 +56,7 @@ public class OpenDeckPage extends JPanel {
 		panel.add(profileButton);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(518, 59, 208, 26);
+		panel_1.setBounds(459, 59, 267, 26);
 		add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 		
@@ -70,6 +70,14 @@ public class OpenDeckPage extends JPanel {
 			}
 		});
 		panel_1.add(btnNewButton_2);
+		
+		JButton Quiz = new JButton("Quiz");
+		Quiz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.quiz(deck);
+			}
+		});
+		panel_1.add(Quiz);
 		
 		
 		panel_2.setPreferredSize(new Dimension(738, 403));

@@ -146,6 +146,42 @@ public class JDBC {
 		return deck;
 	}
 	
+	public void createQuiz(QuizSession quizSession) {
+		String addQuizQuery = "INSERT INTO Quizzes (quizID, deckID, avgScore, quizTakenBy) VALUES (?, ?, ?, ?);";
+		
+		try {
+			PreparedStatement stmt1 = conn.prepareStatement(addQuizQuery);
+			stmt1.setString(1, quizSession.getQuizID());
+			stmt1.setString(2, quizSession.getDeckID());
+			stmt1.setString(3, Double.toString(quizSession.getAvgScore()));
+			stmt1.setString(4, quizSession.getUser().getUsername());
+			int rowsInserted = stmt1.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int quizAttempts(Deck deck, User user) {
+		int userAttempts = 0;
+		
+		sql = "SELECT COUNT(*) FROM Quizzes WHERE deckID='" + deck.getDeckID() + "' AND quizTakenBy='" + user.getUsername() + "';";
+		
+		try {
+			stmt = conn.createStatement();
+			rs1 = stmt.executeQuery(sql);
+			
+			rs1.next();
+			userAttempts = rs1.getInt(1);
+			return userAttempts;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return userAttempts;
+		}
+	}
+	
+	
+	
+	
 	public ArrayList<Deck> publicDeckList() {
 		ArrayList<Deck> publicDecks = new ArrayList<>();
 		

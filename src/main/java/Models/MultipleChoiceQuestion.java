@@ -22,7 +22,15 @@ public class MultipleChoiceQuestion extends Question {
 	
 	@Override
 	public boolean checkAnswer(String userAnswer) {
-		return userAnswer.equals(this.answer);
+		
+		if (userAnswer.equals(this.answer)) {
+			this.setCorrect(true);
+			return true;
+		} else {
+			this.setCorrect(false);
+			return false;
+		}
+	
 	}
 
 }

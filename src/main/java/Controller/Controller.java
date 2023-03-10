@@ -14,11 +14,15 @@ import javax.swing.JPanel;
 import Models.Deck;
 import Models.Flashcard;
 import Models.JDBC;
+import Models.QuizCreator;
+import Models.QuizSession;
 import Models.User;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
 import Views.LoginPage;
 import Views.OpenDeckPage;
+import Views.QuizPage;
+import Views.QuizResults;
 import Views.RegisterPage;
 import Views.SessionPlayer;
 
@@ -163,6 +167,23 @@ public class Controller {
 		main.add(sessionPage, "sessionPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "sessionPage" + num);
+	}
+	
+	public void quiz(Deck deck) {
+		QuizCreator quizCreator = new QuizCreator(deck);
+		QuizSession quizSession = new QuizSession(quizCreator, currentUser);
+		QuizPage quizPage = new QuizPage(quizSession, this);
+		main.add(quizPage, "quizPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "quizPage" + num);
+	}
+	
+	public void quizResults(QuizSession quizSession) {
+		QuizResults quizResultsPage = new QuizResults(quizSession);
+		main.add(quizResultsPage, "quizResultsPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "quizResultsPage" + num);
+		System.out.println("SCORE" + quizSession.getScore());
 	}
 	
 }
