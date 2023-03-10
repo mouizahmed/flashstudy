@@ -23,6 +23,10 @@ public class Deck {
 		return deckID;
 	}
 	
+	public void setDeckID() {
+		this.deckID = UUID.randomUUID().toString();
+	}
+	
 	public void addFlashcard(Flashcard flashcard) {
 //		if (!flashcard.getDeckID().equals(this.getDeckID())) {
 //			throw new IllegalArgumentException("Flashcard ID does not match Deck ID");
@@ -54,6 +58,14 @@ public class Deck {
 	
 	public ArrayList<Flashcard> getAllFlashcards() {
 		return flashcards;
+	}
+	
+	public void setCreatedBy(String newUser) {
+		this.createdBy = newUser;
+	}
+	
+	public void replaceFlashcards(ArrayList<Flashcard> flashcards) {
+		this.flashcards = flashcards;
 	}
 	
 }

@@ -9,6 +9,7 @@ public class Flashcard {
 	public String flashcardID;
 	public String deckID;
 	public String createdBy;
+	public String difficultyColour = "";
 	
 	public Flashcard(String question, String answer, String createdBy, String deckID) {
 		this.question = question;
@@ -17,6 +18,24 @@ public class Flashcard {
 		this.deckID = deckID;
 		this.flashcardID = UUID.randomUUID().toString();
 	}
+	
+	public Flashcard(String question, String answer, String createdBy, String deckID, String flashcardID) {
+		this.question = question;
+		this.answer = answer;
+		this.createdBy = createdBy;
+		this.deckID = deckID;
+		this.flashcardID = flashcardID;
+	}
+	
+	public Flashcard(String question, String answer, String createdBy, String deckID, String flashcardID, String difficultyColour) {
+		this.question = question;
+		this.answer = answer;
+		this.createdBy = createdBy;
+		this.deckID = deckID;
+		this.flashcardID = flashcardID;
+		this.difficultyColour = difficultyColour;
+	}
+	
 
 	public Flashcard(String question, String answer) {
 		this.question = question;
@@ -44,5 +63,29 @@ public class Flashcard {
 	public String getDeckID() {
 		return deckID;
 
+	}
+	
+	public String getFlashcardID() {
+		return this.flashcardID;
+	}
+	
+	public void setNewFlashcardID() {
+		this.flashcardID = UUID.randomUUID().toString();
+	}
+	
+	public void setNewUser(String newUser) {
+		this.createdBy = newUser;
+	}
+	
+	public void setDeckID(String deckID) {
+		this.deckID = deckID;
+	}
+	
+	public void setDifficultyColour(String colour) {
+		this.difficultyColour = colour;
+	}
+	
+	public String getDifficultyColour() {
+		return this.difficultyColour;
 	}
 }

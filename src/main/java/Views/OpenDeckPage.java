@@ -56,7 +56,7 @@ public class OpenDeckPage extends JPanel {
 		panel.add(profileButton);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(459, 59, 267, 26);
+		panel_1.setBounds(242, 59, 484, 26);
 		add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 		
@@ -78,6 +78,22 @@ public class OpenDeckPage extends JPanel {
 			}
 		});
 		panel_1.add(Quiz);
+		
+		JButton addButton = new JButton("Add to Profile");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.addDeckToProfile(deck);
+			}
+		});
+		panel_1.add(addButton);
+		
+		JButton leaderboardButton = new JButton("Leaderboard");
+		leaderboardButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.leaderboardPage(deck);
+			}
+		});
+		panel_1.add(leaderboardButton);
 		
 		
 		panel_2.setPreferredSize(new Dimension(738, 403));
@@ -101,7 +117,7 @@ public class OpenDeckPage extends JPanel {
 //			deckPanel.add(deckTitle);
 //			deckPanel.add(deckCreatedBy);
 			
-			FlashcardView flashcardView = new FlashcardView(deck.getAllFlashcards().get(i), controller);
+			FlashcardView flashcardView = new FlashcardView(deck, deck.getAllFlashcards().get(i), controller);
 			
 			dynamicPanel.add(flashcardView);
 			

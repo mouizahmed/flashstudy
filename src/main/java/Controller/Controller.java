@@ -14,17 +14,20 @@ import javax.swing.JPanel;
 import Models.Deck;
 import Models.Flashcard;
 import Models.JDBC;
+import Models.Leaderboard;
 import Models.QuizCreator;
 import Models.QuizSession;
 import Models.User;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
+import Views.LeaderboardView;
 import Views.LoginPage;
 import Views.OpenDeckPage;
 import Views.QuizPage;
 import Views.QuizResults;
 import Views.RegisterPage;
 import Views.SessionPlayer;
+import Views.UserView;
 
 /**
  * Controller without MySQL connection
@@ -180,10 +183,39 @@ public class Controller {
 	
 	public void quizResults(QuizSession quizSession) {
 		QuizResults quizResultsPage = new QuizResults(quizSession);
+		this.mysql_database.createQuiz(quizSession);
 		main.add(quizResultsPage, "quizResultsPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "quizResultsPage" + num);
 		System.out.println("SCORE" + quizSession.getScore());
+	}
+	
+	public void profilePage(User user) {
+		UserView profilePage = new UserView(user);
+		main.add(profilePage, "profilePage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "profilePage" + num);
+	}
+	
+	public User getCurrentUser() {
+		return this.currentUser;
+	}
+	
+	public void addDeckToProfile(Deck deck) {
+		Deck deckCopy = this.mysql_database.addDeckToProfile(deck, this.currentUser);
+		this.currentUser.addDeck(deckCopy);
+	}
+	
+	public void updateFlashcardDifficulty(Flashcard flashcard, String colour) {
+		this.mysql_database.setFlashcardDifficulty(flashcard, colour);
+	}
+	
+	public void leaderboardPage(Deck deck) {
+		Leaderboard leaderboard = this.mysql_database.getQuizLeaderboard(deck);
+		LeaderboardView leaderboardPage = new LeaderboardView(leaderboard);
+		main.add(leaderboardPage, "leaderboardPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "leaderboardPage" + num);
 	}
 	
 }

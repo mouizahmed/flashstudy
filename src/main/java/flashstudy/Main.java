@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.text.*;
 
 import Controller.Controller;
+import Models.EmailSender;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
 import Views.LandingPage;
@@ -59,7 +60,7 @@ public class Main {
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		main.setVisible(true);
 		
-		
+		//EmailSender email = new EmailSender();
 		//MiddleTier app = new MiddleTier();
 		
 		

@@ -37,6 +37,10 @@ public class User {
 		return this.userDeckList;
 	}
 	
+	public void setUserDeckList(ArrayList<Deck> decks) {
+		this.userDeckList.addAll(decks);
+	}
+	
 	public void addDeck(Deck deck) {
 		userDeckList.add(deck);
 	}

@@ -22,11 +22,14 @@ public class JDBC {
 	private static Connection conn;
 	private static Statement stmt;
 	private static Statement stmt2;
+	private static Statement stmt3;
 	private static ResultSet rs;
 	private static ResultSet rs1;
 	private static ResultSet rs2;
+	private static ResultSet rs3;
 	private static String sql;
 	private static String sql2;
+	private static String sql3;
 	private static String query1;
 	private PasswordUtilities passwordUtilities = new PasswordUtilities();
 
@@ -80,13 +83,37 @@ public class JDBC {
 	
 	public User verifyUser(String username, String password) {
 		User user = null;
+		ArrayList<Deck> decks = new ArrayList<>();
 		try {
 			stmt = conn.createStatement();
+			stmt2 = conn.createStatement();
+			stmt3 = conn.createStatement();
 			sql = "SELECT * FROM Users WHERE username='" + username + "';";
+			sql2 = "SELECT * FROM Decks WHERE createdBy='" + username +"';";
+			
 			rs1 = stmt.executeQuery(sql);
 			if (rs1.next()) {
 				if (PasswordUtilities.validate(password, rs1.getString("password"))) {
+					rs2 = stmt2.executeQuery(sql2);
+					
+					while (rs2.next()) {
+						System.out.println(rs2.getString("deckTitle"));
+						ArrayList<Flashcard> flashcards = new ArrayList<>();
+						sql3 = "SELECT * FROM Flashcards WHERE deckID='" + rs2.getString("deckID") + "'";
+						rs3 = stmt3.executeQuery(sql3);
+						while (rs3.next()) {
+							flashcards.add(new Flashcard(rs3.getString("question"), rs3.getString("answer"), rs3.getString("createdBy"), rs3.getString("deckID")));
+						}
+						
+						decks.add(new Deck(rs2.getString("deckTitle"), flashcards, rs2.getString("createdBy"), rs2.getBoolean("public"), rs2.getString("deckID")));
+					}
+					
+					
 					user = new User(rs1.getString("username"), rs1.getString("email"), rs1.getString("password"), rs1.getDate("regDate").toLocalDate());
+					
+					user.setUserDeckList(decks);
+					
+					
 					return user;
 				} else {
 					throw new IllegalArgumentException("Incorrect Password");
@@ -109,6 +136,29 @@ public class JDBC {
 			e.printStackTrace();
 			return user;
 		}
+		
+	}
+	
+	public Deck addDeckToProfile(Deck deck, User currentUser) {
+		// TODO Auto-generated method stub
+		ArrayList<Flashcard> flashcardsCopy = new ArrayList<>();
+		Deck deckCopy = deck;
+		deckCopy.setDeckID();
+		deckCopy.setCreatedBy(currentUser.getUsername());
+		
+		for (int i = 0; i < deck.getAllFlashcards().size(); i++) {
+			Flashcard flashcardCopy = deck.getAllFlashcards().get(i);
+			flashcardCopy.setNewFlashcardID();
+			flashcardCopy.setDeckID(deckCopy.getDeckID());
+			flashcardCopy.setNewUser(currentUser.getUsername());
+			flashcardsCopy.add(flashcardCopy);
+		}
+		
+		deckCopy.replaceFlashcards(flashcardsCopy);
+		this.createDeck(deckCopy.getDeckTitle(), flashcardsCopy, false, currentUser, deckCopy.getDeckID());
+		return deckCopy;
+		
+		
 		
 	}
 	
@@ -146,6 +196,8 @@ public class JDBC {
 		return deck;
 	}
 	
+
+	
 	public void createQuiz(QuizSession quizSession) {
 		String addQuizQuery = "INSERT INTO Quizzes (quizID, deckID, avgScore, quizTakenBy) VALUES (?, ?, ?, ?);";
 		
@@ -160,6 +212,43 @@ public class JDBC {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public void setFlashcardDifficulty(Flashcard flashcard, String colour) {
+		String updateFlashcard = "UPDATE Flashcards SET difficultyColor=? WHERE flashcardID=?";
+		
+		try {
+			PreparedStatement stmt1 = conn.prepareStatement(updateFlashcard);
+			stmt1.setString(1, colour);
+			stmt1.setString(2, flashcard.getFlashcardID());
+			int rowsUpdated = stmt1.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Leaderboard getQuizLeaderboard(Deck deck) {
+		
+		Leaderboard leaderboard = new Leaderboard(deck);
+		
+		sql = "SELECT quizTakenBy, MAX(avgScore) as avgScore FROM Quizzes WHERE deckID='" + deck.getDeckID() + "' GROUP BY quizTakenBy ORDER BY avgScore DESC;";
+		
+		try {
+			stmt = conn.createStatement();
+			rs1 = stmt.executeQuery(sql);
+			
+			while(rs1.next()) {
+				Player player = new Player(deck, rs1.getString("quizTakenBy"), rs1.getDouble("avgScore"));
+				leaderboard.addPlayer(player);
+			}
+			return leaderboard;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return leaderboard;
+		}
+		
+	}
+	
 	
 	public int quizAttempts(Deck deck, User user) {
 		int userAttempts = 0;
@@ -179,7 +268,7 @@ public class JDBC {
 		}
 	}
 	
-	
+
 	
 	
 	public ArrayList<Deck> publicDeckList() {
@@ -198,7 +287,8 @@ public class JDBC {
 				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
 				rs2 = stmt2.executeQuery(sql2);
 				while (rs2.next()) {
-					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID")));
+					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor")));
+					
 				}
 				
 				publicDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID")));
@@ -241,6 +331,9 @@ public class JDBC {
 			return searchedDecks;
 		}
 	}
+
+
+
 	
 
 }
