@@ -9,7 +9,7 @@ public class User {
 
 	private String username;
 	private String email; 
-	private ArrayList<Deck> userDeckList = new ArrayList<>();;
+	private ArrayList<Deck> userDeckList = new ArrayList<>();
 	private String password;
 	private LocalDate regDate;
 

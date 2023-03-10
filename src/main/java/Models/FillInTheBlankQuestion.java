@@ -4,6 +4,7 @@ public class FillInTheBlankQuestion extends Question {
 
 	private String answer;
 	
+	
 	public FillInTheBlankQuestion(String question, String answer) {
 		super("Fill in the Blank", question);
 		this.answer = answer;
