@@ -12,6 +12,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class EmailSender {
+	
+	public EmailSender() {
+		sendEmail("mouizahmed1@gmail.com","testing flashcard","This is a test");
+	}
 
     public static void sendEmail(String to, String subject, String body) {
         String from = "flashstudyhelp@gmail.com";

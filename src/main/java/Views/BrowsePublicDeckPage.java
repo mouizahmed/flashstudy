@@ -58,6 +58,11 @@ public class BrowsePublicDeckPage extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
