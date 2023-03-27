@@ -8,5 +8,7 @@ public interface QuizDatabase {
 	QuizSession getQuiz(String quizID);
 	ArrayList<QuizSession> getDeckQuizzes(String deckID);
 	
+	    Leaderboard getQuizLeaderboard(Deck deck);
 	
+
 }

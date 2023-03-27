@@ -30,4 +30,18 @@ public class Leaderboard {
 	public Deck getDeck() {
 		return this.deck;
 	}
+
+	public void displayLeaderboard() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void removeAllPlayers() {
+        players.clear();
+    }
+
+	public Player getPlayer(int i) {
+		// TODO Auto-generated method stub
+		return this.getPlayer(i);
+	}
 }

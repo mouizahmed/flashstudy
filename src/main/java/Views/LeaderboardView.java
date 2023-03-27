@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
+
 import javax.swing.BoxLayout;
 
 public class LeaderboardView extends JPanel {
@@ -19,6 +21,10 @@ public class LeaderboardView extends JPanel {
 	public LeaderboardView(Leaderboard leaderboard) {		
 		this.leaderboard = leaderboard;
 		initialize();
+	}
+
+	public void setLeaderboard(Leaderboard leaderboard) {
+	    this.leaderboard = leaderboard;
 	}
 
 	
@@ -57,6 +63,46 @@ public class LeaderboardView extends JPanel {
 			
 			panel_1.add(player);
 		}
-
 	}
+	
+		 public JPanel getLeaderboardPanel() {
+		    Component[] components = this.getComponents();
+		    for (Component component : components) {
+		        if (component instanceof JPanel && component.getBounds().equals(new Rectangle(180, 172, 364, 255))) {
+		            return (JPanel) component;
+		        }
+		    }
+		    return null;
+		}
+		 
+		 public JButton getBackButton() {
+			    Component[] components = this.getComponents();
+			    for (Component component : components) {
+			        if (component instanceof JPanel && component.getBounds().equals(new Rectangle(0, 0, 738, 47))) {
+			            Component[] panelComponents = ((JPanel) component).getComponents();
+			            for (Component panelComponent : panelComponents) {
+			                if (panelComponent instanceof JButton && ((JButton) panelComponent).getText().equals("Back")) {
+			                    return (JButton) panelComponent;
+			                }
+			            }
+			        }
+			    }
+			    return null;
+			}
+		 
+		 public JButton getProfileButton() {
+			    Component[] components = this.getComponents();
+			    for (Component component : components) {
+			        if (component instanceof JPanel && component.getBounds().equals(new Rectangle(0, 0, 738, 47))) {
+			            Component[] panelComponents = ((JPanel) component).getComponents();
+			            for (Component panelComponent : panelComponents) {
+			                if (panelComponent instanceof JButton && ((JButton) panelComponent).getText().equals("Profile")) {
+			                    return (JButton) panelComponent;
+			                }
+			            }
+			        }
+			    }
+			    return null;
+			}
+
 }
