@@ -2,6 +2,7 @@ package Views;
 
 import javax.swing.JPanel;
 
+import Controller.Controller;
 import Models.Leaderboard;
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -9,15 +10,19 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LeaderboardView extends JPanel {
 
 	private Leaderboard leaderboard;
+	private Controller controller;
 	/**
 	 * Create the panel.
 	 */
-	public LeaderboardView(Leaderboard leaderboard) {		
+	public LeaderboardView(Leaderboard leaderboard, Controller controller) {		
 		this.leaderboard = leaderboard;
+		this.controller = controller;
 		initialize();
 	}
 
@@ -32,6 +37,11 @@ public class LeaderboardView extends JPanel {
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.previous();
+			}
+		});
 		btnNewButton.setBounds(10, 11, 63, 26);
 		panel.add(btnNewButton);
 		
@@ -56,6 +66,11 @@ public class LeaderboardView extends JPanel {
 			JLabel player = new JLabel(Integer.toString(i+1) + ". " + leaderboard.getPlayers().get(i).getUsername() + " " + Double.toString(leaderboard.getPlayers().get(i).getScore()));
 			
 			panel_1.add(player);
+		}
+		
+		if (panel_1.getComponentCount() == 0) {
+			JLabel noPlayers = new JLabel("No Players");
+			panel_1.add(noPlayers);
 		}
 
 	}

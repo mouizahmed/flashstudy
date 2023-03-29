@@ -27,6 +27,7 @@ public class SessionPlayer extends JPanel {
 	 * Create the panel.
 	 */
 	public SessionPlayer(ArrayList<Flashcard> flashcards, Controller controller) {
+		setBackground(new Color(255, 255, 255));
 		this.flashcards = flashcards;
 		this.controller = controller;
 		initialize();
@@ -37,6 +38,7 @@ public class SessionPlayer extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 738, 47);
 		add(panel);

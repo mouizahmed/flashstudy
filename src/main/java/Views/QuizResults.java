@@ -2,20 +2,36 @@ package Views;
 
 import javax.swing.JPanel;
 
+import Controller.Controller;
 import Models.QuizSession;
 import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class QuizResults extends JPanel {
 
 	private QuizSession quizSession;
+	private Controller controller;
 	/**
 	 * Create the panel.
 	 */
-	public QuizResults(QuizSession quizSession) {
-		setPreferredSize(new Dimension(750, 500));
+	
+	
+	
+	public QuizResults(QuizSession quizSession, Controller controller) {
 		this.quizSession = quizSession;
+		this.controller = controller;
+		initialize();
+	}
+	
+	
+	private void initialize() {
+		
+		setPreferredSize(new Dimension(750, 500));
+		
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -24,6 +40,11 @@ public class QuizResults extends JPanel {
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.deckPage(quizSession.getDeck());
+			}
+		});
 		btnNewButton.setBounds(10, 11, 63, 26);
 		panel.add(btnNewButton);
 		
@@ -43,11 +64,16 @@ public class QuizResults extends JPanel {
 		JLabel avgScore = new JLabel(average);
 		avgScore.setBounds(103, 221, 257, 16);
 		add(avgScore);
-		initialize();
-	}
-	
-	
-	private void initialize() {
 		
+		JButton leaderboard = new JButton("Leaderboard");
+		leaderboard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.leaderboardPage(quizSession.getDeck());
+			}
+		});
+		leaderboard.setForeground(new Color(255, 255, 255));
+		leaderboard.setBackground(new Color(0, 0, 0));
+		leaderboard.setBounds(302, 362, 121, 23);
+		add(leaderboard);
 	}
 }

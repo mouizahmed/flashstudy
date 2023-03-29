@@ -20,6 +20,7 @@ import Models.QuizSession;
 import Models.User;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
+import Views.LandingPage;
 import Views.LeaderboardView;
 import Views.LoginPage;
 import Views.OpenDeckPage;
@@ -42,6 +43,7 @@ public class Controller {
 	private CardLayout card;
 	private JDBC mysql_database;
 	private User currentUser;
+	
 	private static String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
 	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	
@@ -52,7 +54,6 @@ public class Controller {
 		this.card = card;
 		
 		this.mysql_database = new JDBC();
-		
 	}
 	
 	
@@ -69,8 +70,15 @@ public class Controller {
 		} else {
 			try {
 				currentUser = this.mysql_database.createNewUser(username, email, password, confirmPassword);
-				this.landingPage();
-				return true;
+				if (currentUser != null) {
+					LandingPage landingPage = new LandingPage(this);
+					main.add(landingPage, "landingPage");
+					card.show(main, "landingPage");
+					return true;
+				} else {
+					return false;
+				}
+				
 			} catch(Exception e) {
 				e.printStackTrace();
 				return false;
@@ -86,7 +94,9 @@ public class Controller {
 		if (currentUser == null) {
 			return false;
 		} else {
-			this.landingPage();
+			LandingPage landingPage = new LandingPage(this);
+			main.add(landingPage, "landingPage");
+			card.show(main, "landingPage");
 			return true;
 		}
 	}
@@ -117,7 +127,9 @@ public class Controller {
 	
 	public void landingPage() {
 		System.out.println("LANDINGPAGE!");
+	
 		card.show(main, "landingPage");
+		
 	}
 	
 	public void createDeckPage() {
@@ -182,7 +194,7 @@ public class Controller {
 	}
 	
 	public void quizResults(QuizSession quizSession) {
-		QuizResults quizResultsPage = new QuizResults(quizSession);
+		QuizResults quizResultsPage = new QuizResults(quizSession, this);
 		this.mysql_database.createQuiz(quizSession);
 		main.add(quizResultsPage, "quizResultsPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
@@ -191,7 +203,7 @@ public class Controller {
 	}
 	
 	public void profilePage(User user) {
-		UserView profilePage = new UserView(user);
+		UserView profilePage = new UserView(user, this);
 		main.add(profilePage, "profilePage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "profilePage" + num);
@@ -212,7 +224,7 @@ public class Controller {
 	
 	public void leaderboardPage(Deck deck) {
 		Leaderboard leaderboard = this.mysql_database.getQuizLeaderboard(deck);
-		LeaderboardView leaderboardPage = new LeaderboardView(leaderboard);
+		LeaderboardView leaderboardPage = new LeaderboardView(leaderboard, this);
 		main.add(leaderboardPage, "leaderboardPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "leaderboardPage" + num);

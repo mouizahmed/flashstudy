@@ -66,16 +66,16 @@ public class JDBC {
 			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return user;
+			return null;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			return user;
+			return null;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			return user;
+			return null;
 		} catch (InvalidKeySpecException e) {
 			e.printStackTrace();
-			return user;
+			return null;
 		}
 	
 	}
@@ -204,7 +204,7 @@ public class JDBC {
 		try {
 			PreparedStatement stmt1 = conn.prepareStatement(addQuizQuery);
 			stmt1.setString(1, quizSession.getQuizID());
-			stmt1.setString(2, quizSession.getDeckID());
+			stmt1.setString(2, quizSession.getDeck().getDeckID());
 			stmt1.setString(3, Double.toString(quizSession.getAvgScore()));
 			stmt1.setString(4, quizSession.getUser().getUsername());
 			int rowsInserted = stmt1.executeUpdate();

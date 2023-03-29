@@ -33,17 +33,13 @@ public class TrueFalseView extends JPanel {
 	private void initialize() {
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("TF");
-		lblNewLabel.setBounds(218, 5, 13, 16);
-		add(lblNewLabel);
-		
 		JRadioButton trueButton = new JRadioButton("True");
 		trueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				quizSession.answerQuestion(index, "True");
 			}
 		});
-		trueButton.setBounds(67, 163, 121, 24);
+		trueButton.setBounds(94, 176, 121, 24);
 		add(trueButton);
 		
 		JRadioButton falseButton = new JRadioButton("False");
@@ -52,7 +48,7 @@ public class TrueFalseView extends JPanel {
 				quizSession.answerQuestion(index, "False");
 			}
 		});
-		falseButton.setBounds(215, 163, 121, 24);
+		falseButton.setBounds(242, 176, 121, 24);
 		add(falseButton);
 		
 		JLabel lblNewLabel_1 = new JLabel("Is this true or false?");
