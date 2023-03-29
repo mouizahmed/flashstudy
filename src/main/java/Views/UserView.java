@@ -3,55 +3,68 @@ package Views;
 import Models.User;
 
 import javax.swing.*;
+
+import Controller.Controller;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UserView extends JPanel {
     private User user;
-
-    public UserView(User user) {
+    private Controller controller;
+    
+    public UserView(User user, Controller controller) {
         this.user = user;
+        this.controller = controller;
 
         initialize();
     }
 
     private void initialize() {
-        setLayout(new GridBagLayout());
-        setPreferredSize(new Dimension(400, 300));
+        setPreferredSize(new Dimension(750, 500));
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        setLayout(null);
 
         JLabel nameLabel = new JLabel(user.getUsername());
+        nameLabel.setBounds(151, 101, 245, 22);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        GridBagConstraints gbc_nameLabel = new GridBagConstraints();
-        gbc_nameLabel.insets = new Insets(10, 10, 10, 10);
-        gbc_nameLabel.gridx = 0;
-        gbc_nameLabel.gridy = 0;
-        add(nameLabel, gbc_nameLabel);
+        add(nameLabel);
 
         JLabel emailLabel = new JLabel(user.getEmail());
+        emailLabel.setBounds(165, 133, 166, 17);
         emailLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        GridBagConstraints gbc_emailLabel = new GridBagConstraints();
-        gbc_emailLabel.insets = new Insets(0, 10, 10, 10);
-        gbc_emailLabel.gridx = 0;
-        gbc_emailLabel.gridy = 1;
-        add(emailLabel, gbc_emailLabel);
+        add(emailLabel);
 
         JLabel decksLabel = new JLabel("Decks:");
+        decksLabel.setBounds(172, 170, 199, 19);
         decksLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        GridBagConstraints gbc_decksLabel = new GridBagConstraints();
-        gbc_decksLabel.insets = new Insets(10, 10, 10, 10);
-        gbc_decksLabel.gridx = 0;
-        gbc_decksLabel.gridy = 2;
-        add(decksLabel, gbc_decksLabel);
+        add(decksLabel);
 
         JPanel decksPanel = new JPanel();
+        decksPanel.setBounds(0, 0, 0, 0);
         decksPanel.setBackground(Color.WHITE);
         decksPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc_decksPanel = new GridBagConstraints();
-        gbc_decksPanel.insets = new Insets(0, 10, 10, 10);
-        gbc_decksPanel.gridx = 0;
-        gbc_decksPanel.gridy = 3;
-        add(decksPanel, gbc_decksPanel);
+        add(decksPanel);
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(Color.WHITE);
+        panel.setBounds(0, 0, 738, 47);
+        add(panel);
+        
+        JButton btnNewButton = new JButton("Back");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		controller.previous();
+        		
+        	}
+        });
+        btnNewButton.setForeground(Color.WHITE);
+        btnNewButton.setBackground(Color.BLACK);
+        btnNewButton.setBounds(10, 11, 63, 26);
+        panel.add(btnNewButton);
 
         int row = 0;
         for (int i = 0; i < user.userDeckList().size(); i++) {
@@ -74,22 +87,5 @@ public class UserView extends JPanel {
             row++;
         }
     }
-
-    /*   Testing Userview
-
-    public static void main(String[] args) {
-        // create a sample user
-        User user = new User("johndoe", "johndoe@example.com", "password", LocalDate.now());
-        Deck deck1 = new Deck("Math", new ArrayList<Flashcard>(), user.getUsername(), true, "123");
-        Deck deck2 = new Deck("Science", new ArrayList<Flashcard>(), user.getUsername(), true, "456");
-        user.addDeck(deck1);
-        user.addDeck(deck2);
-
-        // create and display the user view
-        UserView userView = new UserView(user);
-        userView.setVisible(true);
-    }
-
-     */
 }
 

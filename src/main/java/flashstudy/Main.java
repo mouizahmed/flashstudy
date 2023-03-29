@@ -42,8 +42,8 @@ public class Main {
 		RegisterPage registerPage = new RegisterPage(controller);
 		container.add(registerPage, "registerPage");
 		
-		LandingPage landingPage = new LandingPage(controller);
-		container.add(landingPage, "landingPage");
+//		LandingPage landingPage = new LandingPage(controller);
+//		container.add(landingPage, "landingPage");
 		
 //		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
 //		container.add(createDeckPage, "createDeckPage");

@@ -17,6 +17,7 @@ import Models.Deck;
 import Models.Flashcard;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.border.LineBorder;
 
 public class FlashcardView extends JPanel implements ActionListener {
 	private ArrayList<Flashcard> flashcards;
@@ -39,6 +40,8 @@ public class FlashcardView extends JPanel implements ActionListener {
 	
 	
 	public FlashcardView(Deck deck, Flashcard flashcard, Controller controller) {
+		setBorder(new LineBorder(new Color(0, 0, 0)));
+		setBackground(new Color(255, 255, 255));
 		this.controller = controller;
 		this.flashcard = flashcard;
 		questionLabel = new JLabel(flashcard.question);
@@ -67,10 +70,12 @@ public class FlashcardView extends JPanel implements ActionListener {
 		this.setLayout(null);
 		
 		setSize(717, 113);
+		flashcardQuestion.setBackground(new Color(255, 255, 255));
 		flashcardQuestion.setBounds(10, 11, 347, 88);
 		flashcardQuestion.add(questionLabel);
 		
 		add(flashcardQuestion);
+		flashcardAnswer.setBackground(new Color(255, 255, 255));
 		flashcardAnswer.setBounds(373, 11, 332, 88);
 		flashcardAnswer.add(answerLabel);
 		

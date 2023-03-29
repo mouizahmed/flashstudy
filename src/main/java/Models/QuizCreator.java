@@ -8,16 +8,16 @@ public class QuizCreator {
 	
 	private int questionsNum;
 	private String quizID;
-	private String deckID;
+
 	private ArrayList<Question> questions = new ArrayList<>();
 	
 	private String[] questionType = {"multiple-choice", "True or False", "Fill in the blank"};
-	
+	private Deck deck;
 	
 	public QuizCreator(Deck deck) {
 		this.questionsNum = deck.getAllFlashcards().size();
 		this.quizID = UUID.randomUUID().toString();
-		this.deckID = deck.getDeckID();
+		this.deck = deck;
 		ArrayList<Flashcard> flashcards = deck.getAllFlashcards();
 		
 		for (int i=0; i<this.questionsNum; i++) {
@@ -71,8 +71,8 @@ public class QuizCreator {
 		return this.quizID;
 	}
 	
-	public String getDeckID() {
-		return this.deckID;
+	public Deck getDeck() {
+		return this.deck;
 	}
 	
 }
