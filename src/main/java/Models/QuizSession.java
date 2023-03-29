@@ -12,7 +12,7 @@ public class QuizSession {
 	private double avgScore;
 	private ArrayList<Question> questions;
 	private String quizID;
-	private String deckID;
+	private Deck deck;
 	private Date dateCreated;
 	
 	public QuizSession(QuizCreator quizCreator, User user) {
@@ -20,7 +20,7 @@ public class QuizSession {
 		this.user = user;
 		this.questions = quizCreator.getAllQuestions();
 		this.quizID = quizCreator.getQuizID();
-		this.deckID = quizCreator.getDeckID();
+		this.deck = quizCreator.getDeck();
 	}
 	
 	public void answerQuestion(int index, String answer) {
@@ -62,14 +62,14 @@ public class QuizSession {
 		return user;
 	}
 	
-	public String getDeckID() {
-		return this.deckID;
+	public Deck getDeck() {
+		return this.deck;
 	}
 	
-	public void submitQuiz() {
-		this.dateCreated = new java.util.Date();
-		// link to sql
-	}
+//	public void submitQuiz() {
+//		this.dateCreated = new java.util.Date();
+//		// link to sql
+//	}
 	
 
 }

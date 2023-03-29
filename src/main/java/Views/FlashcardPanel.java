@@ -56,6 +56,8 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		flashcardAnswer.setBackground(Color.WHITE);
 		flashcardAnswer.setBounds(373, 11, 332, 54);
 		this.add(flashcardAnswer);
+		deleteFlashcard.setForeground(new Color(255, 255, 255));
+		deleteFlashcard.setBackground(new Color(0, 0, 0));
 		
 		
 		deleteFlashcard.addActionListener(new ActionListener() {
@@ -67,6 +69,8 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		});
 		deleteFlashcard.setBounds(517, 78, 89, 23);
 		this.add(deleteFlashcard);
+		saveFlashcard.setForeground(new Color(255, 255, 255));
+		saveFlashcard.setBackground(new Color(0, 0, 0));
 		saveFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				flashcard = controller.createFlashcard(flashcardQuestion.getText(), flashcardAnswer.getText(), deckID);

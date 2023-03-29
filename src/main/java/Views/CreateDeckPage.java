@@ -45,6 +45,7 @@ public class CreateDeckPage extends JPanel {
 	 * Create the panel.
 	 */
 	public CreateDeckPage(Controller controller, String deckID) {
+		setBackground(new Color(255, 255, 255));
 		setMinimumSize(new Dimension(750, 500));
 		setSize(new Dimension(750, 500));
 		setPreferredSize(new Dimension(750, 500));
@@ -60,11 +61,14 @@ public class CreateDeckPage extends JPanel {
 		
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 738, 47);
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(0, 0, 0));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.landingPage();
@@ -74,10 +78,13 @@ public class CreateDeckPage extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.setForeground(new Color(255, 255, 255));
+		profileButton.setBackground(new Color(0, 0, 0));
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 47, 738, 139);
 		add(panel_1);
 		panel_1.setLayout(null);
@@ -116,6 +123,8 @@ public class CreateDeckPage extends JPanel {
 		panel_1.add(course);
 		
 		JRadioButton publicDeck = new JRadioButton("Public");
+		publicDeck.setForeground(new Color(0, 0, 0));
+		publicDeck.setBackground(new Color(255, 255, 255));
 		publicDeck.setSelected(true);
 		publicDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,6 +137,8 @@ public class CreateDeckPage extends JPanel {
 		panel_1.add(publicDeck);
 		
 		JRadioButton privateDeck = new JRadioButton("Private");
+		privateDeck.setForeground(new Color(0, 0, 0));
+		privateDeck.setBackground(new Color(255, 255, 255));
 		privateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (privateDeck.isSelected()) {
@@ -141,6 +152,7 @@ public class CreateDeckPage extends JPanel {
 		ButtonGroup privacy = new ButtonGroup();
 		privacy.add(publicDeck);
 		privacy.add(privateDeck);
+		flashcardContainer.setBackground(new Color(255, 255, 255));
 		flashcardContainer.setMaximumSize(new Dimension(728, 32767));
 		flashcardContainer.setPreferredSize(new Dimension(220, 150));
 		
@@ -148,6 +160,7 @@ public class CreateDeckPage extends JPanel {
 		
 		flashcardContainer.setBounds(0, 198, 738, 120);
 		add(flashcardContainer);
+		dynamicPanel.setBackground(new Color(255, 255, 255));
 		
 		dynamicPanel.setPreferredSize(new Dimension(150, 500));
 		
@@ -159,6 +172,8 @@ public class CreateDeckPage extends JPanel {
 		
 		
 		JButton btnCreateDeck = new JButton("Create Deck");
+		btnCreateDeck.setBackground(new Color(0, 0, 0));
+		btnCreateDeck.setForeground(new Color(255, 255, 255));
 		btnCreateDeck.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCreateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -169,6 +184,8 @@ public class CreateDeckPage extends JPanel {
 		add(btnCreateDeck);
 		
 		JButton addFlashcard = new JButton("Add Card");
+		addFlashcard.setForeground(new Color(0, 0, 0));
+		addFlashcard.setBackground(new Color(255, 255, 0));
 		addFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addFlashcard();
@@ -192,20 +209,10 @@ public class CreateDeckPage extends JPanel {
 		}
 		FlashcardPanel flashcardPanel = new FlashcardPanel(flashcards, controller, deckID);
 		dynamicPanel.add(flashcardPanel);
-		//JLabel someLabel = new JLabel("Some new Label");
-		//flashcardContainer.add(someLabel);
-		
-		 //JPanel newPanel = new JPanel();
-         //newPanel.setPreferredSize(new Dimension(50, 50));
-         //newPanel.setBackground(Color.YELLOW);
-         
-         //flashcardContainer.add(flashcardPanel);
-		
+
 		dynamicPanel.revalidate();
 		dynamicPanel.repaint();
 		
-//		revalidate();
-//		repaint();
-		
+	
 	}
 }

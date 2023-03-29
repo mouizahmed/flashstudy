@@ -40,12 +40,9 @@ public class MultipleChoiceView extends JPanel {
 	
 	private void initialize() {
 		setLayout(null);
-		JLabel lblNewLabel = new JLabel("MC");
-		lblNewLabel.setBounds(217, 5, 29, 14);
-		add(lblNewLabel);
 		
 		JLabel questionLabel = new JLabel(this.question.getQuestion());
-		questionLabel.setBounds(36, 61, 354, 47);
+		questionLabel.setBounds(36, 59, 354, 47);
 		add(questionLabel);
 		
 		JRadioButton answer1 = new JRadioButton(this.options[0]);
