@@ -66,6 +66,14 @@ public class BrowsePublicDeckPage extends JPanel {
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
+		JButton SPButton = new JButton("Your Study Plan");
+		SPButton.setBounds(519, 13, 126, 23);
+		panel.add(SPButton);
+		
+		JButton new_SPButton = new JButton("Create New Study Plan");
+		new_SPButton.setBounds(340, 13, 169, 23);
+		panel.add(new_SPButton);
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 58, 738, 111);
 		add(panel_1);
