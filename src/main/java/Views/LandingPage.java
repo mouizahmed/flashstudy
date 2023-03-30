@@ -1,22 +1,21 @@
 package Views;
 
-import java.awt.CardLayout;
-import java.awt.Insets;
-import java.awt.event.*;
+import Controller.Controller;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-import Controller.Controller;
-import java.awt.Color;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LandingPage extends JPanel implements ActionListener {
 	
 	private Controller controller;
-	String username;
 	JButton add = new JButton("New Deck");
 	JButton browse = new JButton("Browse");
 	JButton logout = new JButton("Logout");
+	JButton emailRemiender = new JButton("Reminder");
+
 	JPanel buttons = new JPanel();
 	JPanel title = new JPanel();
 	
@@ -27,7 +26,7 @@ public class LandingPage extends JPanel implements ActionListener {
 	
 	public LandingPage(Controller controller) {
 		setBackground(new Color(255, 255, 255));
-		
+
 		this.controller = controller;
 		title.setBackground(new Color(255, 255, 255));
 //		this.main = main;
@@ -68,7 +67,15 @@ public class LandingPage extends JPanel implements ActionListener {
 			}
 		});
 		buttons.add(logout);
-		
+		emailRemiender.setBackground(new Color(0, 0, 0));
+		emailRemiender.setForeground(new Color(255, 255, 255));
+		emailRemiender.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.emailPage();
+			}
+		});
+		buttons.add(emailRemiender);
+
 		BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		this.setLayout(boxlayout);
 		this.setBorder(new EmptyBorder(new Insets(100, 100, 100, 100)));

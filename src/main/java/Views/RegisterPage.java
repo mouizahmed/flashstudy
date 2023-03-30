@@ -1,27 +1,15 @@
 package Views;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
+import Controller.Controller;
+import Models.EmailMessageMaker;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
-import Controller.Controller;
-import javax.swing.JPasswordField;
-import java.awt.GridLayout;
-import java.awt.Color;
 
 public class RegisterPage extends JPanel implements ItemListener, ActionListener {
 	
@@ -136,7 +124,11 @@ public class RegisterPage extends JPanel implements ItemListener, ActionListener
 		} else if (e.getSource() == submit) {
 			System.out.println(String.valueOf(password.getPassword()));
 			controller.createNewUser(name.getText(), email.getText(), String.valueOf(password.getPassword()), String.valueOf(confirmPassword.getPassword()));
-			
+
+			//send New Registered User email
+			EmailMessageMaker emailMessageMaker = new EmailMessageMaker();
+			emailMessageMaker.sendWelcomeEmail(email.getText(),name.getText());
+
 			//LandingPage landingPage = new LandingPage(main, card, name.getText());
 			
 			
