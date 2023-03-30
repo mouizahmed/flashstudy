@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 
 import Controller.Controller;
 import Models.Deck;
+import Models.DeckList;
+import Models.User;
 
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
@@ -25,8 +27,10 @@ public class BrowsePublicDeckPage extends JPanel {
 	private JPanel dynamicPanel = new JPanel(new FlowLayout());
 	private JPanel resultsContainer = new JPanel();
 	private ArrayList<Deck> publicDecks = new ArrayList<>();
+	//private ArrayList<Deck> publicDecks = new ArrayList<>();
 	private ArrayList<Deck> searchedDecks = new ArrayList<>();
 	private Controller controller;
+	private DeckList decklist;
 	/**
 	 * Create the panel.
 	 */
@@ -67,11 +71,30 @@ public class BrowsePublicDeckPage extends JPanel {
 		panel.add(profileButton);
 		
 		JButton SPButton = new JButton("Your Study Plan");
-		SPButton.setBounds(519, 13, 126, 23);
+		SPButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
+		SPButton.setBounds(519, 11, 126, 26);
 		panel.add(SPButton);
 		
 		JButton new_SPButton = new JButton("Create New Study Plan");
-		new_SPButton.setBounds(340, 13, 169, 23);
+		new_SPButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 User user = controller.getCurrentUser();
+				 //ArrayList<Deck> publicDecks = decklist.getAllPublicDecks();
+				 //ArrayList<Deck> userDecks = decklist.getAllCurrentUserDecks();
+				 ArrayList<Deck> allDecks;
+			        // Combine the public and user decks into a single list
+			        allDecks = new ArrayList<Deck>();
+			        allDecks.addAll(publicDecks);
+			        //allDecks.addAll(userDecks);
+			        
+				controller.createStudyPlanPage(user, allDecks);
+			}
+		});
+		new_SPButton.setBounds(340, 11, 169, 26);
 		panel.add(new_SPButton);
 		
 		JPanel panel_1 = new JPanel();

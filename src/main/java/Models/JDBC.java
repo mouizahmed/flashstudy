@@ -304,6 +304,39 @@ public class JDBC {
 		
 	}
 	
+	public ArrayList<Deck> userDeckList() {
+		ArrayList<Deck> userDecks = new ArrayList<>();
+		
+		sql = "SELECT * FROM Decks WHERE public='0'";
+		
+				
+		try {
+			stmt = conn.createStatement();
+			stmt2 = conn.createStatement();
+			rs1 = stmt.executeQuery(sql);
+			while (rs1.next()) {
+				System.out.println(rs1.getString("deckTitle"));
+				ArrayList<Flashcard> flashcards = new ArrayList<>();
+				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
+				rs2 = stmt2.executeQuery(sql2);
+				while (rs2.next()) {
+					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor")));
+					
+				}
+				
+				userDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID")));
+			}
+			
+			return userDecks;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return userDecks;
+		}
+		
+		
+	}
+	
 	public ArrayList<Deck> searchPublicDeckQuery(String query) {
 		ArrayList<Deck> searchedDecks = new ArrayList<>();
 		

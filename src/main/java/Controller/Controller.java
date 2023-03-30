@@ -20,6 +20,7 @@ import Models.QuizSession;
 import Models.User;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
+import Views.CreateStudyPlanPage;
 import Views.LeaderboardView;
 import Views.LoginPage;
 import Views.OpenDeckPage;
@@ -158,6 +159,12 @@ public class Controller {
 		return publicDecks;
 	}
 	
+	public ArrayList<Deck> allUserDecks() {
+		ArrayList<Deck> userDecks = mysql_database.userDeckList();
+		System.out.println(userDecks.size());
+		return userDecks;
+	}
+	
 	public void deckPage(Deck deck) {
 		OpenDeckPage deckPage = new OpenDeckPage(deck, this);
 		main.add(deckPage, "deckPage" + main.getComponentCount());
@@ -199,6 +206,13 @@ public class Controller {
 	
 	public User getCurrentUser() {
 		return this.currentUser;
+	}
+	
+	public void createStudyPlanPage(User user, ArrayList<Deck> decks) {
+		CreateStudyPlanPage createStudyPlanPage = new CreateStudyPlanPage(user, decks);
+		main.add(createStudyPlanPage, "createStudyPlanPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "createStudyPlanPage" + num);
 	}
 	
 	public void addDeckToProfile(Deck deck) {
