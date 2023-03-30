@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -16,7 +18,7 @@ public class ExamReminderView extends JFrame {
     public ExamReminderView() {
         setTitle("Exam Reminder");
         setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(5, 2, 10, 10));
@@ -29,7 +31,6 @@ public class ExamReminderView extends JFrame {
         timeField = new JTextField();
         JLabel emailLabel = new JLabel("Email:");
         emailField = new JTextField();
-
         panel.add(examLabel);
         panel.add(examField);
         panel.add(dateLabel);
@@ -79,6 +80,13 @@ public class ExamReminderView extends JFrame {
             }
         });
         panel.add(submitButton);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose(); // Close only the ExamReminderView window
+            }
+        });
 
         add(panel);
         setVisible(true);
