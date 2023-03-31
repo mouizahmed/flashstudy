@@ -102,7 +102,9 @@ public class JDBC {
 						sql3 = "SELECT * FROM Flashcards WHERE deckID='" + rs2.getString("deckID") + "'";
 						rs3 = stmt3.executeQuery(sql3);
 						while (rs3.next()) {
-							flashcards.add(new Flashcard(rs3.getString("question"), rs3.getString("answer"), rs3.getString("createdBy"), rs3.getString("deckID")));
+							System.out.println("QUESTION: "+ rs3.getString("question"));
+							System.out.println(rs3.getBytes("flashCardImg") == null);
+							flashcards.add(new Flashcard(rs3.getString("question"), rs3.getString("answer"), rs3.getString("createdBy"), rs3.getString("deckID"), rs3.getBytes("flashCardImg")));
 						}
 						
 						decks.add(new Deck(rs2.getString("deckTitle"), flashcards, rs2.getString("createdBy"), rs2.getBoolean("public"), rs2.getString("deckID")));
@@ -164,7 +166,7 @@ public class JDBC {
 	
 	public Deck createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, User currentUser, String deckID) {
 		Deck deck = null;
-		String addFlashcardsQuery = "INSERT INTO Flashcards (createdBy, flashcardID, deckID, question, answer) VALUES (?, ?, ?, ?, ?)";
+		String addFlashcardsQuery = "INSERT INTO Flashcards (createdBy, flashcardID, deckID, question, answer, flashCardImg) VALUES (?, ?, ?, ?, ?, ?)";
 		String addDeckQuery = "INSERT INTO Decks (createdBy, deckID, deckTitle, public) VALUES (?, ?, ?, ?);";
 		try {
 			
@@ -185,6 +187,7 @@ public class JDBC {
 				stmt2.setString(3, flashcards.get(i).getDeckID());
 				stmt2.setString(4, flashcards.get(i).getQuestion());
 				stmt2.setString(5, flashcards.get(i).getAnswer());
+				stmt2.setBytes(6, flashcards.get(i).getFlashCardImgData());
 				int rowsInserted2 = stmt2.executeUpdate();
 			}
 			
@@ -287,7 +290,7 @@ public class JDBC {
 				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
 				rs2 = stmt2.executeQuery(sql2);
 				while (rs2.next()) {
-					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor")));
+					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor"), rs2.getBytes("flashCardImg")));
 					
 				}
 				

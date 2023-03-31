@@ -3,6 +3,8 @@ package Views;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -12,11 +14,13 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
 import javax.swing.border.EtchedBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Controller.Controller;
 import Models.Flashcard;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
@@ -80,7 +84,7 @@ public class CreateDeckPage extends JPanel {
 		JButton profileButton = new JButton("Profile");
 		profileButton.setForeground(new Color(255, 255, 255));
 		profileButton.setBackground(new Color(0, 0, 0));
-		profileButton.setBounds(655, 11, 71, 26);
+		profileButton.setBounds(621, 11, 105, 26);
 		panel.add(profileButton);
 		
 		JPanel panel_1 = new JPanel();
@@ -152,6 +156,7 @@ public class CreateDeckPage extends JPanel {
 		ButtonGroup privacy = new ButtonGroup();
 		privacy.add(publicDeck);
 		privacy.add(privateDeck);
+		
 		flashcardContainer.setBackground(new Color(255, 255, 255));
 		flashcardContainer.setMaximumSize(new Dimension(728, 32767));
 		flashcardContainer.setPreferredSize(new Dimension(220, 150));

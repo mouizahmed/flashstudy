@@ -1,7 +1,7 @@
 package Models;
 
 import java.util.UUID;
-
+import javax.swing.ImageIcon;
 public class Flashcard {
 
 	public String question;
@@ -10,6 +10,7 @@ public class Flashcard {
 	public String deckID;
 	public String createdBy;
 	public String difficultyColour = "";
+	public byte[] cardImgData;
 	
 	public Flashcard(String question, String answer, String createdBy, String deckID) {
 		this.question = question;
@@ -17,6 +18,15 @@ public class Flashcard {
 		this.createdBy = createdBy;
 		this.deckID = deckID;
 		this.flashcardID = UUID.randomUUID().toString();
+	}
+	
+	public Flashcard(String question, String answer, String createdBy, String deckID, byte[] flashCardImgData) {
+		this.question = question;
+		this.answer = answer;
+		this.createdBy = createdBy;
+		this.deckID = deckID;
+		this.flashcardID = UUID.randomUUID().toString();
+		this.cardImgData = flashCardImgData;
 	}
 	
 	public Flashcard(String question, String answer, String createdBy, String deckID, String flashcardID) {
@@ -27,13 +37,14 @@ public class Flashcard {
 		this.flashcardID = flashcardID;
 	}
 	
-	public Flashcard(String question, String answer, String createdBy, String deckID, String flashcardID, String difficultyColour) {
+	public Flashcard(String question, String answer, String createdBy, String deckID, String flashcardID, String difficultyColour, byte[] flashCardImgData) {
 		this.question = question;
 		this.answer = answer;
 		this.createdBy = createdBy;
 		this.deckID = deckID;
 		this.flashcardID = flashcardID;
 		this.difficultyColour = difficultyColour;
+		this.cardImgData = flashCardImgData;
 	}
 	
 
@@ -87,5 +98,10 @@ public class Flashcard {
 	
 	public String getDifficultyColour() {
 		return this.difficultyColour;
+	}
+
+	public byte[] getFlashCardImgData() {
+		// TODO Auto-generated method stub
+		return this.cardImgData;
 	}
 }

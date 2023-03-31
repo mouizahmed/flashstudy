@@ -2,17 +2,26 @@ package Views;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Controller.Controller;
 import Models.Flashcard;
+import javax.swing.JLabel;
+import java.nio.file.Files;
 
 public class FlashcardPanel extends JPanel implements ActionListener {
 
@@ -20,10 +29,14 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	private JTextArea flashcardAnswer = new JTextArea();
 	private JButton deleteFlashcard = new JButton("Delete");
 	private JButton saveFlashcard = new JButton("Save");
+	private JButton uploadImgBtn = new JButton("Upload Image");
 	private ArrayList<Flashcard> flashcards;
 	private Controller controller;
 	private Flashcard flashcard;
 	private String deckID;
+	private byte[] flashCardImgData;
+	private JLabel uploadedImgPreview = new JLabel("");
+
 	/**
 	 * Create the panel.
 	 */
@@ -73,7 +86,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		saveFlashcard.setBackground(new Color(0, 0, 0));
 		saveFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				flashcard = controller.createFlashcard(flashcardQuestion.getText(), flashcardAnswer.getText(), deckID);
+				flashcard = controller.createFlashcard(flashcardQuestion.getText(), flashcardAnswer.getText(), deckID, flashCardImgData);
 				flashcards.add(flashcard);
 				setBackground(new Color(51, 204, 255));
 				
@@ -85,6 +98,52 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		this.add(saveFlashcard);
 		
 		setSize(717, 113);
+		
+
+		uploadImgBtn.setForeground(new Color(255, 255, 255));
+		uploadImgBtn.setBackground(new Color(0, 0, 0));
+		uploadImgBtn.setBounds(10, 79, 173, 21);
+		uploadImgBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser browseImgFile = new JFileChooser();
+				FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES","png","jpg","jpeg","gif");
+				browseImgFile.addChoosableFileFilter(fnef);
+				int showOpenDialogue = browseImgFile.showOpenDialog(null);
+				if (showOpenDialogue == JFileChooser.APPROVE_OPTION) {
+					File selectedImgFile = browseImgFile.getSelectedFile();
+					
+			        // Check if the selected file has a valid extension
+			        String extension = getFileExtension(selectedImgFile.getName());
+			        if (!isValidExtension(extension)) {
+			            JOptionPane.showMessageDialog(null, "Invalid file type selected. Please select a file with a valid image extension (.png, .jpg, .jpeg, .gif).", "Invalid file uploaded", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+			        
+					long fileSizeInKiloBytes = selectedImgFile.length() / 1024;
+					if(fileSizeInKiloBytes > 0 && fileSizeInKiloBytes < 100) {
+						String selectedImgPath = selectedImgFile.getAbsolutePath();
+						try {
+							flashCardImgData = Files.readAllBytes(selectedImgFile.toPath());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Error reading file", "Invalid file uploaded", JOptionPane.ERROR_MESSAGE);
+						}
+						ImageIcon previewIcon = new ImageIcon(selectedImgPath);
+						Image resizedImg = previewIcon.getImage().getScaledInstance(uploadedImgPreview.getWidth(), uploadedImgPreview.getHeight(), Image.SCALE_SMOOTH);
+						uploadedImgPreview.setIcon(new ImageIcon(resizedImg));
+					} else {
+						JOptionPane.showMessageDialog(null, "The selected file must be less than 100kB and a valid image file.", "Invalid file uploaded", JOptionPane.ERROR_MESSAGE);
+					}
+
+				}
+			}
+		});
+		this.add(uploadImgBtn);
+		
+		uploadedImgPreview.setLabelFor(uploadImgBtn);
+		uploadedImgPreview.setBounds(215, 75, 67, 35);
+		add(uploadedImgPreview);
 	}
 
 	@Override
@@ -92,5 +151,23 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private String getFileExtension(String fileName) {
+	    int dotIndex = fileName.lastIndexOf(".");
+	    if (dotIndex > 0) {
+	        return fileName.substring(dotIndex + 1).toLowerCase();
+	    }
+	    return "";
+	}
 
+	// Returns true if the given extension is valid, false otherwise
+	private boolean isValidExtension(String extension) {
+	    String[] validExtensions = {"png", "jpg", "jpeg", "gif"};
+	    for (String validExtension : validExtensions) {
+	        if (validExtension.equals(extension)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 }

@@ -2,8 +2,10 @@ package Views;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -16,7 +18,9 @@ import Controller.Controller;
 import Models.Deck;
 import Models.Flashcard;
 import javax.swing.JRadioButton;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.border.LineBorder;
 
 public class FlashcardView extends JPanel implements ActionListener {
@@ -32,7 +36,8 @@ public class FlashcardView extends JPanel implements ActionListener {
 	private final JRadioButton mediumButton = new JRadioButton("Medium");
 	private final JRadioButton easyButton = new JRadioButton("Easy");
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-
+	private final JLabel flashCardImg = new JLabel("");
+	private byte[] flashCardImgData;
 	/**
 	 * Create the panel.
 	 */
@@ -47,6 +52,7 @@ public class FlashcardView extends JPanel implements ActionListener {
 		questionLabel = new JLabel(flashcard.question);
 		answerLabel = new JLabel(flashcard.answer);
 		this.deck = deck;
+		this.flashCardImgData = flashcard.getFlashCardImgData();
 		initialize();
 	}
 	
@@ -65,21 +71,36 @@ public class FlashcardView extends JPanel implements ActionListener {
 		}
 		
 		//this.setBounds(10, 197, 717, 113);
-		setPreferredSize(new Dimension(718, 151));
+		setPreferredSize(new Dimension(718, 225));
 		
 		this.setLayout(null);
 		
 		setSize(717, 113);
 		flashcardQuestion.setBackground(new Color(255, 255, 255));
-		flashcardQuestion.setBounds(10, 11, 347, 88);
+		flashcardQuestion.setBounds(10, 11, 241, 88);
 		flashcardQuestion.add(questionLabel);
 		
 		add(flashcardQuestion);
 		flashcardAnswer.setBackground(new Color(255, 255, 255));
-		flashcardAnswer.setBounds(373, 11, 332, 88);
+		flashcardAnswer.setBounds(10, 109, 241, 88);
 		flashcardAnswer.add(answerLabel);
 		
 		add(flashcardAnswer);
+		
+		flashCardImg.setBounds(313, 24, 304, 173);
+		
+		if(this.flashCardImgData != null) {
+			try {
+				ImageIcon previewIcon = new ImageIcon(ImageIO.read(new ByteArrayInputStream(flashCardImgData)));
+				Image resizedImg = previewIcon.getImage().getScaledInstance(flashCardImg.getWidth(), flashCardImg.getHeight(), Image.SCALE_SMOOTH);
+				flashCardImg.setIcon(new ImageIcon(resizedImg));
+			} catch (Exception e) {
+				e.printStackTrace();
+			
+		}
+}
+
+		add(flashCardImg);
 		
 		if (this.deck.createdBy.equals(controller.getCurrentUser().getUsername())) {
 			buttonGroup.add(hardButton);
