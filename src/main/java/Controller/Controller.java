@@ -5,6 +5,7 @@ import Models.*;
 import Views.*;
 
 import javax.swing.*;
+import javax.swing.ImageIcon;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -141,6 +142,11 @@ private JPanel main;
 
 	public Flashcard createFlashcard(String question, String answer, String deckID) {
 		Flashcard flashcard = new Flashcard(question, answer, currentUser.getUsername(), deckID);
+		return flashcard;
+	}
+	
+	public Flashcard createFlashcard(String question, String answer, String deckID, byte[] flashCardImgData) {
+		Flashcard flashcard = new Flashcard(question, answer, currentUser.getUsername(), deckID,flashCardImgData);
 		return flashcard;
 	}
 

@@ -145,7 +145,7 @@ public class OpenDeckPage extends JPanel {
 //			deckPanel.add(deckCreatedBy);
 			
 			FlashcardView flashcardView = new FlashcardView(deck, deck.getAllFlashcards().get(i), controller);
-			
+
 			dynamicPanel.add(flashcardView);
 			
 			dynamicPanel.revalidate();
