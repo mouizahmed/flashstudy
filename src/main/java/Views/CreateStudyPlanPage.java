@@ -1,20 +1,25 @@
 package Views;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -29,10 +34,11 @@ import Models.User;
 public class CreateStudyPlanPage extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
 
-    private JTextField testDateField;
-    private JTextField frequencyField;
-   private JComboBox<String> difficultyComboBox;
-    private JTextField studyTimeField;
+    private JFormattedTextField testDateField;
+    private JComboBox<String> frequencyComboBox;
+    private JComboBox<String> difficultyComboBox;
+    private JTextField studyTimeDaysField;
+    private JComboBox<String> studyTimeComboBox;
     private ArrayList<Deck> publicDecks = new ArrayList<>();
     private ArrayList<Deck> userDecks = new ArrayList<>();
     private ArrayList<Deck> allDecks;
@@ -50,24 +56,18 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         this.decks = decks;
         deckCheckBoxes = new ArrayList<JCheckBox>();
         this.mysql_database = new JDBC();
+        
         // Retrieve the public decks and user decks from the database
-//        publicDecks = decklist.getAllPublicDecks();
-//        System.out.print(publicDecks);
-        // Retrieve all public decks
-        //ArrayList<Deck> publicDecks = controller.allPublicDecks();
         publicDecks = mysql_database.publicDeckList();
         userDecks = mysql_database.userDeckList();
-        System.out.print(publicDecks);
-        System.out.print(userDecks);
-        // Retrieve all user decks
-        //ArrayList<Deck> userDecks = controller.allUserDecks(user_id);
-//        userDecks = decklist.getAllCurrentUserDecks();
+//        System.out.print(publicDecks);
+//        System.out.print(userDecks);
         
         // Combine the public and user decks into a single list
         allDecks = new ArrayList<Deck>();
         allDecks.addAll(publicDecks);
         allDecks.addAll(userDecks);
-        System.out.print(allDecks);
+        //System.out.print(allDecks);
         
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -84,17 +84,27 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         
         // Create a panel to input test date
         JPanel testDatePanel = new JPanel(new FlowLayout());
-        JLabel testDateLabel = new JLabel("Test Date: ");
-        testDateField = new JTextField(10);
+        // Create a label and a formatted text field for the test date
+        JLabel testDateLabel = new JLabel("Test date (DD/MM/YYYY): ");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        JFormattedTextField testDateField = new JFormattedTextField(dateFormat);
+        testDateField.setColumns(10);
+        testDateField.setValue(new Date()); // Set the default value to today's date
+        testDateField.setToolTipText("Enter the date of your test in the format DD/MM/YYYY");
+
+//        JLabel testDateLabel = new JLabel("Test Date (DD/MM/YYYY): ");
+//        testDateField = new JFormattedTextField(new SimpleDateFormat("dd/MM/yyyy"));
+//        testDateField.setColumns(10);
         testDatePanel.add(testDateLabel);
         testDatePanel.add(testDateField);
 
         // Create a panel to input flashcard frequency
         JPanel frequencyPanel = new JPanel(new FlowLayout());
         JLabel frequencyLabel = new JLabel("Flashcard Frequency: ");
-        frequencyField = new JTextField(10);
+        String[] frequencies = {"2", "3", "4+"};
+        frequencyComboBox = new JComboBox<String>(frequencies);
         frequencyPanel.add(frequencyLabel);
-        frequencyPanel.add(frequencyField);
+        frequencyPanel.add(frequencyComboBox);
 
         // Create a panel to select flashcard difficulty
         JPanel difficultyPanel = new JPanel(new FlowLayout());
@@ -114,6 +124,11 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
             deckCheckBoxes.add(checkBox);
             deckPanel.add(checkBox);
         }
+        JScrollPane deckScrollPane = new JScrollPane(deckPanel);
+        deckScrollPane.setPreferredSize(new Dimension(400, 150));
+        deckScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        // Set the layout manager of deckPanel to BoxLayout with a vertical axis
+        deckPanel.setLayout(new BoxLayout(deckPanel, BoxLayout.Y_AXIS));
 
         // Create a panel for the back & submit button
         JPanel submitPanel = new JPanel(new FlowLayout());
@@ -126,19 +141,46 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				String testDate = testDateField.getText();
+	            String frequency = frequencyComboBox.getSelectedItem().toString();
+	            String difficulty = difficultyComboBox.getSelectedItem().toString();
+	            String studyTime = studyTimeComboBox.getSelectedItem().toString();
+	            int studyTimeDays = Integer.parseInt(studyTimeDaysField.getText());
+	            ArrayList<Deck> selectedDecks = new ArrayList<Deck>();
+	            for (int i = 0; i < deckCheckBoxes.size(); i++) {
+	                if (deckCheckBoxes.get(i).isSelected()) {
+	                    selectedDecks.add(allDecks.get(i));
+	                }
+	            }
+//	            System.out.println(testDate);
+//	            System.out.println(frequency);
+//	            System.out.println(difficulty);
+//	            System.out.println(studyTime);
+//	            System.out.println(studyTimeDays);
+//	            System.out.println(selectedDecks);
+	            
+	            // Create a new StudyPlan based on the user's inputs
+	            StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	            // Print the study plan for testing purposes
+	            System.out.println(studyPlan);
 			}
 		});
         submitPanel.add(backButton);
         submitPanel.add(submitButton);
 
 
-        JLabel studyTimeLabel = new JLabel("Study Time: ");
+        JLabel studyTimeDaysLabel = new JLabel("Study Time each day: ");
         // Create a panel to input study time
         JPanel studyTimePanel = new JPanel(new FlowLayout());
-        studyTimeField = new JTextField(10);
+        String[] studyTimes = {"30 mins", "1 hour", "1.5 hours"};
+        studyTimeComboBox = new JComboBox<String>(studyTimes);
+        studyTimePanel.add(studyTimeDaysLabel);
+        studyTimePanel.add(studyTimeComboBox);
+        
+        JLabel studyTimeLabel = new JLabel("Study Time in total (# of days): ");
+        studyTimeDaysField = new JTextField(10);
         studyTimePanel.add(studyTimeLabel);
-        studyTimePanel.add(studyTimeField);
+        studyTimePanel.add(studyTimeDaysField);
         
         // Add test date panel to contentPanel
         contentPanel.add(testDatePanel);        
@@ -149,7 +191,7 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         // Add study time panel to contentPanel
         contentPanel.add(studyTimePanel);
         // Add deck panel to contentPanel
-        contentPanel.add(deckPanel);       
+        contentPanel.add(deckScrollPane);       
         // Add submit panel to contentPanel
         contentPanel.add(submitPanel);
         // Add the contentPanel to the center of the main panel
@@ -158,8 +200,6 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         // Set frame properties
         setName("Create Study Plan");
         setSize(400, 400);
-        //setLocation(null);
-        //setDefaultCloseOperation(JPanel.EXIT_ON_CLOSE);
         setVisible(true);
 
     }
@@ -168,18 +208,25 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
             String testDate = testDateField.getText();
-            int frequency = Integer.parseInt(frequencyField.getText());
+            String frequency = frequencyComboBox.getSelectedItem().toString();
             String difficulty = difficultyComboBox.getSelectedItem().toString();
-            int studyTime = Integer.parseInt(studyTimeField.getText());
+            String studyTime = studyTimeComboBox.getSelectedItem().toString();
+            int studyTimeDays = Integer.parseInt(studyTimeDaysField.getText());
             ArrayList<Deck> selectedDecks = new ArrayList<Deck>();
             for (int i = 0; i < deckCheckBoxes.size(); i++) {
                 if (deckCheckBoxes.get(i).isSelected()) {
                     selectedDecks.add(decks.get(i));
                 }
             }
+            System.out.println(testDate);
+            System.out.println(frequency);
+            System.out.println(difficulty);
+            System.out.println(studyTime);
+            System.out.println(studyTimeDays);
+            System.out.println(selectedDecks);
 
             // Create a new StudyPlan based on the user's inputs
-            StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, selectedDecks);
+            StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
             // Print the study plan for testing purposes
             System.out.println(studyPlan);
             
