@@ -52,7 +52,9 @@ public class StudyPlan {
         this.allRepeatDecks = new ArrayList<>();
         this.deckRepeatCount = new HashMap<>(); // Initialize the deckRepeatCount HashMap
         this.mysql_database = new JDBC();
-
+        System.out.print(studyPlanID);
+        System.out.print(studyPlanTitle);
+        System.out.print(selectedDecks);
         // Loop through all selected decks
         for (Deck deck : selectedDecks) {
             // Check if the deck is already in AllStudyDecks or AllRepeatDecks
@@ -68,18 +70,22 @@ public class StudyPlan {
         public void updateStudyDecks() {
             ArrayList<Deck> allRepeatDecks = new ArrayList<Deck>();
             for (Deck deck : allStudyDecks) {
+            	int count = deckRepeatCount.get(deck);
                 if (deck.getCounter() == Integer.parseInt(frequency)) {
                     Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
                     if (latestQuizSessionDate != null && quizSession.getAvgScore() == 1) {
                         allRepeatDecks.add(deck);
                         deck.setCounter(0);
+                        deckRepeatCount.put(deck, 0);
                         continue;
                     }
                 } else if (deck.getCounter() < Integer.parseInt(frequency)) {
-                    continue;
+                	deckRepeatCount.put(deck, count+1);
+                	continue;
                 }
                 allRepeatDecks.add(deck);
                 deck.setCounter(0);
+                deckRepeatCount.put(deck, 0);
             }
 
             for (Deck deck : allRepeatDecks) {

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class Deck {
 	
+	private static ArrayList<Deck> decks = new ArrayList<>();
 	public String deckTitle;
 	public String deckID;
 	public ArrayList<Flashcard> flashcards = new ArrayList<>();
