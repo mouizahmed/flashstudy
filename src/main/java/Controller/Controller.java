@@ -17,10 +17,12 @@ import Models.JDBC;
 import Models.Leaderboard;
 import Models.QuizCreator;
 import Models.QuizSession;
+import Models.StudyPlan;
 import Models.User;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
 import Views.CreateStudyPlanPage;
+import Views.UserStudyPlannerPage;
 import Views.LeaderboardView;
 import Views.LoginPage;
 import Views.OpenDeckPage;
@@ -43,6 +45,7 @@ public class Controller {
 	private CardLayout card;
 	private JDBC mysql_database;
 	private User currentUser;
+	private StudyPlan studyPlan;
 	private static String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
 	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 	
@@ -209,12 +212,27 @@ public class Controller {
 	}
 	
 	public void createStudyPlanPage(User user, ArrayList<Deck> decks) {
-		CreateStudyPlanPage createStudyPlanPage = new CreateStudyPlanPage(user, decks);
+		CreateStudyPlanPage createStudyPlanPage = new CreateStudyPlanPage(user, decks, this); //added
 		main.add(createStudyPlanPage, "createStudyPlanPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "createStudyPlanPage" + num);
 	}
 	
+	public void UserStudyPlannerPage(User user, StudyPlan studyPlan) {
+		studyPlan = this.mysql_database.getAllStudyPlansByUser(user.getUsername());
+		System.out.print(studyPlan);
+		UserStudyPlannerPage userStudyPlannerPage = new UserStudyPlannerPage(user, studyPlan, this); //added
+		System.out.print(userStudyPlannerPage);
+		main.add(userStudyPlannerPage, "userStudyPlannerPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "userStudyPlannerPage" + num);
+	}
+	
+	public StudyPlan getStudyPlan(User user) {
+		StudyPlan studyPlan = this.mysql_database.getAllStudyPlansByUser(user.getUsername());
+	        return studyPlan;
+	}
+
 	public void addDeckToProfile(Deck deck) {
 		Deck deckCopy = this.mysql_database.addDeckToProfile(deck, this.currentUser);
 		this.currentUser.addDeck(deckCopy);

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -38,6 +39,7 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
     private JComboBox<String> frequencyComboBox;
     private JComboBox<String> difficultyComboBox;
     private JTextField studyTimeDaysField;
+    private JTextField studyPlanTitleField;
     private JComboBox<String> studyTimeComboBox;
     private ArrayList<Deck> publicDecks = new ArrayList<>();
     private ArrayList<Deck> userDecks = new ArrayList<>();
@@ -51,15 +53,18 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
     private DeckList decklist;
     private JDBC mysql_database;
 
-    public CreateStudyPlanPage(User user, ArrayList<Deck> decks) {
+    public CreateStudyPlanPage(User user, ArrayList<Deck> decks, Controller controller) {
 		this.user = user;
         this.decks = decks;
+        this.controller = controller;
         deckCheckBoxes = new ArrayList<JCheckBox>();
+       // this.mysql_database = controller.getJdbc();
+
         this.mysql_database = new JDBC();
         
         // Retrieve the public decks and user decks from the database
-        publicDecks = mysql_database.publicDeckList();
-        userDecks = mysql_database.userDeckList();
+        publicDecks = controller.allPublicDecks();//mysql_database.publicDeckList();
+        userDecks = controller.allUserDecks();//mysql_database.userDeckList();
 //        System.out.print(publicDecks);
 //        System.out.print(userDecks);
         
@@ -67,7 +72,7 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         allDecks = new ArrayList<Deck>();
         allDecks.addAll(publicDecks);
         allDecks.addAll(userDecks);
-        //System.out.print(allDecks);
+        System.out.print(allDecks);
         
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -82,6 +87,13 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
         
+        JPanel studyPlanTitlePanel = new JPanel(new FlowLayout());
+        JLabel studyPlanTitleLabel = new JLabel("Name for study plan");
+        studyPlanTitleField = new JTextField(10);
+        studyPlanTitlePanel.add(studyPlanTitleLabel);
+        studyPlanTitlePanel.add(studyPlanTitleField);
+        
+       
         // Create a panel to input test date
         JPanel testDatePanel = new JPanel(new FlowLayout());
         // Create a label and a formatted text field for the test date
@@ -99,20 +111,19 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         testDatePanel.add(testDateField);
 
         // Create a panel to input flashcard frequency
-        JPanel frequencyPanel = new JPanel(new FlowLayout());
+        JPanel  frequency_difficultyPanel = new JPanel(new FlowLayout());
         JLabel frequencyLabel = new JLabel("Flashcard Frequency: ");
         String[] frequencies = {"2", "3", "4+"};
         frequencyComboBox = new JComboBox<String>(frequencies);
-        frequencyPanel.add(frequencyLabel);
-        frequencyPanel.add(frequencyComboBox);
+        frequency_difficultyPanel.add(frequencyLabel);
+        frequency_difficultyPanel.add(frequencyComboBox);
 
         // Create a panel to select flashcard difficulty
-        JPanel difficultyPanel = new JPanel(new FlowLayout());
         JLabel difficultyLabel = new JLabel("Flashcard Difficulty: ");
         String[] difficulties = {"Easy", "Medium", "Hard"};
         difficultyComboBox = new JComboBox<String>(difficulties);
-        difficultyPanel.add(difficultyLabel);
-        difficultyPanel.add(difficultyComboBox);
+        frequency_difficultyPanel.add(difficultyLabel);
+        frequency_difficultyPanel.add(difficultyComboBox);
 
         // Create a panel to select deck(s) to study from
         JPanel deckPanel = new JPanel(new FlowLayout());
@@ -141,6 +152,9 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String createdBy = user.getUsername();
+				String studyPlanID = UUID.randomUUID().toString();
+				String studyPlanTitle = studyPlanTitleField.getText();
 				String testDate = testDateField.getText();
 	            String frequency = frequencyComboBox.getSelectedItem().toString();
 	            String difficulty = difficultyComboBox.getSelectedItem().toString();
@@ -152,17 +166,21 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
 	                    selectedDecks.add(allDecks.get(i));
 	                }
 	            }
-//	            System.out.println(testDate);
-//	            System.out.println(frequency);
-//	            System.out.println(difficulty);
-//	            System.out.println(studyTime);
-//	            System.out.println(studyTimeDays);
-//	            System.out.println(selectedDecks);
 	            
-	            // Create a new StudyPlan based on the user's inputs
-	            StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	           // Create a new StudyPlan based on the user's inputs
+	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	            
+	            //String studyPlanID = UUID.randomUUID().toString();
+	            StudyPlan createStudyPlan = mysql_database.createStudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+
 	            // Print the study plan for testing purposes
 	            System.out.println(studyPlan);
+
+                // retrieve the study plan from the database
+                StudyPlan retrievedStudyPlan = mysql_database.getAllStudyPlansByUser(user.getUsername());
+
+                // display the study plan using the controller
+                controller.UserStudyPlannerPage(user, retrievedStudyPlan);
 			}
 		});
         submitPanel.add(backButton);
@@ -182,12 +200,12 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         studyTimePanel.add(studyTimeLabel);
         studyTimePanel.add(studyTimeDaysField);
         
+        // Add title panel to contentPanel
+        contentPanel.add(studyPlanTitlePanel);
         // Add test date panel to contentPanel
-        contentPanel.add(testDatePanel);        
-        // Add frequency panel to contentPanel
-        contentPanel.add(frequencyPanel);        
+        contentPanel.add(testDatePanel);                
         // Add difficulty panel to contentPanel
-        contentPanel.add(difficultyPanel);        
+        contentPanel.add(frequency_difficultyPanel);        
         // Add study time panel to contentPanel
         contentPanel.add(studyTimePanel);
         // Add deck panel to contentPanel
@@ -226,9 +244,9 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
             System.out.println(selectedDecks);
 
             // Create a new StudyPlan based on the user's inputs
-            StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+            //StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
             // Print the study plan for testing purposes
-            System.out.println(studyPlan);
+            //System.out.println(studyPlan);
             
 //            StudyPlan studyPlanList = new StudyPlanList();
 //            studyPlanList.addStudyPlan(studyPlan);
@@ -238,23 +256,8 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
 
             // Call dispose() on the parent JFrame
             frame.dispose();
-
-            UserStudyPlannerPage studyPlannerPage = new UserStudyPlannerPage(user);
-            studyPlannerPage.setVisible(true);
         }
     }
-
-//    public static void main(String[] args) {
-//        // Create some test decks
-//        ArrayList<Deck> decks = new ArrayList<Deck>();
-//        decks.add(new Deck("Deck 1"));
-//        decks.add(new Deck("Deck 2"));
-//        decks.add(new Deck("Deck 3"));
-//
-//        // Create a new StudyPlannerGUI and show it
-//        UserStudyPlannerPage gui = new UserStudyPlannerPage(decks);
-//        gui.setVisible(true);
-//    }
 }
 
             

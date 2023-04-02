@@ -10,12 +10,14 @@ import javax.swing.border.EmptyBorder;
 
 import Controller.Controller;
 import Models.Deck;
+import Models.StudyPlan;
 import Models.User;
 
 public class LandingPage extends JPanel implements ActionListener {
 	private ArrayList<Deck> publicDecks = new ArrayList<>();
 	//private ArrayList<Deck> publicDecks = new ArrayList<>();
 	private Controller controller;
+	public StudyPlan studyPlan;
 	
 	String username;
 	JButton add = new JButton("New Deck");
@@ -62,7 +64,8 @@ public class LandingPage extends JPanel implements ActionListener {
 		
 		SPButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.profilePage(controller.getCurrentUser());
+				User user = controller.getCurrentUser();
+				controller.UserStudyPlannerPage(user, studyPlan);
 			}
 		});
 		
@@ -72,8 +75,6 @@ public class LandingPage extends JPanel implements ActionListener {
 		new_SPButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 User user = controller.getCurrentUser();
-				 //ArrayList<Deck> publicDecks = decklist.getAllPublicDecks();
-				 //ArrayList<Deck> userDecks = decklist.getAllCurrentUserDecks();
 				 ArrayList<Deck> allDecks;
 			        // Combine the public and user decks into a single list
 			        allDecks = new ArrayList<Deck>();
