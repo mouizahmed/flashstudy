@@ -7,6 +7,10 @@ public class Deck {
 	
 	public String deckTitle;
 	public String deckID;
+	public String schoolName;
+	public String facultyName;
+	public String description;
+	public String courseName;
 	public ArrayList<Flashcard> flashcards = new ArrayList<>();
 	public String createdBy;
 	public boolean publicDeck;
@@ -17,6 +21,18 @@ public class Deck {
 		this.createdBy = createdBy;
 		this.publicDeck = publicDeck;
 		this.deckID = deckID;
+	}
+	
+	public Deck(String deckTitle, ArrayList<Flashcard> flashcards, String createdBy, boolean publicDeck, String deckID, String schoolName, String facultyName, String description, String courseName) {
+		this.deckTitle = deckTitle;
+		this.flashcards = flashcards;
+		this.createdBy = createdBy;
+		this.publicDeck = publicDeck;
+		this.deckID = deckID;
+		this.schoolName = schoolName;
+		this.facultyName = facultyName;
+		this.description = description;
+		this.courseName = courseName;
 	}
 		
 	public String getDeckID() {
@@ -60,6 +76,10 @@ public class Deck {
 		return flashcards;
 	}
 	
+	public String getCreatedBy() {
+		return this.createdBy;
+	}
+	
 	public void setCreatedBy(String newUser) {
 		this.createdBy = newUser;
 	}
@@ -68,4 +88,35 @@ public class Deck {
 		this.flashcards = flashcards;
 	}
 	
+	public String getSchoolName() {
+		return this.schoolName;
+	}
+	
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+	
+	public String getFaultyName() {
+		return this.facultyName;
+	}
+	
+	public void setFacultyName(String facultyName) {
+		this.facultyName = facultyName;
+	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getCourseName() {
+		return this.courseName;
+	}
+	
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
 }

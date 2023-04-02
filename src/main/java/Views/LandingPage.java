@@ -24,6 +24,7 @@ public class LandingPage extends JPanel implements ActionListener {
 	
 	JPanel main;
 	CardLayout card;
+	private final JButton btnNewButton = new JButton("Profile");
 	
 	public LandingPage(Controller controller) {
 		setBackground(new Color(255, 255, 255));
@@ -67,6 +68,15 @@ public class LandingPage extends JPanel implements ActionListener {
 				controller.logout();
 			}
 		});
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(0, 0, 0));
+		
+		buttons.add(btnNewButton);
 		buttons.add(logout);
 		
 		BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);

@@ -7,6 +7,13 @@
 <!-- https://mvnrepository.com/artifact/javax.activation/activation -->  
 <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+
+	<properties>
+   
+        <jackson.version>2.14.2</jackson.version>
+      
+    </properties>
+
   <dependencies>
   	<dependency>
 	    <groupId>mysql</groupId>
@@ -23,6 +30,22 @@
 	    <artifactId>javax.mail-api</artifactId>
 	    <version>1.6.2</version>
 	</dependency>
+	
+	<dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
   	
   </dependencies>
 </project>

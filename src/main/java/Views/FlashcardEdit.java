@@ -16,7 +16,7 @@ import Models.Flashcard;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class FlashcardPanel extends JPanel implements ActionListener {
+public class FlashcardEdit extends JPanel implements ActionListener {
 
 	private JTextArea flashcardQuestion = new JTextArea();
 	private JTextArea flashcardAnswer = new JTextArea();
@@ -28,7 +28,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	private Controller controller;
 	private Flashcard flashcard;
 	private String deckID;
-	private String mode;
+	private int flashcardIndex;
 	/**
 	 * Create the panel.
 	 */
@@ -36,12 +36,12 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	
 	
 	// New Flashcard
-	public FlashcardPanel(ArrayList<Flashcard> flashcards, Controller controller, String deckID, String mode) {
+	public FlashcardEdit(ArrayList<Flashcard> flashcards, int flashcardIndex, Controller controller, String deckID) {
 		this.flashcards = flashcards;
+		this.flashcardIndex = flashcardIndex;
 		this.controller = controller;
 		this.deckID = deckID;
 		this.currentPanel = this;
-		this.mode = mode;
 		initialize();
 	}
 	
@@ -66,6 +66,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		flashcardQuestion.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		flashcardQuestion.setBackground(Color.WHITE);
 		flashcardQuestion.setBounds(10, 11, 347, 54);
+		flashcardQuestion.setText(flashcards.get(flashcardIndex).getQuestion());
 		this.add(flashcardQuestion);
 		
 
@@ -74,6 +75,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		flashcardAnswer.setBounds(373, 11, 332, 54);
 		flashcardAnswer.setLineWrap(true);
 		flashcardAnswer.setWrapStyleWord(true);
+		flashcardAnswer.setText(flashcards.get(flashcardIndex).getAnswer());
 		this.add(flashcardAnswer);
 		deleteFlashcard.setForeground(new Color(255, 255, 255));
 		deleteFlashcard.setBackground(new Color(0, 0, 0));
@@ -81,6 +83,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		
 		deleteFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				controller.deleteFlashcard(flashcards.get(flashcardIndex));
 				flashcards.remove(flashcard);
 				setBackground(Color.WHITE);
 				setVisible(false);
@@ -92,13 +95,11 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		saveFlashcard.setBackground(new Color(0, 0, 0));
 		saveFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				flashcard = controller.createFlashcard(flashcardQuestion.getText().trim(), flashcardAnswer.getText().trim(), deckID);
-				flashcards.add(flashcard);
-				
-				if (mode.equals("edit")) {
-					controller.addFlashcard(flashcard, deckID);
-				}
-				
+				flashcards.get(flashcardIndex).setQuestion(flashcardQuestion.getText().trim());
+				flashcards.get(flashcardIndex).setAnswer(flashcardAnswer.getText().trim());
+				controller.updateFlashcard(flashcards.get(flashcardIndex));
+				//flashcard = controller.createFlashcard(flashcardQuestion.getText().trim(), flashcardAnswer.getText().trim(), deckID);
+				//flashcards.add(flashcard);
 				setBackground(new Color(51, 204, 255));
 				
 			}

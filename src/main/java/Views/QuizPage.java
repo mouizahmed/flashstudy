@@ -67,6 +67,11 @@ public class QuizPage extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
 		profileButton.setForeground(new Color(255, 255, 255));
 		profileButton.setBackground(new Color(0, 0, 0));
 		profileButton.setBounds(655, 11, 71, 26);

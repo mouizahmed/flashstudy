@@ -14,6 +14,7 @@ import java.awt.SystemColor;
 import javax.swing.border.EtchedBorder;
 
 import Controller.Controller;
+import Models.Deck;
 import Models.Flashcard;
 
 import java.awt.event.ActionListener;
@@ -27,31 +28,35 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.Component;
 
-public class CreateDeckPage extends JPanel {
+public class EditDeck extends JPanel {
 	private JTextField deckTitle;
 	private String deckID;
 	private JTextField school;
 	private JTextField faculty;
 	private JTextField course;
 	private Controller controller;
+	private Deck deck;
 	private boolean publicity = true;
 	private ArrayList<Flashcard> flashcards;
 	private int flashcardNum = 0;
 	private int initialDynamicSize = 500;
 	private JPanel flashcardContainer = new JPanel();
 	private JPanel dynamicPanel = new JPanel(new FlowLayout());
+	private JTextArea deckDescription;
 
 	/**
 	 * Create the panel.
 	 */
-	public CreateDeckPage(Controller controller, String deckID) {
+	public EditDeck(Controller controller, Deck deck) {
 		setBackground(new Color(255, 255, 255));
 		setMinimumSize(new Dimension(750, 500));
 		setSize(new Dimension(750, 500));
 		setPreferredSize(new Dimension(750, 500));
 		this.controller = controller;
 		flashcards = new ArrayList<>();
-		this.deckID = deckID;
+		this.deckID = deck.getDeckID();
+		this.deck = deck;
+		this.publicity = deck.getPublicity();
 		initialize();
 
 	}
@@ -99,30 +104,30 @@ public class CreateDeckPage extends JPanel {
 		panel_1.add(title);
 		
 		deckTitle = new JTextField();
-		deckTitle.setText("Title*");
+		deckTitle.setText(deck.getDeckTitle());
 		deckTitle.setBounds(10, 36, 363, 20);
 		panel_1.add(deckTitle);
 		deckTitle.setColumns(10);
 		
-		JTextArea deckDescription = new JTextArea();
-		deckDescription.setText("Description");
+		deckDescription = new JTextArea();
+		deckDescription.setText(deck.getDescription());
 		deckDescription.setBounds(10, 67, 363, 53);
 		panel_1.add(deckDescription);
 		
 		school = new JTextField();
-		school.setText("School");
+		school.setText(deck.getSchoolName());
 		school.setColumns(10);
 		school.setBounds(383, 36, 343, 20);
 		panel_1.add(school);
 		
 		faculty = new JTextField();
-		faculty.setText("Faculty");
+		faculty.setText(deck.getFaultyName());
 		faculty.setColumns(10);
 		faculty.setBounds(383, 69, 343, 20);
 		panel_1.add(faculty);
 		
 		course = new JTextField();
-		course.setText("Course");
+		course.setText(deck.getCourseName());
 		course.setColumns(10);
 		course.setBounds(383, 100, 343, 20);
 		panel_1.add(course);
@@ -130,7 +135,7 @@ public class CreateDeckPage extends JPanel {
 		JRadioButton publicDeck = new JRadioButton("Public");
 		publicDeck.setForeground(new Color(0, 0, 0));
 		publicDeck.setBackground(new Color(255, 255, 255));
-		publicDeck.setSelected(true);
+//		publicDeck.setSelected(true);
 		publicDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (publicDeck.isSelected()) {
@@ -154,6 +159,13 @@ public class CreateDeckPage extends JPanel {
 		privateDeck.setBounds(447, 11, 65, 24);
 		panel_1.add(privateDeck);
 		
+		if (deck.getPublicity()) {
+			publicDeck.setSelected(true);
+		} else {
+			privateDeck.setSelected(true);
+		}
+		
+		
 		ButtonGroup privacy = new ButtonGroup();
 		privacy.add(publicDeck);
 		privacy.add(privateDeck);
@@ -169,6 +181,20 @@ public class CreateDeckPage extends JPanel {
 		
 		dynamicPanel.setPreferredSize(new Dimension(150, 500));
 		
+		for (int i = 0; i < deck.getAllFlashcards().size(); i++) {
+			
+			FlashcardEdit flashcardView = new FlashcardEdit(deck.getAllFlashcards(), i, controller, deck.getDeckID());
+			
+			dynamicPanel.add(flashcardView);
+			
+			dynamicPanel.revalidate();
+			dynamicPanel.repaint();
+			
+			
+			
+		}
+		
+		
 		JScrollPane scrollPane = new JScrollPane(dynamicPanel);
 		scrollPane.setMinimumSize(new Dimension(720, 110));
 		scrollPane.setPreferredSize(new Dimension(728, 150));
@@ -176,13 +202,20 @@ public class CreateDeckPage extends JPanel {
 		
 		
 		
-		JButton btnCreateDeck = new JButton("Create Deck");
+		JButton btnCreateDeck = new JButton("Edit Deck");
 		btnCreateDeck.setBackground(new Color(0, 0, 0));
 		btnCreateDeck.setForeground(new Color(255, 255, 255));
 		btnCreateDeck.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnCreateDeck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createDeck(deckTitle.getText(), flashcards, publicity, deckID, school.getText().trim(), faculty.getText().trim(), course.getText().trim(), deckDescription.getText().trim());
+				deck.setCourseName(course.getText().trim());
+				deck.setDescription(deckDescription.getText().trim());
+				deck.setSchoolName(school.getText().trim());
+				deck.setDeckTitle(deckTitle.getText().trim());
+				deck.setFacultyName(faculty.getText().trim());
+				deck.setPublicDeck(publicity);
+				controller.updateDeckInfo(deck);
+				//controller.createDeck(deckTitle.getText(), flashcards, publicity, deckID);
 			}
 		});
 		btnCreateDeck.setBounds(316, 435, 104, 26);
@@ -212,7 +245,7 @@ public class CreateDeckPage extends JPanel {
 			
 			dynamicPanel.setPreferredSize(new Dimension(150, initialDynamicSize += 500));
 		}
-		FlashcardPanel flashcardPanel = new FlashcardPanel(flashcards, controller, deckID, "create");
+		FlashcardPanel flashcardPanel = new FlashcardPanel(flashcards, controller, deckID, "edit");
 		dynamicPanel.add(flashcardPanel);
 
 		dynamicPanel.revalidate();

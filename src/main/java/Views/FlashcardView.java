@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import Models.Flashcard;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
+import javax.swing.BoxLayout;
 
 public class FlashcardView extends JPanel implements ActionListener {
 	private ArrayList<Flashcard> flashcards;
@@ -44,8 +46,9 @@ public class FlashcardView extends JPanel implements ActionListener {
 		setBackground(new Color(255, 255, 255));
 		this.controller = controller;
 		this.flashcard = flashcard;
-		questionLabel = new JLabel(flashcard.question);
-		answerLabel = new JLabel(flashcard.answer);
+		questionLabel = new JLabel(flashcard.question.trim());
+		
+		answerLabel = new JLabel(flashcard.answer.trim());
 		this.deck = deck;
 		initialize();
 	}
@@ -72,14 +75,32 @@ public class FlashcardView extends JPanel implements ActionListener {
 		setSize(717, 113);
 		flashcardQuestion.setBackground(new Color(255, 255, 255));
 		flashcardQuestion.setBounds(10, 11, 347, 88);
+		flashcardQuestion.setLayout(new BoxLayout(flashcardQuestion, BoxLayout.X_AXIS));
 		flashcardQuestion.add(questionLabel);
 		
 		add(flashcardQuestion);
 		flashcardAnswer.setBackground(new Color(255, 255, 255));
 		flashcardAnswer.setBounds(373, 11, 332, 88);
+		flashcardAnswer.setLayout(new BoxLayout(flashcardAnswer, BoxLayout.X_AXIS));
 		flashcardAnswer.add(answerLabel);
 		
 		add(flashcardAnswer);
+		
+		JButton btnNewButton = new JButton("Fact Check");
+		btnNewButton.setBackground(new Color(0, 0, 0));
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					controller.verifyFlashcard(deck, flashcard);
+				} catch (IOException | InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setBounds(10, 113, 98, 26);
+		add(btnNewButton);
 		
 		if (this.deck.createdBy.equals(controller.getCurrentUser().getUsername())) {
 			buttonGroup.add(hardButton);
@@ -121,5 +142,4 @@ public class FlashcardView extends JPanel implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

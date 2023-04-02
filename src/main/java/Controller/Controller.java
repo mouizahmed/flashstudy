@@ -2,6 +2,7 @@ package Controller;
 
 
 import java.awt.CardLayout;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
@@ -9,8 +10,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Models.AIModel;
 import Models.Deck;
 import Models.Flashcard;
 import Models.JDBC;
@@ -18,8 +21,11 @@ import Models.Leaderboard;
 import Models.QuizCreator;
 import Models.QuizSession;
 import Models.User;
+import Models.Verdict;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
+import Views.EditDeck;
+import Views.FactCheck;
 import Views.LandingPage;
 import Views.LeaderboardView;
 import Views.LoginPage;
@@ -53,7 +59,12 @@ public class Controller {
 		this.main = main;
 		this.card = card;
 		
-		this.mysql_database = new JDBC();
+		try {
+			this.mysql_database = new JDBC();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -155,13 +166,18 @@ public class Controller {
 		return flashcard;
 	}
 	
-	public void createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, String deckID) {
-		Deck deck = mysql_database.createDeck(deckTitle, flashcards, publicDeck, currentUser, deckID);
+	public void createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, String deckID, String schoolName, String facultyName, String courseName, String description) {
+		Deck deck = mysql_database.createDeck(deckTitle, flashcards, publicDeck, currentUser, deckID, schoolName, facultyName, description, courseName);
+		this.getCurrentUser().getUserDeckList().add(deck);
 		deckPage(deck);
 	}
 	
 	public ArrayList<Deck> searchPublicDecks(String deckTitle) {
 		return mysql_database.searchPublicDeckQuery(deckTitle);
+	}
+	
+	public ArrayList<Deck> searchUserDecks(String deckTitle) {
+		return mysql_database.searchUserDeckQuery(deckTitle, this.getCurrentUser().getUsername());
 	}
 	
 	public ArrayList<Deck> allPublicDecks() {
@@ -228,6 +244,61 @@ public class Controller {
 		main.add(leaderboardPage, "leaderboardPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "leaderboardPage" + num);
+	}
+	
+	public void verifyFlashcard(Deck deck, Flashcard flashcard) throws IOException, InterruptedException {
+		AIModel verification = new AIModel();
+		
+		Verdict verdict = verification.verifyFlashcard(flashcard.getQuestion(), flashcard.getAnswer());
+		
+		JFrame factCheck = new FactCheck(deck, flashcard, this, verdict);
+		
+		factCheck.setVisible(true);
+	}
+	
+	public void updateFlashcard(Deck deck, Flashcard flashcard, String updatedDefinition) {
+		Deck updatedDeck = this.mysql_database.updateDefinition(deck, flashcard, updatedDefinition);
+		
+		this.deckPage(updatedDeck);
+	}
+	
+	public String autoComplete(String term, String context) {
+		AIModel autoCompletion = new AIModel();
+		
+		String aiTerm = "";
+		try {
+			aiTerm = autoCompletion.autoComplete(term, context);
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return aiTerm;
+	}
+	
+	public void editDeckPage(Deck deck) {
+		
+		EditDeck editDeckPage = new EditDeck(this, deck);
+		main.add(editDeckPage, "editDeckPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "editDeckPage" + num);
+	}
+	
+	public void updateFlashcard(Flashcard flashcard) {
+		this.mysql_database.updateFlashcard(flashcard);
+	}
+	
+	public void deleteFlashcard(Flashcard flashcard) {
+		this.mysql_database.deleteFlashcard(flashcard);
+	}
+	
+	public void addFlashcard(Flashcard flashcard, String deckID) {
+		this.mysql_database.addFlashcard(flashcard, deckID, this.getCurrentUser().getUsername());
+	}
+	
+	public void updateDeckInfo(Deck deck) {
+		this.mysql_database.updateDeckInfo(deck);
+		this.deckPage(deck);
 	}
 	
 }

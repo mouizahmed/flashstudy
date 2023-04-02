@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 
 import Controller.Controller;
 import Models.Deck;
+import java.awt.Component;
 
 public class OpenDeckPage extends JPanel {
 	
@@ -27,6 +29,7 @@ public class OpenDeckPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	
 	public OpenDeckPage(Deck deck, Controller controller) {
 		setBackground(new Color(255, 255, 255));
 		this.deck = deck;
@@ -56,12 +59,18 @@ public class OpenDeckPage extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
 		profileButton.setForeground(new Color(255, 255, 255));
 		profileButton.setBackground(new Color(0, 0, 0));
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(242, 59, 484, 26);
 		add(panel_1);
@@ -71,8 +80,14 @@ public class OpenDeckPage extends JPanel {
 		btnNewButton_1.setForeground(new Color(255, 255, 255));
 		btnNewButton_1.setBackground(new Color(0, 0, 0));
 		panel_1.add(btnNewButton_1);
+		btnNewButton_1.setVisible(false);
+		if (deck.getCreatedBy().equals(controller.getCurrentUser().getUsername())) {
+			panel_1.add(btnNewButton_1);
+			btnNewButton_1.setVisible(true);
+		}
 		
 		JButton btnNewButton_2 = new JButton("Create Session");
+		btnNewButton_2.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		btnNewButton_2.setForeground(new Color(255, 255, 255));
 		btnNewButton_2.setBackground(new Color(0, 0, 0));
 		btnNewButton_2.addActionListener(new ActionListener() {
@@ -80,9 +95,11 @@ public class OpenDeckPage extends JPanel {
 				controller.session(deck.getAllFlashcards());
 			}
 		});
+		btnNewButton_2.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panel_1.add(btnNewButton_2);
 		
 		JButton Quiz = new JButton("Quiz");
+		Quiz.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		Quiz.setForeground(new Color(255, 255, 255));
 		Quiz.setBackground(new Color(0, 0, 0));
 		Quiz.addActionListener(new ActionListener() {
@@ -90,9 +107,11 @@ public class OpenDeckPage extends JPanel {
 				controller.quiz(deck);
 			}
 		});
+		Quiz.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panel_1.add(Quiz);
 		
 		JButton addButton = new JButton("Add to Profile");
+		addButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		addButton.setForeground(new Color(255, 255, 255));
 		addButton.setBackground(new Color(0, 0, 0));
 		addButton.addActionListener(new ActionListener() {
@@ -100,9 +119,11 @@ public class OpenDeckPage extends JPanel {
 				controller.addDeckToProfile(deck);
 			}
 		});
+		addButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panel_1.add(addButton);
 		
 		JButton leaderboardButton = new JButton("Leaderboard");
+		leaderboardButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		leaderboardButton.setForeground(new Color(255, 255, 255));
 		leaderboardButton.setBackground(new Color(0, 0, 0));
 		leaderboardButton.addActionListener(new ActionListener() {
@@ -134,15 +155,8 @@ public class OpenDeckPage extends JPanel {
 		
 		//new Dimension(150, initialDynamicSize += 500)
 	
-		
+	
 		for (int i = 0; i < deck.getAllFlashcards().size(); i++) {
-			//JLabel deckTitle = new JLabel(deck.get(i).getDeckTitle());
-//			JLabel deckCreatedBy = new JLabel("Created by: " + publicDecks.get(i).createdBy);
-//			JPanel deckPanel = new JPanel();
-//			deckPanel.setPreferredSize(new Dimension(150, 50));
-//			deckPanel.setBackground(Color.YELLOW);
-//			deckPanel.add(deckTitle);
-//			deckPanel.add(deckCreatedBy);
 			
 			FlashcardView flashcardView = new FlashcardView(deck, deck.getAllFlashcards().get(i), controller);
 			
@@ -163,6 +177,7 @@ public class OpenDeckPage extends JPanel {
 		add(title);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				controller.editDeckPage(deck);
 			}
 		});
 	}
