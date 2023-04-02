@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +61,12 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         deckCheckBoxes = new ArrayList<JCheckBox>();
        // this.mysql_database = controller.getJdbc();
 
-        this.mysql_database = new JDBC();
+        try {
+			this.mysql_database = new JDBC();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         // Retrieve the public decks and user decks from the database
         publicDecks = controller.allPublicDecks();//mysql_database.publicDeckList();

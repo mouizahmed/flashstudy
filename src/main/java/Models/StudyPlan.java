@@ -1,5 +1,6 @@
 package Models;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -51,7 +52,12 @@ public class StudyPlan {
         this.allStudyDecks = new ArrayList<>();
         this.allRepeatDecks = new ArrayList<>();
         this.deckRepeatCount = new HashMap<>(); // Initialize the deckRepeatCount HashMap
-        this.mysql_database = new JDBC();
+        try {
+			this.mysql_database = new JDBC();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         System.out.print(studyPlanID);
         System.out.print(studyPlanTitle);
         System.out.print(selectedDecks);

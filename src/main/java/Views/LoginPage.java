@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import Controller.Controller;
 import javax.swing.JPasswordField;
 import java.awt.GridLayout;
+import java.awt.Color;
 
 public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 	
@@ -46,6 +47,7 @@ public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 	private final JPasswordField password = new JPasswordField();
 	
 	public LoginPage(Controller controller) {
+		setBackground(new Color(255, 255, 255));
 		this.controller = controller;
 		//this.welcomePage = welcomePage;
 //		this.main = main;
@@ -54,27 +56,43 @@ public class LoginPage extends JPanel implements ItemListener, ActionListener  {
 	}
 	
 	public void initialize() {
+		title.setBackground(new Color(255, 255, 255));
 		
 		
 		title.add(loginMsg);
 		this.add(title);
+		namePanel.setBackground(new Color(255, 255, 255));
 		namePanel.setLayout(new GridLayout(0, 2, 0, 0));
+		nameLabel.setBackground(new Color(255, 255, 255));
 		
 		namePanel.add(nameLabel);
+		name.setBackground(new Color(255, 255, 255));
 		name.setPreferredSize(new Dimension(100, 20));
 		namePanel.add(name);
+		passwordPanel.setBackground(new Color(255, 255, 255));
 		passwordPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		passwordLabel.setBackground(new Color(255, 255, 255));
 		
 		passwordPanel.add(passwordLabel);
 		
 		this.add(namePanel);
 		this.add(passwordPanel);
+		password.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.login(name.getText(), String.valueOf(password.getPassword()));
+			}
+		});
 		password.setColumns(12);
 		
 		passwordPanel.add(password);
+		back.setBackground(new Color(0, 0, 0));
+		back.setForeground(new Color(255, 255, 255));
 	
 		back.addActionListener(this);
+		submit.setForeground(new Color(255, 255, 255));
+		submit.setBackground(new Color(0, 0, 0));
 		submit.addActionListener(this);
+		buttons.setBackground(new Color(255, 255, 255));
 		buttons.add(back);
 		buttons.add(submit);
 		this.add(buttons);

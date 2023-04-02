@@ -35,6 +35,7 @@ public class BrowsePublicDeckPage extends JPanel {
 	 * Create the panel.
 	 */
 	public BrowsePublicDeckPage(Controller controller) {
+		setBackground(new Color(255, 255, 255));
 		this.controller = controller;
 		this.publicDecks = controller.allPublicDecks();
 		for (int i = 0; i < publicDecks.size(); i++) {
@@ -48,11 +49,14 @@ public class BrowsePublicDeckPage extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 738, 47);
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(0, 0, 0));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.landingPage();
@@ -62,6 +66,8 @@ public class BrowsePublicDeckPage extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.setForeground(new Color(255, 255, 255));
+		profileButton.setBackground(new Color(0, 0, 0));
 		profileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.profilePage(controller.getCurrentUser());
@@ -71,6 +77,7 @@ public class BrowsePublicDeckPage extends JPanel {
 		panel.add(profileButton);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 58, 738, 111);
 		add(panel_1);
 		panel_1.setLayout(null);
@@ -124,10 +131,12 @@ public class BrowsePublicDeckPage extends JPanel {
 		JLabel pageTitle = new JLabel("Search for all Public Decks");
 		pageTitle.setBounds(286, 23, 153, 16);
 		panel_1.add(pageTitle);
+		resultsContainer.setBackground(new Color(255, 255, 255));
 		
 		
 		resultsContainer.setBounds(0, 197, 738, 303);
 		add(resultsContainer);
+		dynamicPanel.setBackground(new Color(255, 255, 255));
 		
 		dynamicPanel.setPreferredSize(new Dimension(150, 500));
 		
@@ -147,7 +156,9 @@ public class BrowsePublicDeckPage extends JPanel {
 			JLabel deckCreatedBy = new JLabel("Created by: " + decks.get(i).createdBy);
 			JPanel deckPanel = new JPanel();
 			deckPanel.setPreferredSize(new Dimension(150, 50));
-			deckPanel.setBackground(Color.YELLOW);
+			deckPanel.setBackground(Color.BLACK);
+			deckTitle.setForeground(Color.WHITE);
+			deckCreatedBy.setForeground(Color.WHITE);
 			deckPanel.add(deckTitle);
 			deckPanel.add(deckCreatedBy);
 			Deck current = decks.get(i);

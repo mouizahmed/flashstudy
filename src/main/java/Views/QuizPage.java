@@ -31,6 +31,7 @@ public class QuizPage extends JPanel {
 	private int index = 0;
 	
 	public QuizPage(QuizSession quizSession, Controller controller) {
+		setBackground(new Color(255, 255, 255));
 		this.quizSession = quizSession;
 		this.controller = controller;
 		this.questions = quizSession.getAllQuestions();
@@ -46,21 +47,33 @@ public class QuizPage extends JPanel {
 		setPreferredSize(new Dimension(750, 500));
 		setLayout(null);
 		nextQuestion = new JButton("Next");
+		nextQuestion.setForeground(new Color(255, 255, 255));
+		nextQuestion.setBackground(new Color(0, 0, 0));
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 738, 47);
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(0, 0, 0));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.previous();
+				controller.deckPage(quizSession.getDeck());
 			}
 		});
-		btnNewButton.setBounds(10, 11, 63, 26);
+		btnNewButton.setBounds(12, 11, 63, 26);
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
+		profileButton.setForeground(new Color(255, 255, 255));
+		profileButton.setBackground(new Color(0, 0, 0));
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
@@ -72,6 +85,8 @@ public class QuizPage extends JPanel {
 		
 		
 		JButton btnPrevious = new JButton("Previous");
+		btnPrevious.setForeground(new Color(255, 255, 255));
+		btnPrevious.setBackground(new Color(0, 0, 0));
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
