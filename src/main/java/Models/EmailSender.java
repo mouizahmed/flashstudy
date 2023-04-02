@@ -1,69 +1,64 @@
 package Models;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Date;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class EmailSender {
-	
-	public EmailSender() {
-		sendEmail("mouizahmed1@gmail.com","testing flashcard","This is a test");
-	}
 
-    public static void sendEmail(String to, String subject, String body) {
-        String from = "flashstudyhelp@gmail.com";
-        String password = "fwffotmkdmlssfmj";
-        String host = "smtp.gmail.com";
+    public static boolean sendEmail(String from, String to, String subject, String body) {
 
-        Properties properties = System.getProperties();
+        boolean flag = false;
+        //SMTP properties
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth",true);
+        properties.put("mail.smtp.starttls.enable",true);
+        properties.put("mail.smtp.port","587");
+        properties.put("mail.smtp.host","smtp.gmail.com");
 
-        //Mail server
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        String username = "flashstudyhelp";                     //email id username before the @ part
+        String password = "ylcxkeqysicdopff";                   // App password to access the email
 
-        Session session = Session.getDefaultInstance(properties,
-                new javax.mail.Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication(from, password);
-                    }
-                });
 
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(subject);
-            message.setText(body);
+        //Session
 
-            Transport.send(message);
-            System.out.println("Email sent successfully.");
-        } catch (MessagingException mex) {
-            mex.printStackTrace();
-        }
-    }
-
-    public static void scheduleEmailReminder(Date reminderDate, String to, String subject, String body) {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        jakarta.mail.Session session = Session.getInstance(properties, new Authenticator() {
             @Override
-            public void run() {
-                EmailSender.sendEmail(to, subject, body);
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username,password);
             }
-        }, reminderDate);
+        });
+
+        try{
+
+            jakarta.mail.Message message = new MimeMessage(session);
+
+            message.setRecipient(Message.RecipientType.TO, new jakarta.mail.internet.InternetAddress(to));        //Set to CC/BCC/From
+            message.setFrom(new InternetAddress(from));                                                           //Set sender
+            message.setSubject(subject);                                                                          //Subject
+            message.setText(body);                                                                                //Set Text of email
+
+            Transport.send(message);                                                                                //Send Message
+
+            flag = true;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return flag;
     }
 
-//     public static void main(String[] args) {
-//         sendEmail("sourav.chandok@gmail.com","testing flashcard","This is a test");
-//     }
 
+    //PSVM for testing
+
+//    public static void main(String[] args) {
+//
+//        boolean b = sendEmail("flashstudyhelp@gmail.com","sourav.chandok@outlook.com","Hello","ABVHDDJDAJDIJDI");
+//        if (b)
+//            System.out.println("sent");
+//        else
+//            System.out.println("fail");
+//    }
 }

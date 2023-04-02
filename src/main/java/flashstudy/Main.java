@@ -1,22 +1,12 @@
 package flashstudy;
 
-import java.awt.CardLayout;
-import java.util.ArrayList;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.text.*;
-
 import Controller.Controller;
-import Models.EmailSender;
-import Views.BrowsePublicDeckPage;
-import Views.CreateDeckPage;
-import Views.LandingPage;
 import Views.LoginPage;
 import Views.RegisterPage;
 import Views.WelcomePage;
 
+import javax.swing.*;
+import java.awt.*;
 
 
 public class Main {
@@ -38,12 +28,11 @@ public class Main {
 		
 		LoginPage loginPage = new LoginPage(controller);
 		container.add(loginPage, "loginPage");
-		
 		RegisterPage registerPage = new RegisterPage(controller);
 		container.add(registerPage, "registerPage");
 		
-		LandingPage landingPage = new LandingPage(controller);
-		container.add(landingPage, "landingPage");
+//		LandingPage landingPage = new LandingPage(controller);
+//		container.add(landingPage, "landingPage");
 		
 //		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
 //		container.add(createDeckPage, "createDeckPage");

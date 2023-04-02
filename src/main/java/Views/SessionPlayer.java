@@ -27,6 +27,7 @@ public class SessionPlayer extends JPanel {
 	 * Create the panel.
 	 */
 	public SessionPlayer(ArrayList<Flashcard> flashcards, Controller controller) {
+		setBackground(new Color(255, 255, 255));
 		this.flashcards = flashcards;
 		this.controller = controller;
 		initialize();
@@ -37,11 +38,14 @@ public class SessionPlayer extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
 		panel.setBounds(0, 0, 738, 47);
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(0, 0, 0));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.previous();
@@ -51,6 +55,13 @@ public class SessionPlayer extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
+		profileButton.setForeground(new Color(255, 255, 255));
+		profileButton.setBackground(new Color(0, 0, 0));
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
@@ -65,6 +76,8 @@ public class SessionPlayer extends JPanel {
 		add(flashcardPanel);
 		
 		JButton revealAnswer = new JButton("Reveal");
+		revealAnswer.setForeground(new Color(255, 255, 255));
+		revealAnswer.setBackground(new Color(0, 0, 0));
 		revealAnswer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				flashcardPanel.remove(text);
@@ -80,6 +93,8 @@ public class SessionPlayer extends JPanel {
 		add(revealAnswer);
 
 		JButton nextQuestion = new JButton("Next");
+		nextQuestion.setForeground(new Color(255, 255, 255));
+		nextQuestion.setBackground(new Color(0, 0, 0));
 		nextQuestion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				index += 1;

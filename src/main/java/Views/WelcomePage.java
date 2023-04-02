@@ -20,6 +20,7 @@ public class WelcomePage extends JPanel implements ItemListener, ActionListener 
 	private Controller controller;
 	
 	public WelcomePage(Controller controller) {
+		setBackground(new Color(255, 255, 255));
 //		this.main = main;
 //		this.card = card;
 		this.controller = controller;
@@ -27,6 +28,7 @@ public class WelcomePage extends JPanel implements ItemListener, ActionListener 
 		lblWelcomeToFlashstudy = new JLabel("Welcome to FlashStudy!");
 		lblWelcomeToFlashstudy.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lblWelcomeToFlashstudy);
+		buttons.setBackground(new Color(255, 255, 255));
 		this.add(buttons);
 		initialize();
 	}
@@ -35,10 +37,14 @@ public class WelcomePage extends JPanel implements ItemListener, ActionListener 
 	private void initialize() {
 		
 		login = new JButton("Login");
+		login.setBackground(new Color(0, 0, 0));
+		login.setForeground(new Color(255, 255, 255));
 		login.addActionListener(this);
 		buttons.add(login);
 		
 		register = new JButton("Register");
+		register.setForeground(new Color(255, 255, 255));
+		register.setBackground(new Color(0, 0, 0));
 		register.addActionListener(this);
 		buttons.add(register);
 		
