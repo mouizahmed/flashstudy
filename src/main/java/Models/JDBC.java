@@ -425,14 +425,16 @@ public class JDBC {
 	            int studyTimeDays = rs.getInt("studyTimeDays");
 	            String selectedDecksStr = rs.getString("selectedDecks");
 	            ArrayList<String> selectedDecksIDs = new ArrayList<>(Arrays.asList(selectedDecksStr.split(",")));
-	            //System.out.print(selectedDecksIDs);
 	            ArrayList<Deck> selectedDecks = new ArrayList<>();
-	            System.out.println("Selected decks string: " + selectedDecksStr);
-	            System.out.println("Selected deck IDs: " + selectedDecksIDs);
+	            ArrayList<Deck> AllDecks = new ArrayList<>();
+	            ArrayList<Deck> publicDecks = publicDeckList();
+	            ArrayList<Deck> userDecks = userDeckList();
+	            AllDecks.addAll(publicDecks);
+	            AllDecks.addAll(userDecks);
 
 	            for (String deckID : selectedDecksIDs) {
 	            	//ArrayList<Deck> deckList = new ArrayList<>();
-	                Deck deck = Deck.findDeckByID(deckID, selectedDecks); // assumes there is a method to retrieve a Deck by its ID
+	                Deck deck = Deck.findDeckByID(deckID, AllDecks); // assumes there is a method to retrieve a Deck by its ID
 	                if (deck != null) {
 	                    System.out.println("Found deck with ID " + deckID + ": " + deck);
 	                    selectedDecks.add(deck);
@@ -440,9 +442,6 @@ public class JDBC {
 	                    System.out.println("Deck with ID " + deckID + " not found in list " + selectedDecks);
 	                }
 	                System.out.println("Selected decks: " + selectedDecks);
-//	                	System.out.print(deck);
-//	                    selectedDecks.add(deck);
-//	                    System.out.print(selectedDecks);
 	                }
 	            
 	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
