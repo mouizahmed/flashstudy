@@ -73,7 +73,8 @@ public class LandingPage extends JPanel implements ActionListener {
 			}
 		});
 		buttons.add(add);
-    
+		SPButton.setBackground(new Color(0, 0, 0));
+		SPButton.setForeground(new Color(255, 255, 255));
     SPButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				User user = controller.getCurrentUser();
@@ -83,7 +84,8 @@ public class LandingPage extends JPanel implements ActionListener {
 		
 		//SPButton.setBounds(519, 11, 126, 26);
 		buttons.add(SPButton);
-		
+		new_SPButton.setBackground(new Color(0, 0, 0));
+		new_SPButton.setForeground(new Color(255, 255, 255));
 		new_SPButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 User user = controller.getCurrentUser();
@@ -91,7 +93,6 @@ public class LandingPage extends JPanel implements ActionListener {
 			        // Combine the public and user decks into a single list
 			        allDecks = new ArrayList<Deck>();
 			        allDecks.addAll(publicDecks);
-			        //allDecks.addAll(userDecks);
 			        
 				controller.createStudyPlanPage(user, allDecks);
 			}

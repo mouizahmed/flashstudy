@@ -365,7 +365,7 @@ public class JDBC {
 				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
 				rs2 = stmt2.executeQuery(sql2);
 				while (rs2.next()) {
-					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor")));
+					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor"), rs2.getBytes("flashCardImg")));
 					
 				}
 				
