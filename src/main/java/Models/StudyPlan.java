@@ -58,6 +58,7 @@ public class StudyPlan {
             if (!allStudyDecks.contains(deck) && !allRepeatDecks.contains(deck)) {
                 // If the deck is not in AllStudyDecks and not in AllRepeatDecks, add it to AllStudyDecks
                 allStudyDecks.add(deck);
+                //System.out.print(allStudyDecks);
             }
         }
     }

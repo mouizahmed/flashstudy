@@ -381,10 +381,10 @@ public class JDBC {
 		    return studyPlan;
 	}
 	
-	public StudyPlan getAllStudyPlansByUser(String createdBy) {
+	public StudyPlan getStudyPlanByUser(String createdBy) {
 		
 		StudyPlan studyPlans = null;//new StudyPlan(null, null, null, null, null, null, null, 0, selectedDecks);
-	    String getStudyPlansQuery = "SELECT * FROM study_plan WHERE createdBy=?";// + user.getUsername() + "';";
+	    String getStudyPlansQuery = "SELECT * FROM study_plan WHERE createdBy=?  LIMIT 1";// + user.getUsername() + "';";
 	    try {
 	        PreparedStatement stmt = conn.prepareStatement(getStudyPlansQuery);
 	        stmt.setString(1, createdBy);

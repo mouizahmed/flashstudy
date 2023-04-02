@@ -219,19 +219,19 @@ public class Controller {
 	}
 	
 	public void UserStudyPlannerPage(User user, StudyPlan studyPlan) {
-		studyPlan = this.mysql_database.getAllStudyPlansByUser(user.getUsername());
-		System.out.print(studyPlan);
-		UserStudyPlannerPage userStudyPlannerPage = new UserStudyPlannerPage(user, studyPlan, this); //added
-		System.out.print(userStudyPlannerPage);
+		//studyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+		StudyPlan retrievedStudyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+		System.out.print(retrievedStudyPlan);
+		UserStudyPlannerPage userStudyPlannerPage = new UserStudyPlannerPage(user, retrievedStudyPlan, this); //added
 		main.add(userStudyPlannerPage, "userStudyPlannerPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "userStudyPlannerPage" + num);
 	}
 	
-	public StudyPlan getStudyPlan(User user) {
-		StudyPlan studyPlan = this.mysql_database.getAllStudyPlansByUser(user.getUsername());
-	        return studyPlan;
-	}
+//	public StudyPlan getStudyPlan(User user) {
+//		StudyPlan studyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+//	        return studyPlan;
+//	}
 
 	public void addDeckToProfile(Deck deck) {
 		Deck deckCopy = this.mysql_database.addDeckToProfile(deck, this.currentUser);

@@ -177,10 +177,10 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
 	            System.out.println(studyPlan);
 
                 // retrieve the study plan from the database
-                StudyPlan retrievedStudyPlan = mysql_database.getAllStudyPlansByUser(user.getUsername());
+                //StudyPlan retrievedStudyPlan = mysql_database.getAllStudyPlansByUser(user.getUsername());
 
                 // display the study plan using the controller
-                controller.UserStudyPlannerPage(user, retrievedStudyPlan);
+                //controller.UserStudyPlannerPage(user, retrievedStudyPlan);
 			}
 		});
         submitPanel.add(backButton);
