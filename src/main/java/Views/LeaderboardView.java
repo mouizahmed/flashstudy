@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class LeaderboardView extends JPanel {
 
@@ -20,7 +21,8 @@ public class LeaderboardView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LeaderboardView(Leaderboard leaderboard, Controller controller) {		
+	public LeaderboardView(Leaderboard leaderboard, Controller controller) {
+		setBackground(new Color(255, 255, 255));		
 		this.leaderboard = leaderboard;
 		this.controller = controller;
 		initialize();
@@ -32,11 +34,14 @@ public class LeaderboardView extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 738, 47);
 		panel.setLayout(null);
 		add(panel);
 		
 		JButton btnNewButton = new JButton("Back");
+		btnNewButton.setBackground(new Color(0, 0, 0));
+		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.previous();
@@ -46,6 +51,13 @@ public class LeaderboardView extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton profileButton = new JButton("Profile");
+		profileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.profilePage(controller.getCurrentUser());
+			}
+		});
+		profileButton.setBackground(new Color(0, 0, 0));
+		profileButton.setForeground(new Color(255, 255, 255));
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		

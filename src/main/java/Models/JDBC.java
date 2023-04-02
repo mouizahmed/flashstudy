@@ -1,6 +1,12 @@
 package Models;
 
+
+import java.io.IOException;
 import java.math.BigInteger;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -14,9 +20,14 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Arrays;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JDBC {
 	private static Connection conn;
@@ -32,8 +43,11 @@ public class JDBC {
 	private static String sql3;
 	private static String query1;
 	private PasswordUtilities passwordUtilities = new PasswordUtilities();
+	
+	
 
-	public JDBC() {
+	
+	public JDBC() throws IOException, InterruptedException {
 		String url = "jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_957a5ec054245a7?reconnect=true";
 		String user = "b94e112144658f";
 		String password = "7af4eb5c";
@@ -107,7 +121,7 @@ public class JDBC {
 							flashcards.add(new Flashcard(rs3.getString("question"), rs3.getString("answer"), rs3.getString("createdBy"), rs3.getString("deckID"), rs3.getBytes("flashCardImg")));
 						}
 						
-						decks.add(new Deck(rs2.getString("deckTitle"), flashcards, rs2.getString("createdBy"), rs2.getBoolean("public"), rs2.getString("deckID")));
+						decks.add(new Deck(rs2.getString("deckTitle"), flashcards, rs2.getString("createdBy"), rs2.getBoolean("public"), rs2.getString("deckID"), rs2.getString("school"), rs2.getString("faculty"), rs2.getString("description"), rs2.getString("courseName")));
 					}
 					
 					
@@ -157,17 +171,19 @@ public class JDBC {
 		}
 		
 		deckCopy.replaceFlashcards(flashcardsCopy);
-		this.createDeck(deckCopy.getDeckTitle(), flashcardsCopy, false, currentUser, deckCopy.getDeckID());
+		this.createDeck(deckCopy.getDeckTitle(), flashcardsCopy, false, currentUser, deckCopy.getDeckID(), deckCopy.schoolName, deckCopy.facultyName, deckCopy.description, deckCopy.courseName);
 		return deckCopy;
 		
 		
 		
 	}
 	
-	public Deck createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, User currentUser, String deckID) {
+	public Deck createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, User currentUser, String deckID, String schoolName, String facultyName, String description, String courseName) {
 		Deck deck = null;
+
 		String addFlashcardsQuery = "INSERT INTO Flashcards (createdBy, flashcardID, deckID, question, answer, flashCardImg) VALUES (?, ?, ?, ?, ?, ?)";
-		String addDeckQuery = "INSERT INTO Decks (createdBy, deckID, deckTitle, public) VALUES (?, ?, ?, ?);";
+		String addDeckQuery = "INSERT INTO Decks (createdBy, deckID, deckTitle, public, school, faculty, description, courseName) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
 		try {
 			
 			PreparedStatement stmt1 = conn.prepareStatement(addDeckQuery);
@@ -177,6 +193,10 @@ public class JDBC {
 			stmt1.setString(2, deckID);
 			stmt1.setString(3, deckTitle);
 			stmt1.setBoolean(4, publicDeck);
+			stmt1.setString(5, schoolName);
+			stmt1.setString(6, facultyName);
+			stmt1.setString(7, description);
+			stmt1.setString(8, courseName);
 			System.out.println(stmt1);
 			int rowsInserted1 = stmt1.executeUpdate();
 			
@@ -185,13 +205,14 @@ public class JDBC {
 				stmt2.setString(1, flashcards.get(i).createdBy);
 				stmt2.setString(2, flashcards.get(i).flashcardID);
 				stmt2.setString(3, flashcards.get(i).getDeckID());
-				stmt2.setString(4, flashcards.get(i).getQuestion());
-				stmt2.setString(5, flashcards.get(i).getAnswer());
+				stmt2.setString(4, flashcards.get(i).getQuestion().trim());
+				stmt2.setString(5, flashcards.get(i).getAnswer().trim());
 				stmt2.setBytes(6, flashcards.get(i).getFlashCardImgData());
+
 				int rowsInserted2 = stmt2.executeUpdate();
 			}
-			
-			deck = new Deck(deckTitle, flashcards, currentUser.getUsername(), publicDeck, deckID);
+			//String schoolName, String facultyName, String description, String courseName
+			deck = new Deck(deckTitle, flashcards, currentUser.getUsername(), publicDeck, deckID, schoolName, facultyName, description, courseName);
 			return deck;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -290,11 +311,13 @@ public class JDBC {
 				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
 				rs2 = stmt2.executeQuery(sql2);
 				while (rs2.next()) {
+
 					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor"), rs2.getBytes("flashCardImg")));
+
 					
 				}
 				
-				publicDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID")));
+				publicDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID"), rs1.getString("school"), rs1.getString("faculty"), rs1.getString("description"), rs1.getString("courseName")));
 			}
 			
 			return publicDecks;
@@ -325,7 +348,7 @@ public class JDBC {
 					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID")));
 				}
 				
-				searchedDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID")));
+				searchedDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID"), rs1.getString("school"), rs1.getString("faculty"), rs1.getString("description"), rs1.getString("courseName")));
 			}
 			
 			return searchedDecks;
@@ -334,6 +357,122 @@ public class JDBC {
 			return searchedDecks;
 		}
 	}
+	
+	public Deck updateDefinition(Deck deck, Flashcard flashcard, String updatedDefinition) {
+		sql = "UPDATE Flashcards SET answer= ? WHERE flashcardID = ? AND deckID = ?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, updatedDefinition);
+			stmt.setString(2, flashcard.getFlashcardID());
+			stmt.setString(3, flashcard.getDeckID());
+			int rowsUpdated = stmt.executeUpdate();
+			flashcard.setAnswer(updatedDefinition);
+			int index = deck.getAllFlashcards().indexOf(flashcard);
+			if (index != -1) {
+				deck.getAllFlashcards().set(index, flashcard);
+			}
+			
+			return deck;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+
+		
+		
+	}
+	
+	public void updateFlashcard(Flashcard flashcard) {
+		sql = "UPDATE Flashcards SET question = ?, answer = ? WHERE flashcardID = ? AND deckID = ?";
+		
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, flashcard.getQuestion());
+			stmt.setString(2, flashcard.getAnswer());
+			stmt.setString(3, flashcard.getFlashcardID());
+			stmt.setString(4, flashcard.getDeckID());
+			int rowsUpdated = stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteFlashcard(Flashcard flashcard) {
+		sql = "DELETE FROM Flashcards WHERE flashcardID = ? AND deckID = ?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, flashcard.getFlashcardID());
+			stmt.setString(2, flashcard.getDeckID());
+			int rowsUpdated = stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addFlashcard(Flashcard flashcard, String deckID, String user) {
+		sql = "INSERT INTO Flashcards (createdBy, flashcardID, deckID, question, answer) VALUES (?, ?, ?, ?, ?)";
+		
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, user);
+			stmt.setString(2, flashcard.getFlashcardID());
+			stmt.setString(3, deckID);
+			stmt.setString(4, flashcard.getQuestion());
+			stmt.setString(5, flashcard.getAnswer());
+			int rowsUpdated = stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateDeckInfo(Deck deck) {
+		sql = "UPDATE Decks SET deckTitle = ?, public = ?, school = ?, faculty = ?, courseName = ?, description = ? WHERE deckID = ?";
+		
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, deck.getDeckTitle());
+			stmt.setBoolean(2, deck.getPublicity());
+			stmt.setString(3, deck.getSchoolName());
+			stmt.setString(4, deck.getFaultyName());
+			stmt.setString(5, deck.getCourseName());
+			stmt.setString(6, deck.getDescription());
+			stmt.setString(7, deck.getDeckID());
+			int rowsUpdated = stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Deck> searchUserDeckQuery(String query, String user) {
+		ArrayList<Deck> searchedDecks = new ArrayList<>();
+		
+		sql = "SELECT * FROM Decks WHERE deckTitle LIKE '%" + query + "%' AND createdBy='" + user + "'";
+		
+		try {
+			stmt = conn.createStatement();
+			stmt2 = conn.createStatement();
+			rs1 = stmt.executeQuery(sql);
+			
+			while (rs1.next()) {
+				ArrayList<Flashcard> flashcards = new ArrayList<>();
+				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
+				rs2 = stmt2.executeQuery(sql2);
+				while (rs2.next()) {
+					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID")));
+				}
+				// String schoolName, String facultyName, String description, String courseName
+				searchedDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID"), rs1.getString("school"), rs1.getString("faculty"), rs1.getString("description"), rs1.getString("courseName")));
+			}
+			
+			return searchedDecks;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return searchedDecks;
+		}
+	}
+	
 
 
 

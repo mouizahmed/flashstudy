@@ -100,12 +100,12 @@ public class DeckList implements DeckDatabase {
 	@Override
 	public ArrayList<Deck> getAllUserDecks(User user) {
 		// TODO Auto-generated method stub
-		return user.userDeckList();
+		return user.getUserDeckList();
 	}
 	
 	@Override
 	public ArrayList<Deck> getAllCurrentUserDecks() {
-		return userDatabase.getCurrentUser().userDeckList();
+		return userDatabase.getCurrentUser().getUserDeckList();
 	}
 
 
