@@ -9,13 +9,17 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class AIModel {
 
 	private HttpRequest request;
 	private HttpClient client;
 	private ObjectMapper mapper;
+	private Dotenv dotenv;
 	public AIModel() {
 		mapper = new ObjectMapper();
+		dotenv = Dotenv.configure().load();
 	}
 	
 	public MultipleChoiceQuestion generateMC(String term, String definition) throws IOException, InterruptedException {
@@ -37,7 +41,7 @@ public class AIModel {
 		HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.openai.com/v1/completions"))
                 .header("Content-Type", "application/json")
-                .header("Authorization","Bearer " + "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")
+                .header("Authorization","Bearer " + dotenv.get("OPENAI_KEY"))
                 .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();
 	 
@@ -107,7 +111,7 @@ public class AIModel {
 		HttpRequest request = HttpRequest.newBuilder()
 	            .uri(URI.create("https://api.openai.com/v1/completions"))
 	            .header("Content-Type", "application/json")
-	            .header("Authorization","Bearer " + "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")
+	            .header("Authorization","Bearer " + dotenv.get("OPENAI_KEY"))
 	            .POST(HttpRequest.BodyPublishers.ofString(input))
 	            .build();
 	 
@@ -155,7 +159,7 @@ public class AIModel {
 		HttpRequest request = HttpRequest.newBuilder()
 	            .uri(URI.create("https://api.openai.com/v1/completions"))
 	            .header("Content-Type", "application/json")
-	            .header("Authorization","Bearer " + "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")
+	            .header("Authorization","Bearer " + dotenv.get("OPENAI_KEY"))
 	            .POST(HttpRequest.BodyPublishers.ofString(input))
 	            .build();
 	 
