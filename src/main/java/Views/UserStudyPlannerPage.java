@@ -84,8 +84,8 @@ public class UserStudyPlannerPage extends JPanel {
 	        allButton = new JButton("All Study Decks");
 	        allButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 	        allButton.addActionListener(e -> {
-	            displayStudyDecksList(studyPlan.allStudyDecks);
-	            displayRepeatDecksList(studyPlan.allRepeatDecks);
+	            displayStudyDecksList(studyPlan.getAllStudyDecks());
+	            displayRepeatDecksList(studyPlan.getAllRepeatDecks());
 	        });
 	        mainPanel.add(allButton);
 	        

@@ -70,33 +70,6 @@ public class BrowsePublicDeckPage extends JPanel {
 		profileButton.setBounds(655, 11, 71, 26);
 		panel.add(profileButton);
 		
-		JButton SPButton = new JButton("Your Study Plan");
-		SPButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controller.profilePage(controller.getCurrentUser());
-			}
-		});
-		SPButton.setBounds(519, 11, 126, 26);
-		panel.add(SPButton);
-		
-		JButton new_SPButton = new JButton("Create New Study Plan");
-		new_SPButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 User user = controller.getCurrentUser();
-				 //ArrayList<Deck> publicDecks = decklist.getAllPublicDecks();
-				 //ArrayList<Deck> userDecks = decklist.getAllCurrentUserDecks();
-				 ArrayList<Deck> allDecks;
-			        // Combine the public and user decks into a single list
-			        allDecks = new ArrayList<Deck>();
-			        allDecks.addAll(publicDecks);
-			        //allDecks.addAll(userDecks);
-			        
-				controller.createStudyPlanPage(user, allDecks);
-			}
-		});
-		new_SPButton.setBounds(340, 11, 169, 26);
-		panel.add(new_SPButton);
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 58, 738, 111);
 		add(panel_1);

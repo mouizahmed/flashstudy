@@ -50,6 +50,7 @@ public class StudyPlan {
         //this.dateCreated = dateCreated;
         this.allStudyDecks = new ArrayList<>();
         this.allRepeatDecks = new ArrayList<>();
+        this.deckRepeatCount = new HashMap<>(); // Initialize the deckRepeatCount HashMap
         this.mysql_database = new JDBC();
 
         // Loop through all selected decks
@@ -60,6 +61,7 @@ public class StudyPlan {
                 allStudyDecks.add(deck);
                 //System.out.print(allStudyDecks);
             }
+            deckRepeatCount.put(deck, deck.getCounter()); // Add the deck and its counter to the deckRepeatCount HashMap
         }
     }
     
@@ -119,9 +121,10 @@ public class StudyPlan {
         
         
         public ArrayList<Deck> getAllStudyDecks() {
+        	System.out.print(selectedDecks);
             return selectedDecks;
         }
-
+        
         public ArrayList<Deck> getAllRepeatDecks() {
             ArrayList<Deck> repeatDecks = new ArrayList<>();
 
@@ -130,6 +133,7 @@ public class StudyPlan {
                     repeatDecks.add(deck);
                 }
             }
+            System.out.print(repeatDecks);
             return repeatDecks;
         }
         
