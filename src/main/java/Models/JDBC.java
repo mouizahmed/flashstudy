@@ -650,14 +650,14 @@ public class JDBC {
 			stmt1.setString(1, quizSession.getUser().getUsername());
 			stmt1.setString(2, quizSession.getQuizID());
 			stmt1.setInt(3, (quizSession.getScore()));
-			stmt1.setLong(4, quizSession.getdurationInMins());
+			stmt1.setLong(4, quizSession.getDurationInSeconds());
 
 			int rowsInserted = stmt1.executeUpdate();
 			}
 		catch (SQLException e) {
 				e.printStackTrace();
 			}
-		return quizSession.getdurationInMins();
+		return quizSession.getDurationInSeconds();
 
 
 
