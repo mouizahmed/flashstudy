@@ -113,7 +113,7 @@ public class UserStudyPlannerPage extends JPanel {
 	            }
 	        });
 	        mainPanel.add(quizButton);
-	        
+	        //Changes needed for display!!
 	        backButton = new JButton("Back");
 	        backButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

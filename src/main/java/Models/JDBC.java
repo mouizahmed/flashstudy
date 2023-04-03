@@ -597,7 +597,7 @@ public class JDBC {
 			return searchedDecks;
 		}
 	}
-
+    ///New methods for studyPlan
 	public Deck getDeckByTitle(String selectedDeckTitle) {
 	    String sql = "SELECT * FROM Decks WHERE deckTitle = ?";
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

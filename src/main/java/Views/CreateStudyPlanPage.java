@@ -63,7 +63,6 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         try {
 			this.mysql_database = new JDBC();
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
