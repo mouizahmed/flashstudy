@@ -1,5 +1,6 @@
 package Models;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +11,7 @@ import java.util.Date;
 public class QuizSession {
 
 	private QuizCreator quizCreator;
+	long durationInMins;
 
 	private User user;
 	private int score = 0;
@@ -37,7 +39,7 @@ public class QuizSession {
 
 	public int getScore() {
 		this.score = 0;
-		for (int i=0; i<questions.size();  i++) {
+		for (int i = 0; i < questions.size(); i++) {
 			if (questions.get(i).getCorrect() == true) {
 				this.score += 1;
 			}
@@ -70,34 +72,25 @@ public class QuizSession {
 	public Deck getDeck() {
 		return this.deck;
 	}
+	public long getdurationInMins(){
+		return this.durationInMins;
+	}
+	public Date getDateCreated(){
+		return this.dateCreated;
+	}
 
 	public void submitQuiz() {
 		Date quizEndTime = new Date();
 		long timeTaken = quizEndTime.getTime() - quizStartTime.getTime();
-		int durationInSeconds = (int) (timeTaken / 1000);
+		long durationInSeconds = (timeTaken / 1000);
+		 this.durationInMins = (durationInSeconds / 60);
+
 
 		try {
-
-			String url = "jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_957a5ec054245a7?reconnect=true";
-			String username = "b94e112144658f";
-			String password = "7af4eb5c";
-			Connection conn = DriverManager.getConnection(url, username, password);
-
-
-			String sql = "INSERT INTO quiz_results (username, quiz_id, score, time_taken, date_created) VALUES (?, ?, ?, ?, ?)";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, user.getUsername());
-			stmt.setString(2, quizID);
-			stmt.setInt(3, score);
-			stmt.setLong(4, timeTaken);
-			stmt.setTimestamp(5, new java.sql.Timestamp(dateCreated.getTime()));
-
-			stmt.executeUpdate();
-
-			stmt.close();
-			conn.close();
-		} catch (SQLException e) {
-			System.out.println("Error: " + e.getMessage());
+			this.mysql_database = new JDBC();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
