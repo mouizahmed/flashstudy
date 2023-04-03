@@ -12,6 +12,7 @@ public class QuizSession {
 
 	private QuizCreator quizCreator;
 	long durationInMins;
+	long durationInSeconds;
 
 	private User user;
 	private int score = 0;
@@ -75,6 +76,10 @@ public class QuizSession {
 	public long getdurationInMins(){
 		return this.durationInMins;
 	}
+	public long getdurationInSeconds(){
+
+		return this.durationInMins;
+	}
 	public Date getDateCreated(){
 		return this.dateCreated;
 	}
@@ -82,8 +87,8 @@ public class QuizSession {
 	public void submitQuiz() {
 		Date quizEndTime = new Date();
 		long timeTaken = quizEndTime.getTime() - quizStartTime.getTime();
-		long durationInSeconds = (timeTaken / 1000);
-		 this.durationInMins = (durationInSeconds / 60);
+		this.durationInSeconds = (timeTaken / 1000);
+
 
 
 		try {
