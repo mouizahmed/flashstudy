@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 
 import Controller.Controller;
 import Models.Deck;
+import Models.DeckList;
+import Models.User;
 
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
@@ -25,8 +27,10 @@ public class BrowsePublicDeckPage extends JPanel {
 	private JPanel dynamicPanel = new JPanel(new FlowLayout());
 	private JPanel resultsContainer = new JPanel();
 	private ArrayList<Deck> publicDecks = new ArrayList<>();
+	//private ArrayList<Deck> publicDecks = new ArrayList<>();
 	private ArrayList<Deck> searchedDecks = new ArrayList<>();
 	private Controller controller;
+	private DeckList decklist;
 	/**
 	 * Create the panel.
 	 */

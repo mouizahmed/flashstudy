@@ -18,7 +18,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Arrays;
@@ -286,6 +289,25 @@ public class JDBC {
 			return userAttempts;
 		}
 	}
+  
+  	public Date getLatestQuizSessionDate(Deck deck, User user) {
+	    Date latestSessionDate = null;
+	    sql = "SELECT MAX(date_created) FROM Quizzes WHERE deckID = ? AND quizTakenBy = ?;";
+	    try {
+	    	PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, deck.getDeckID());
+	        pstmt.setString(2, user.getUsername());
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            latestSessionDate = rs.getDate("date_created");
+	        }
+	        rs.close();
+	        pstmt.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return latestSessionDate;
+	}
 
 	public ArrayList<Deck> publicDeckList() {
 		ArrayList<Deck> publicDecks = new ArrayList<>();
@@ -321,6 +343,111 @@ public class JDBC {
 			return publicDecks;
 		}
 
+	}
+	
+	public ArrayList<Deck> userDeckList() {
+		ArrayList<Deck> userDecks = new ArrayList<>();
+		
+		sql = "SELECT * FROM Decks WHERE public='0'";
+		
+				
+		try {
+			stmt = conn.createStatement();
+			stmt2 = conn.createStatement();
+			rs1 = stmt.executeQuery(sql);
+			while (rs1.next()) {
+				System.out.println(rs1.getString("deckTitle"));
+				ArrayList<Flashcard> flashcards = new ArrayList<>();
+				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
+				rs2 = stmt2.executeQuery(sql2);
+				while (rs2.next()) {
+					flashcards.add(new Flashcard(rs2.getString("question"), rs2.getString("answer"), rs2.getString("createdBy"), rs2.getString("deckID"), rs2.getString("flashcardID"), rs2.getString("difficultyColor"), rs2.getBytes("flashCardImg")));
+					
+				}
+				
+				userDecks.add(new Deck(rs1.getString("deckTitle"), flashcards, rs1.getString("createdBy"), rs1.getBoolean("public"), rs1.getString("deckID")));
+			}
+			
+			return userDecks;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return userDecks;
+		}
+		
+		
+	}
+	
+	public StudyPlan createStudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
+	    StudyPlan studyPlan = null;
+		  //StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+		  String addStudyPlanQuery = "INSERT INTO study_plan (createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		  try {
+		        PreparedStatement stmt = conn.prepareStatement(addStudyPlanQuery);
+		        stmt.setString(1, createdBy);
+		        stmt.setString(2, studyPlanID);
+		        stmt.setString(3, studyPlanTitle);
+		        stmt.setString(4, testDate);
+		        stmt.setString(5, frequency);
+		        stmt.setString(6, difficulty);
+		        stmt.setString(7, studyTime);
+		        stmt.setInt(8, studyTimeDays);
+		        stmt.setString(9, String.join(",", selectedDecks.stream().map(Deck::getDeckID).collect(Collectors.toList())));
+		        //stmt.setDate(10, dateCreated);
+		        int rowsInserted = stmt.executeUpdate();
+		        studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+		        return studyPlan;
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return studyPlan;
+	}
+	
+	public StudyPlan getStudyPlanByUser(String createdBy) {
+		
+		StudyPlan studyPlans = null;//new StudyPlan(null, null, null, null, null, null, null, 0, selectedDecks);
+	    String getStudyPlansQuery = "SELECT * FROM study_plan WHERE createdBy=?  LIMIT 1";// + user.getUsername() + "';";
+	    try {
+	        PreparedStatement stmt = conn.prepareStatement(getStudyPlansQuery);
+	        stmt.setString(1, createdBy);
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            String studyPlanID = rs.getString("studyPlanID");
+	            String studyPlanTitle = rs.getString("studyPlanTitle");
+	            String testDate = rs.getString("testDate");
+	            String frequency = rs.getString("frequency");
+	            String difficulty = rs.getString("difficulty");
+	            String studyTime = rs.getString("studyTime");
+	            int studyTimeDays = rs.getInt("studyTimeDays");
+	            String selectedDecksStr = rs.getString("selectedDecks");
+	            ArrayList<String> selectedDecksIDs = new ArrayList<>(Arrays.asList(selectedDecksStr.split(",")));
+	            ArrayList<Deck> selectedDecks = new ArrayList<>();
+	            ArrayList<Deck> AllDecks = new ArrayList<>();
+	            ArrayList<Deck> publicDecks = publicDeckList();
+	            ArrayList<Deck> userDecks = userDeckList();
+	            AllDecks.addAll(publicDecks);
+	            AllDecks.addAll(userDecks);
+
+	            for (String deckID : selectedDecksIDs) {
+	            	//ArrayList<Deck> deckList = new ArrayList<>();
+	                Deck deck = Deck.findDeckByID(deckID, AllDecks); // assumes there is a method to retrieve a Deck by its ID
+	                if (deck != null) {
+	                    System.out.println("Found deck with ID " + deckID + ": " + deck);
+	                    selectedDecks.add(deck);
+	                } else {
+	                    System.out.println("Deck with ID " + deckID + " not found in list " + selectedDecks);
+	                }
+	                System.out.println("Selected decks: " + selectedDecks);
+	                }
+	            
+	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+//	            studyPlans.add(studyPlan);
+	        return studyPlan;    
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return studyPlans;
 	}
 
 	public ArrayList<Deck> searchPublicDeckQuery(String query) {
@@ -468,5 +595,4 @@ public class JDBC {
 			return searchedDecks;
 		}
 	}
-
 }

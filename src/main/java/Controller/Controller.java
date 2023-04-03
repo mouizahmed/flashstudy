@@ -30,13 +30,17 @@ import Models.JDBC;
 import Models.Leaderboard;
 import Models.QuizCreator;
 import Models.QuizSession;
+import Models.StudyPlan;
 import Models.User;
 import Models.Verdict;
 import Views.BrowsePublicDeckPage;
 import Views.CreateDeckPage;
+import Views.CreateStudyPlanPage;
+import Views.UserStudyPlannerPage;
 import Views.EditDeck;
 import Views.FactCheck;
 import Views.LandingPage;
+
 import Views.LeaderboardView;
 import Views.LoginPage;
 import Views.OpenDeckPage;
@@ -60,10 +64,10 @@ private JPanel main;
 	private CardLayout card;
 	private JDBC mysql_database;
 	private User currentUser;
-
-	private static String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-			+ "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-
+  private StudyPlan studyPlan;
+	private static String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
+	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+          
 	public Controller(JPanel main, CardLayout card) {
 //		userDatabase = new UserList();
 //		deckDatabase = new DeckList(userDatabase);
@@ -220,7 +224,13 @@ private JPanel main;
 		System.out.println(publicDecks.size());
 		return publicDecks;
 	}
-
+  
+  public ArrayList<Deck> allUserDecks() {
+		ArrayList<Deck> userDecks = mysql_database.userDeckList();
+		System.out.println(userDecks.size());
+		return userDecks;
+	}
+	
 	public void deckPage(Deck deck) {
 		OpenDeckPage deckPage = new OpenDeckPage(deck, this);
 		main.add(deckPage, "deckPage" + main.getComponentCount());
@@ -263,6 +273,28 @@ private JPanel main;
 	public User getCurrentUser() {
 		return this.currentUser;
 	}
+  
+  	public void createStudyPlanPage(User user, ArrayList<Deck> decks) {
+		CreateStudyPlanPage createStudyPlanPage = new CreateStudyPlanPage(user, decks, this); //added
+		main.add(createStudyPlanPage, "createStudyPlanPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "createStudyPlanPage" + num);
+	}
+	
+	public void UserStudyPlannerPage(User user, StudyPlan studyPlan) {
+		//studyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+		StudyPlan retrievedStudyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+		System.out.print(retrievedStudyPlan);
+		UserStudyPlannerPage userStudyPlannerPage = new UserStudyPlannerPage(user, retrievedStudyPlan, this); //added
+		main.add(userStudyPlannerPage, "userStudyPlannerPage" + main.getComponentCount());
+		int num = main.getComponentCount() - 1;
+		card.show(main, "userStudyPlannerPage" + num);
+	}
+	
+//	public StudyPlan getStudyPlan(User user) {
+//		StudyPlan studyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+//	        return studyPlan;
+//	}
 
 	public void addDeckToProfile(Deck deck) {
 		Deck deckCopy = this.mysql_database.addDeckToProfile(deck, this.currentUser);
