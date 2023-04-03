@@ -20,8 +20,13 @@ import javax.swing.JOptionPane;
 
 import Controller.Controller;
 import Models.Flashcard;
+
 import javax.swing.JLabel;
 import java.nio.file.Files;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 
 public class FlashcardPanel extends JPanel implements ActionListener {
 
@@ -29,7 +34,10 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	private JTextArea flashcardAnswer = new JTextArea();
 	private JButton deleteFlashcard = new JButton("Delete");
 	private JButton saveFlashcard = new JButton("Save");
+
 	private JButton uploadImgBtn = new JButton("Upload Image");
+	private JPanel currentPanel;
+	JButton btnAutoComplete = new JButton("Auto Complete");
 	private ArrayList<Flashcard> flashcards;
 	private Controller controller;
 	private Flashcard flashcard;
@@ -37,26 +45,40 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	private byte[] flashCardImgData;
 	private JLabel uploadedImgPreview = new JLabel("");
 
+	private String mode;
+
 	/**
 	 * Create the panel.
 	 */
 	
 	
 	
-	public FlashcardPanel(ArrayList<Flashcard> flashcards, Controller controller, String deckID) {
+	// New Flashcard
+	public FlashcardPanel(ArrayList<Flashcard> flashcards, Controller controller, String deckID, String mode) {
 		this.flashcards = flashcards;
 		this.controller = controller;
 		this.deckID = deckID;
+		this.currentPanel = this;
+		this.mode = mode;
 		initialize();
 	}
 	
 	private void initialize() {
+		this.checkQuestionEmpty();
 		//System.out.println("FLASHCARD");
 		this.setBackground(Color.WHITE);
 		//this.setBounds(10, 197, 717, 113);
 		setPreferredSize(new Dimension(718, 110));
 		
 		this.setLayout(null);
+		flashcardQuestion.addKeyListener(new KeyAdapter() {
+			int i = 0;
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				checkQuestionEmpty();
+			}
+		});
 		
 	
 		flashcardQuestion.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -68,6 +90,8 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		flashcardAnswer.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		flashcardAnswer.setBackground(Color.WHITE);
 		flashcardAnswer.setBounds(373, 11, 332, 54);
+		flashcardAnswer.setLineWrap(true);
+		flashcardAnswer.setWrapStyleWord(true);
 		this.add(flashcardAnswer);
 		deleteFlashcard.setForeground(new Color(255, 255, 255));
 		deleteFlashcard.setBackground(new Color(0, 0, 0));
@@ -87,7 +111,13 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		saveFlashcard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				flashcard = controller.createFlashcard(flashcardQuestion.getText(), flashcardAnswer.getText(), deckID, flashCardImgData);
+
 				flashcards.add(flashcard);
+				
+				if (mode.equals("edit")) {
+					controller.addFlashcard(flashcard, deckID);
+				}
+				
 				setBackground(new Color(51, 204, 255));
 				
 			}
@@ -144,6 +174,23 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		uploadedImgPreview.setLabelFor(uploadImgBtn);
 		uploadedImgPreview.setBounds(215, 75, 67, 35);
 		add(uploadedImgPreview);
+
+		
+		btnAutoComplete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String autoCompletedAnswer = controller.autoComplete(flashcardQuestion.getText(), "");
+				flashcardAnswer.setText(autoCompletedAnswer);
+				currentPanel.revalidate();
+				currentPanel.repaint();
+			}
+		});
+		
+		
+		
+		btnAutoComplete.setForeground(Color.WHITE);
+		btnAutoComplete.setBackground(Color.BLACK);
+		btnAutoComplete.setBounds(383, 78, 122, 23);
+		add(btnAutoComplete);
 	}
 
 	@Override
@@ -152,6 +199,7 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 		
 	}
 	
+
 	private String getFileExtension(String fileName) {
 	    int dotIndex = fileName.lastIndexOf(".");
 	    if (dotIndex > 0) {
@@ -170,4 +218,15 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 	    }
 	    return false;
 	}
+	
+	public void checkQuestionEmpty() {
+		if (flashcardQuestion.getText().trim().isEmpty()) {
+			btnAutoComplete.setEnabled(false);
+		} else {
+			btnAutoComplete.setEnabled(true);
+		}
+
+	}
 }
+	
+	

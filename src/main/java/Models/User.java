@@ -33,7 +33,7 @@ public class User {
 		return this.email;
 	}
 	
-	public ArrayList<Deck> userDeckList() {
+	public ArrayList<Deck> getUserDeckList() {
 		return this.userDeckList;
 	}
 	

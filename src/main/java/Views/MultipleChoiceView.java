@@ -39,10 +39,9 @@ public class MultipleChoiceView extends JPanel {
 	
 	
 	private void initialize() {
-		setLayout(null);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JLabel questionLabel = new JLabel(this.question.getQuestion());
-		questionLabel.setBounds(36, 59, 354, 47);
 		add(questionLabel);
 		
 		JRadioButton answer1 = new JRadioButton(this.options[0]);
@@ -51,7 +50,6 @@ public class MultipleChoiceView extends JPanel {
 				quizSession.answerQuestion(index, options[0]);
 			}
 		});
-		answer1.setBounds(79, 133, 109, 23);
 		add(answer1);
 		
 		JRadioButton answer2 = new JRadioButton(this.options[1]);
@@ -60,7 +58,6 @@ public class MultipleChoiceView extends JPanel {
 				quizSession.answerQuestion(index, options[1]);
 			}
 		});
-		answer2.setBounds(220, 133, 109, 23);
 		add(answer2);
 		
 		JRadioButton answer3 = new JRadioButton(this.options[2]);
@@ -69,7 +66,6 @@ public class MultipleChoiceView extends JPanel {
 				quizSession.answerQuestion(index, options[2]);
 			}
 		});
-		answer3.setBounds(79, 185, 109, 23);
 		add(answer3);
 		
 		JRadioButton answer4 = new JRadioButton(this.options[3]);
@@ -78,7 +74,6 @@ public class MultipleChoiceView extends JPanel {
 				quizSession.answerQuestion(index, options[3]);
 			}
 		});
-		answer4.setBounds(220, 185, 109, 23);
 		add(answer4);
 		
 		ButtonGroup answer = new ButtonGroup();
