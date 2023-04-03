@@ -17,9 +17,9 @@ import Models.User;
 
 public class LandingPage extends JPanel implements ActionListener {
 	private ArrayList<Deck> publicDecks = new ArrayList<>();
-	//private ArrayList<Deck> publicDecks = new ArrayList<>();
+
 	private Controller controller;
-  public StudyPlan studyPlan;
+	public StudyPlan studyPlan;
 	
 	String username;
 	JButton add = new JButton("New Deck");

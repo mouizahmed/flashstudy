@@ -51,7 +51,6 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
     private JButton backButton;
     private User user;
     private Controller controller;
-    private DeckList decklist;
     private JDBC mysql_database;
 
     public CreateStudyPlanPage(User user, ArrayList<Deck> decks, Controller controller) {
