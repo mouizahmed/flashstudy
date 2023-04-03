@@ -83,7 +83,7 @@ public class QuizSession {
 			String password = "7af4eb5c";
 			Connection conn = DriverManager.getConnection(url, username, password);
 
-			// Create a prepared statement to insert the quiz result into the quiz_results table
+
 			String sql = "INSERT INTO quiz_results (username, quiz_id, score, time_taken, date_created) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, user.getUsername());
