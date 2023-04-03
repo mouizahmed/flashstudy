@@ -76,7 +76,7 @@ public class QuizResults extends JPanel {
 		avgScore.setBounds(103, 221, 257, 16);
 		add(avgScore);
 
-		JLabel timer = new JLabel("Time taken to complete the quiz:" + Integer.toString((int)quizSession.getdurationInMins()));
+		JLabel timer = new JLabel("Time taken :" + Integer.toString((int)quizSession.getDurationInSeconds()));
 		timer.setBounds(103,274,150,16);
 		add(timer);
 		
