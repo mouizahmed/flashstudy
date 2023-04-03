@@ -595,4 +595,51 @@ public class JDBC {
 			return searchedDecks;
 		}
 	}
+	
+	public Deck getDeckByTitle(String selectedDeckTitle) {
+	    String sql = "SELECT * FROM Decks WHERE deckTitle = ?";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, selectedDeckTitle);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            String deckID = rs.getString("deckID");
+	            String createdBy = rs.getString("createdBy");
+	            boolean isPublic = rs.getBoolean("public");
+	            String school = rs.getString("school");
+	            String faculty = rs.getString("faculty");
+	            String description = rs.getString("description");
+	            String courseName = rs.getString("courseName");
+	            ArrayList<Flashcard> flashcards = getFlashcardsByDeckID(deckID);
+	            return new Deck(selectedDeckTitle, flashcards, createdBy, isPublic, deckID, school, faculty, description, courseName);
+	        } else {
+	            return null;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
+	private ArrayList<Flashcard> getFlashcardsByDeckID(String deckID) {
+	    String sql = "SELECT * FROM Flashcards WHERE deckID = ?";
+	    ArrayList<Flashcard> flashcards = new ArrayList<>();
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, deckID);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            String question = rs.getString("question");
+	            String answer = rs.getString("answer");
+	            String createdBy = rs.getString("createdBy");
+	            String flashcardID = rs.getString("flashcardID");
+	            String difficultyColor = rs.getString("difficultyColor");
+	            byte[] flashCardImg = rs.getBytes("flashCardImg");
+	            flashcards.add(new Flashcard(question, answer, createdBy, deckID, flashcardID, difficultyColor, flashCardImg));
+	        }
+	        return flashcards;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
 }

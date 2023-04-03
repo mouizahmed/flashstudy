@@ -17,9 +17,9 @@ import Models.User;
 
 public class LandingPage extends JPanel implements ActionListener {
 	private ArrayList<Deck> publicDecks = new ArrayList<>();
-	//private ArrayList<Deck> publicDecks = new ArrayList<>();
+
 	private Controller controller;
-  public StudyPlan studyPlan;
+	public StudyPlan studyPlan;
 	
 	String username;
 	JButton add = new JButton("New Deck");
@@ -75,7 +75,7 @@ public class LandingPage extends JPanel implements ActionListener {
 		buttons.add(add);
 		SPButton.setBackground(new Color(0, 0, 0));
 		SPButton.setForeground(new Color(255, 255, 255));
-    SPButton.addActionListener(new ActionListener() {
+        SPButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				User user = controller.getCurrentUser();
 				controller.UserStudyPlannerPage(user, studyPlan);
