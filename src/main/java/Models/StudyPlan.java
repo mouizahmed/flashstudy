@@ -22,140 +22,151 @@ public class StudyPlan {
 	public String createdBy;
 	public String studyPlanID;
 	public String studyPlanTitle;
-    public String testDate;
-    public String frequency;
-    public String difficulty;
-    public String studyTime;
-    public int studyTimeDays;
-    public ArrayList<Deck> selectedDecks;
-    public ArrayList<Deck> allStudyDecks;
-    public ArrayList<Deck> allRepeatDecks;
-    private Date dateCreated;
-    private HashMap<Deck, Integer> deckRepeatCount;
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private QuizSession quizSession;
-    private User user;
-    private JDBC mysql_database;
-    
-    public StudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, 
-    		String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
-        this.createdBy = createdBy;
-        this.studyPlanID = studyPlanID;
-        this.studyPlanTitle = studyPlanTitle;
-    	this.testDate = testDate;
-        this.frequency = frequency;
-        this.difficulty = difficulty;
-        this.studyTime = studyTime;
-        this.studyTimeDays = studyTimeDays;
-        this.selectedDecks = selectedDecks;
-        //this.dateCreated = dateCreated;
-        this.allStudyDecks = new ArrayList<>();
-        this.allRepeatDecks = new ArrayList<>();
-        this.deckRepeatCount = new HashMap<>(); // Initialize the deckRepeatCount HashMap
-        try {
+	public String testDate;
+	public String frequency;
+	public String difficulty;
+	public String studyTime;
+	public int studyTimeDays;
+	public ArrayList<Deck> selectedDecks;
+	public ArrayList<Deck> allStudyDecks;
+	public ArrayList<Deck> allRepeatDecks;
+	private Date dateCreated;
+	private HashMap<Deck, Integer> deckRepeatCount;
+	private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private QuizSession quizSession;
+	private User user;
+	private JDBC mysql_database;
+
+	public StudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, 
+			String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
+		this.createdBy = createdBy;
+		this.studyPlanID = studyPlanID;
+		this.studyPlanTitle = studyPlanTitle;
+		this.testDate = testDate;
+		this.frequency = frequency;
+		this.difficulty = difficulty;
+		this.studyTime = studyTime;
+		this.studyTimeDays = studyTimeDays;
+		this.selectedDecks = selectedDecks;
+		this.allStudyDecks = new ArrayList<>();
+		this.allRepeatDecks = new ArrayList<>();
+		this.deckRepeatCount = new HashMap<>(); // Initialize the deckRepeatCount HashMap
+		try {
 			this.mysql_database = new JDBC();
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        System.out.print(studyPlanID);
-        System.out.print(studyPlanTitle);
-        System.out.print(selectedDecks);
-        // Loop through all selected decks
-        for (Deck deck : selectedDecks) {
-            // Check if the deck is already in AllStudyDecks or AllRepeatDecks
-            if (!allStudyDecks.contains(deck) && !allRepeatDecks.contains(deck)) {
-                // If the deck is not in AllStudyDecks and not in AllRepeatDecks, add it to AllStudyDecks
-                allStudyDecks.add(deck);
-                //System.out.print(allStudyDecks);
-            }
-            deckRepeatCount.put(deck, deck.getCounter()); // Add the deck and its counter to the deckRepeatCount HashMap
-        }
-    }
-    
-        public void updateStudyDecks() {
-            ArrayList<Deck> allRepeatDecks = new ArrayList<Deck>();
-            for (Deck deck : allStudyDecks) {
-            	int count = deckRepeatCount.get(deck);
-                if (deck.getCounter() == Integer.parseInt(frequency)) {
-                    Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
-                    if (latestQuizSessionDate != null && quizSession.getAvgScore() == 1) {
-                        allRepeatDecks.add(deck);
-                        deck.setCounter(0);
-                        deckRepeatCount.put(deck, 0);
-                        continue;
-                    }
-                } else if (deck.getCounter() < Integer.parseInt(frequency)) {
-                	deckRepeatCount.put(deck, count+1);
-                	continue;
-                }
-                allRepeatDecks.add(deck);
-                deck.setCounter(0);
-                deckRepeatCount.put(deck, 0);
-            }
+		
+		// Loop through all selected decks
+		for (Deck deck : selectedDecks) {
+			// Check if the deck is already in AllStudyDecks or AllRepeatDecks
+			if (!allStudyDecks.contains(deck) && !allRepeatDecks.contains(deck)) {
+				// If the deck is not in AllStudyDecks and not in AllRepeatDecks, add it to AllStudyDecks
+				allStudyDecks.add(deck);
+				//System.out.print(allStudyDecks);
+			}
+			deckRepeatCount.put(deck, deck.getCounter()); // Add the deck and its counter to the deckRepeatCount HashMap
+		}
+	}
 
-            for (Deck deck : allRepeatDecks) {
-            	Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
-                LocalDate latestQuizSessionLocalDate = latestQuizSessionDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                LocalDate currentDate = LocalDate.now();
-                long daysSinceStudied = ChronoUnit.DAYS.between(latestQuizSessionLocalDate, currentDate);
-                if (daysSinceStudied >= getRepeatThreshold()) {
-                    allStudyDecks.add(deck);
-                    continue;
-                }
-                //Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
-                if (latestQuizSessionDate != null) {
-                    long dateCreated = latestQuizSessionDate.getTime();
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    String formattedDate = formatter.format(dateCreated);
-                    System.out.println("Deck " + deck.getDeckTitle() + " was last studied on " + formattedDate);
-                } else {
-                    System.out.println("Deck " + deck.getDeckTitle() + " has not been studied yet");
-                }
-            }
-        }
+	public void updateStudyDecks() {
+		ArrayList<Deck> updatedAllRepeatDecks = new ArrayList<Deck>();
+		for (Deck deck : allStudyDecks) {
+			System.out.print("Counter: " + deck.getCounter());
+			int count = deckRepeatCount.get(deck);
+			if (deck.getCounter() == Integer.parseInt(frequency)) {
+				Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
+				if (latestQuizSessionDate != null && quizSession.getAvgScore() == 1) {
+					updatedAllRepeatDecks.add(deck);
+					deck.setCounter(0);
+					deckRepeatCount.put(deck, 0);
+					continue;
+				}
+			} else if (deck.getCounter() < Integer.parseInt(frequency)) {
+				deckRepeatCount.put(deck, count+1);
+				continue;
+			}
+			updatedAllRepeatDecks.add(deck);
+			deck.setCounter(0);
+			deckRepeatCount.put(deck, 0);
+		}
 
-        public int getRepeatThreshold() {
-            int threshold = 0;
-            switch (this.difficulty) {
-                case "Easy":
-                    threshold = 7;
-                    break;
-                case "Medium":
-                    threshold = 5;
-                    break;
-                case "Hard":
-                    threshold = 3;
-                    break;
-            }
-            return threshold;
-        }
-        
-        
-        public ArrayList<Deck> getAllStudyDecks() {
-        	System.out.print(selectedDecks);
-            return selectedDecks;
-        }
-        
-        public ArrayList<Deck> getAllRepeatDecks() {
-            ArrayList<Deck> repeatDecks = new ArrayList<>();
+		for (Deck deck : updatedAllRepeatDecks) {
+			Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
+			LocalDate latestQuizSessionLocalDate = latestQuizSessionDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate currentDate = LocalDate.now();
+			long daysSinceStudied = ChronoUnit.DAYS.between(latestQuizSessionLocalDate, currentDate);
+			if (daysSinceStudied >= getRepeatThreshold()) {
+				allStudyDecks.add(deck);
+				allRepeatDecks.remove(deck);
+				continue;
+			}
+			//Date latestQuizSessionDate = mysql_database.getLatestQuizSessionDate(deck, user);
+			if (latestQuizSessionDate != null) {
+				long dateCreated = latestQuizSessionDate.getTime();
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				String formattedDate = formatter.format(dateCreated);
+				System.out.println("Deck " + deck.getDeckTitle() + " was last studied on " + formattedDate);
+			} else {
+				System.out.println("Deck " + deck.getDeckTitle() + " has not been studied yet");
+			}
+		}
+		allRepeatDecks = updatedAllRepeatDecks;
+	}
 
-            for (Deck deck : deckRepeatCount.keySet()) {
-                if (deckRepeatCount.get(deck) > 0) {
-                    repeatDecks.add(deck);
-                }
-            }
-            System.out.print(repeatDecks);
-            return repeatDecks;
-        }
-        
-      public String getTestDate() {
-  		return testDate;
-  	}
-  
-  	public void setTestDate(String testDate) {
-  		this.testDate = testDate;
-  	}
+	public int getRepeatThreshold() {
+		int threshold = 0;
+		switch (this.difficulty) {
+		case "Easy":
+			threshold = 7;
+			break;
+		case "Medium":
+			threshold = 5;
+			break;
+		case "Hard":
+			threshold = 3;
+			break;
+		}
+		return threshold;
+	}
+
+
+	public ArrayList<Deck> getAllStudyDecks() {
+		//System.out.print(selectedDecks);
+		return selectedDecks;
+	}
+
+	public ArrayList<Deck> getAllRepeatDecks() {
+		ArrayList<Deck> repeatDecks = new ArrayList<>();
+
+		for (Deck deck : deckRepeatCount.keySet()) {
+			if (deckRepeatCount.get(deck) > 0) {
+				repeatDecks.add(deck);
+			}
+		}
+		System.out.print(repeatDecks);
+		return repeatDecks;
+	}
+
+	public String getTestDate() {
+		return testDate;
+	}
+
+	public void setTestDate(String testDate) {
+		this.testDate = testDate;
+	}
+
+	public String getStudyPlanTitle() {
+		return this.studyPlanTitle;
+	}
+
+	public String getStudyPlanID() {
+		return this.studyPlanID;
+	}
+
+	public ArrayList<Deck> getSelectedDecks() {
+		return this.selectedDecks;
+	}
 }
 
         
@@ -223,19 +234,6 @@ public class StudyPlan {
 //        }
 //        
 //
-//    public ArrayList<Deck> getStudyDecksForToday() {
-//        ArrayList<Deck> todayDecks = new ArrayList<>();
-//        LocalDate today = LocalDate.now();
-//
-//        for (Deck deck : selectedDecks) {
-//            if (deck.getNextStudyDate().isEqual(today)) {
-//                todayDecks.add(deck);
-//            }
-//        }
-//
-//        return todayDecks;
-//    }
-//
 //    public ArrayList<Deck> getRepeatDecksForToday() {
 //        ArrayList<Deck> todayDecks = new ArrayList<>();
 //        LocalDate today = LocalDate.now();
@@ -247,32 +245,6 @@ public class StudyPlan {
 //        }
 //
 //        return todayDecks;
-//    }
-//
-//    public ArrayList<Deck> getStudyDecksForTomorrow() {
-//        ArrayList<Deck> tomorrowDecks = new ArrayList<>();
-//        LocalDate tomorrow = LocalDate.now().plusDays(1);
-//
-//        for (Deck deck : selectedDecks) {
-//            if (deck.getNextStudyDate().isEqual(tomorrow)) {
-//                tomorrowDecks.add(deck);
-//            }
-//        }
-//
-//        return tomorrowDecks;
-//    }
-//
-//    public ArrayList<Deck> getRepeatDecksForTomorrow() {
-//        ArrayList<Deck> tomorrowDecks = new ArrayList<>();
-//        LocalDate tomorrow = LocalDate.now().plusDays(1);
-//
-//        for (Deck deck : deckRepeatCount.keySet()) {
-//            if (deckRepeatCount.get(deck) > 0 && deck.getNextRepeatDate().isEqual(tomorrow)) {
-//                tomorrowDecks.add(deck);
-//            }
-//        }
-//
-//        return tomorrowDecks;
 //    }
 //
 //    public ArrayList<Deck> getAllStudyDecks() {
@@ -317,30 +289,4 @@ public class StudyPlan {
 //        }
 //        LocalDate nextStudyDate = currentDate.plusDays(daysUntilNextStudy);
 //        deck.setNextStudyDate(nextStudyDate);
-//    }
-//
-//	public ArrayList<Deck> getStudyDecksForToday() {
-//        ArrayList<Deck> todayDecks = new ArrayList<>();
-//        LocalDate today = LocalDate.now();
-//
-//        for (Deck deck : selectedDecks) {
-//            if (deck.getNextStudyDate().isEqual(today)) {
-//                todayDecks.add(deck);
-//            }
-//        }
-//
-//        return todayDecks;
-//    }
-//	
-//	public ArrayList<Deck> getRepeatDecksForToday() {
-//        ArrayList<Deck> todayDecks = new ArrayList<>();
-//        LocalDate today = LocalDate.now();
-//
-//        for (Deck deck : deckRepeatCount.keySet()) {
-//            if (deckRepeatCount.get(deck) > 0 && deck.getNextRepeatDate().isEqual(today)) {
-//                todayDecks.add(deck);
-//            }
-//        }
-//
-//        return todayDecks;
 //    }

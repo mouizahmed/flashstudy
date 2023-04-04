@@ -283,7 +283,7 @@ private JPanel main;
 	
 	public void UserStudyPlannerPage(User user, StudyPlan studyPlan) {
 		//studyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
-		StudyPlan retrievedStudyPlan = this.mysql_database.getStudyPlanByUser(user.getUsername());
+		ArrayList<StudyPlan> retrievedStudyPlan = this.mysql_database.getAllStudyPlansForUser(user.getUsername());
 		System.out.print(retrievedStudyPlan);
 		UserStudyPlannerPage userStudyPlannerPage = new UserStudyPlannerPage(user, retrievedStudyPlan, this); //added
 		main.add(userStudyPlannerPage, "userStudyPlannerPage" + main.getComponentCount());
