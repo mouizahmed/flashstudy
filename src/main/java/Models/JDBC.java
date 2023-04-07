@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Arrays;
+import java.sql.Timestamp;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -404,7 +405,7 @@ public class JDBC {
 	}
 	
 	public StudyPlan getStudyPlanByUser(String createdBy) {
-		
+
 		StudyPlan studyPlans = null;//new StudyPlan(null, null, null, null, null, null, null, 0, selectedDecks);
 	    String getStudyPlansQuery = "SELECT * FROM study_plan WHERE createdBy=?  LIMIT 1";// + user.getUsername() + "';";
 	    try {
@@ -641,5 +642,26 @@ public class JDBC {
 	        return null;
 	    }
 	}
+
+	public long getTimeTaken(QuizSession quizSession){
+		String sql = "INSERT INTO quiz_results (username, quiz_id, score, time_taken) VALUES (?, ?, ?, ?)";
+		try {
+			PreparedStatement stmt1 = conn.prepareStatement(sql);
+			stmt1.setString(1, quizSession.getUser().getUsername());
+			stmt1.setString(2, quizSession.getQuizID());
+			stmt1.setInt(3, (quizSession.getScore()));
+			stmt1.setLong(4, quizSession.getDurationInSeconds());
+
+			int rowsInserted = stmt1.executeUpdate();
+			}
+		catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return quizSession.getDurationInSeconds();
+
+
+
+	}
+
 
 }

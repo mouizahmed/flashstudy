@@ -261,6 +261,7 @@ private JPanel main;
 		int num = main.getComponentCount() - 1;
 		card.show(main, "quizResultsPage" + num);
 		System.out.println("SCORE" + quizSession.getScore());
+		System.out.println("TIME TAKEN" + quizSession.getdurationInMins());
 	}
 
 	public void profilePage(User user) {
