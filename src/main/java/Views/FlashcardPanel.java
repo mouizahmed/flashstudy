@@ -219,12 +219,12 @@ public class FlashcardPanel extends JPanel implements ActionListener {
 
 	}
 
-	private boolean isImageFileSizeValid(long fileSizeInBytes) {
+	public boolean isImageFileSizeValid(long fileSizeInBytes) {
 		long fileSizeInKiloBytes = fileSizeInBytes / 1024;
 		return fileSizeInKiloBytes > 0 && fileSizeInKiloBytes < 100;
 	}
 
-	private void showErrorMessage(String message) {
+	public void showErrorMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Invalid file uploaded", JOptionPane.ERROR_MESSAGE);
 	}
 }
