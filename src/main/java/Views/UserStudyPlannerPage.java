@@ -5,6 +5,7 @@ import java.util.Date;
 
 import Models.Deck;
 import Models.JDBC;
+import Models.QuizSession;
 import Models.StudyPlan;
 import Models.User;
 
@@ -217,10 +218,31 @@ public class UserStudyPlannerPage extends JPanel {
 	            }
 	            
 	            String selectedDeckTitle = studyListModel.get(selectedIndex);
+	            Deck selectedDeck = null;
+	            for (Deck deck : studyPlan.getSelectedDecks()) {
+	                if (deck.getDeckTitle().equals(selectedDeckTitle)) {
+	                    selectedDeck = deck;
+	                    break;
+	                }
+	            }
+	            if (selectedDeck == null) {
+	                JOptionPane.showMessageDialog(null, "Selected deck not found in study plan.", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+	            
 	            int selectedOption = JOptionPane.showConfirmDialog(null,
 	                    "Are you sure you want to delete the \"" + selectedDeckTitle + "\" deck?",
 	                    "Confirmation", JOptionPane.YES_NO_OPTION);
 	            if (selectedOption == JOptionPane.YES_OPTION) {
+	            	 // Check if the average score is 1
+	            	String deckID = selectedDeck.getDeckID();
+	                double avgScore = mysql_database.getAvgScore(deckID, user.getUsername());
+	                
+	                if (avgScore != 1) {
+	                    JOptionPane.showMessageDialog(null, "This deck cannot be deleted as it has an average score of " + avgScore + ". You need to study this deck and get 100%", "Error", JOptionPane.ERROR_MESSAGE);
+	                    return;
+	                }
+	                
 	                // Delete the selected deck from the study plan and update the display
 	            	mysql_database.deleteSelectedDeckFromStudyPlan(studyPlan, selectedDeckTitle);
 

@@ -292,7 +292,7 @@ public class JDBC {
   
   	public Date getLatestQuizSessionDate(Deck deck, User user) {
 	    Date latestSessionDate = null;
-	    sql = "SELECT MAX(date_created) FROM Quizzes WHERE deckID = ? AND quizTakenBy = ?;";
+	    sql = "SELECT MAX(date_created) FROM quizzes WHERE deckID = ? AND quizTakenBy = ?;";
 	    try {
 	    	PreparedStatement pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, deck.getDeckID());
@@ -308,6 +308,24 @@ public class JDBC {
 	    }
 	    return latestSessionDate;
 	}
+  	
+  	public double getAvgScore(String deckID, String quizTakenBy) {
+  	    double avgScore = 0.0;
+  	    try {
+  	        PreparedStatement pstmt = conn.prepareStatement("SELECT avgScore FROM quizzes WHERE deckID = ? AND quizTakenBy = ?");
+  	        pstmt.setString(1, deckID);
+  	        pstmt.setString(2, quizTakenBy);
+  	        ResultSet rs = pstmt.executeQuery();
+  	        if (rs.next()) {
+  	            avgScore = rs.getDouble("avgScore");
+  	        }
+  	        rs.close();
+  	        pstmt.close();
+  	    } catch (SQLException e) {
+  	        e.printStackTrace();
+  	    }
+  	    return avgScore;
+  	}
 
 	public ArrayList<Deck> publicDeckList() {
 		ArrayList<Deck> publicDecks = new ArrayList<>();
