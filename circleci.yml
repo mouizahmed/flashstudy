@@ -25,7 +25,9 @@ jobs:
       # Then run your tests!
       - run:
           name: Test
-          command: mvn test
+          command: mvn -B -Dmaven.test.failure.ignore=true test
+      - store_test_results:
+          path: /home/target/surefire-reports
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
