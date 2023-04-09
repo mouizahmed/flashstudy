@@ -393,57 +393,13 @@ public class JDBC {
 		        stmt.setInt(8, studyTimeDays);
 		        stmt.setString(9, String.join(",", selectedDecks.stream().map(Deck::getDeckID).collect(Collectors.toList())));
 		        //stmt.setDate(10, dateCreated);
+		        int rowsInserted = stmt.executeUpdate();
 		        studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 		        return studyPlan;
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		    }
 		    return studyPlan;
-	}
-	
-	public StudyPlan getStudyPlanByUser(String createdBy) {
-		
-		StudyPlan studyPlans = null;
-	    String getStudyPlansQuery = "SELECT * FROM study_plan WHERE createdBy=?";
-	    try {
-	        PreparedStatement stmt = conn.prepareStatement(getStudyPlansQuery);
-	        stmt.setString(1, createdBy);
-	        ResultSet rs = stmt.executeQuery();
-	        while (rs.next()) {
-	            String studyPlanID = rs.getString("studyPlanID");
-	            String studyPlanTitle = rs.getString("studyPlanTitle");
-	            String testDate = rs.getString("testDate");
-	            String frequency = rs.getString("frequency");
-	            String difficulty = rs.getString("difficulty");
-	            String studyTime = rs.getString("studyTime");
-	            int studyTimeDays = rs.getInt("studyTimeDays");
-	            String selectedDecksStr = rs.getString("selectedDecks");
-	            ArrayList<String> selectedDecksIDs = new ArrayList<>(Arrays.asList(selectedDecksStr.split(",")));
-	            ArrayList<Deck> selectedDecks = new ArrayList<>();
-	            ArrayList<Deck> AllDecks = new ArrayList<>();
-	            ArrayList<Deck> publicDecks = publicDeckList();
-	            ArrayList<Deck> userDecks = userDeckList();
-	            AllDecks.addAll(publicDecks);
-	            AllDecks.addAll(userDecks);
-
-	            for (String deckID : selectedDecksIDs) {
-	                Deck deck = Deck.findDeckByID(deckID, AllDecks); 
-	                if (deck != null) {
-	                    //System.out.println("Found deck with ID " + deckID + ": " + deck);
-	                    selectedDecks.add(deck);
-	                } else {
-	                    //System.out.println("Deck with ID " + deckID + " not found in list " + selectedDecks);
-	                }
-	                System.out.println("Selected decks: " + selectedDecks);
-	                }
-	            
-	             studyPlans = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
-	        return studyPlans;    
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return studyPlans;
 	}
 	
 	public ArrayList<StudyPlan> getAllStudyPlansForUser(String createdBy) {
@@ -587,7 +543,8 @@ public class JDBC {
 	    for (int i = 0; i < selectedDecks.size(); i++) {
 	        Deck deck = selectedDecks.get(i);
 	        if (deck.getDeckID().equals(selectedDeck.getDeckID())) {
-	        	System.out.println("FOUND!");
+	        	//System.out.print("DeckID: " + deck.getDeckID() + "StudyDeckID: " + selectedDeck.getDeckID());
+	        	System.out.println("\nFOUND!");
 	            // Remove the selected deck from the list of selected decks for the study plan
 	            selectedDecks.remove(i);
 	            // Update the list of selected decks for the study plan in the database

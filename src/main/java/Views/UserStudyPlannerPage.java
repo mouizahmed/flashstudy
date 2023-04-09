@@ -9,8 +9,6 @@ import Models.StudyPlan;
 import Models.User;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,7 +30,6 @@ public class UserStudyPlannerPage extends JPanel {
 	private JPanel mainPanel;
 	private JLabel currentDateLabel;
 	private JButton quizButton;
-	private JButton deckDeleteButton;
 	private JList<String> studyDecksList;
 	private JButton backButton;
 	private User user;
@@ -226,13 +223,9 @@ public class UserStudyPlannerPage extends JPanel {
 	            if (selectedOption == JOptionPane.YES_OPTION) {
 	                // Delete the selected deck from the study plan and update the display
 	            	mysql_database.deleteSelectedDeckFromStudyPlan(studyPlan, selectedDeckTitle);
-  
-	                // Update the studyDecksList object with the new list of decks
-//	                studyListModel.remove(selectedIndex);
-//	                studyDecksList.setModel(studyListModel);
+
+	                // Update the list of selected decks in the study plan
 	            	displayStudyDecksList(studyPlan.getSelectedDecks());
-	                // Update the list of selected decks in the study plandisplayStudyDecksList(studyPlan.getSelectedDecks());
-	                //studyPlan.setSelectedDecks(mysql_database.getSelectedDecksForStudyPlan(studyPlan.getStudyPlanTitle()));
 	            }
 	        }
 	    });
