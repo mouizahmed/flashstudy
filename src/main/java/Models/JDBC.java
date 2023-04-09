@@ -1,7 +1,7 @@
 package Models;
 
 import java.io.IOException;
-import java.math.BigInteger;
+//import java.math.BigInteger;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -380,7 +380,6 @@ public class JDBC {
 	
 	public StudyPlan createStudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
 	    StudyPlan studyPlan = null;
-		  //StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 		  String addStudyPlanQuery = "INSERT INTO study_plan (createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		  try {
 		        PreparedStatement stmt = conn.prepareStatement(addStudyPlanQuery);
@@ -394,7 +393,6 @@ public class JDBC {
 		        stmt.setInt(8, studyTimeDays);
 		        stmt.setString(9, String.join(",", selectedDecks.stream().map(Deck::getDeckID).collect(Collectors.toList())));
 		        //stmt.setDate(10, dateCreated);
-		        int rowsInserted = stmt.executeUpdate();
 		        studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 		        return studyPlan;
 		    } catch (SQLException e) {
@@ -440,8 +438,6 @@ public class JDBC {
 	                }
 	            
 	             studyPlans = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
-				//studyPlans.add(studyPlan);
-	            // System.out.println("studyPlan: "+ studyPlans);
 	        return studyPlans;    
 	        }
 	    } catch (SQLException e) {
@@ -479,7 +475,6 @@ public class JDBC {
 	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 	            allStudyPlans.add(studyPlan);
 	        }
-	        //System.out.println("AllStudyPlans: " + allStudyPlans);
 	        return allStudyPlans;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -561,7 +556,69 @@ public class JDBC {
 	        return studyPlan;
 	    }
 	}
+	
+	public boolean deleteStudyPlan(String studyPlanTitle, String createdBy) {
+	    boolean success = false;
+	    try {
+	        String deleteStudyPlanQuery = "DELETE FROM study_plan WHERE studyPlanTitle = ? AND createdBy = ?";
+	        PreparedStatement stmt = conn.prepareStatement(deleteStudyPlanQuery);
+	        stmt.setString(1, studyPlanTitle);
+	        stmt.setString(2, createdBy);
+	        int rowsDeleted = stmt.executeUpdate();
+	        if (rowsDeleted > 0) {
+	            success = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return success;
+	}
 
+	public void deleteSelectedDeckFromStudyPlan(StudyPlan studyPlan, String selectedDeckTitle) {
+	    // Get the deck from the database
+	    Deck selectedDeck = getDeckByTitle(selectedDeckTitle);
+	    if (selectedDeck == null) {
+	        System.out.print("NONE");// The deck does not exist in the database
+	        return;
+	    }
+	    
+	    // Find the selected deck in the list of selected decks for the study plan
+	    ArrayList<Deck> selectedDecks = studyPlan.getSelectedDecks();
+	    for (int i = 0; i < selectedDecks.size(); i++) {
+	        Deck deck = selectedDecks.get(i);
+	        if (deck.getDeckID().equals(selectedDeck.getDeckID())) {
+	        	System.out.println("FOUND!");
+	            // Remove the selected deck from the list of selected decks for the study plan
+	            selectedDecks.remove(i);
+	            // Update the list of selected decks for the study plan in the database
+	            updateSelectedDecks(studyPlan.getStudyPlanTitle(), selectedDecks);
+	            // Update the study plan object with the new list of selected decks
+	            studyPlan.setSelectedDecks(selectedDecks);
+	            break;
+	        }
+	    }
+	}
+	
+	public void updateSelectedDecks(String studyPlanTitle, ArrayList<Deck> selectedDecks) {
+	    try {
+	        // Create a comma-separated string of deck IDs from the selectedDecks list
+	        StringBuilder deckIds = new StringBuilder();
+	        for (Deck deck : selectedDecks) {
+	            deckIds.append(deck.getDeckID()).append(",");
+	        }
+	        String deckIdsStr = deckIds.toString().replaceAll(",$", ""); // Remove the last comma
+	        
+	        // Update the selectedDecks field in the database
+	        String sql = "UPDATE study_plan SET selectedDecks = ? WHERE studyPlanTitle = ?";
+	        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, deckIdsStr);
+	            pstmt.setString(2, studyPlanTitle);
+	            pstmt.executeUpdate();
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	private Deck getDeckByID(String deckID) {
 		Deck deck = null; 

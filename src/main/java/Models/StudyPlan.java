@@ -167,6 +167,11 @@ public class StudyPlan {
 	public ArrayList<Deck> getSelectedDecks() {
 		return this.selectedDecks;
 	}
+
+	public void setSelectedDecks(ArrayList<Deck> selectedDecks) {
+		this.selectedDecks = selectedDecks;
+		
+	}
 }
 
         
