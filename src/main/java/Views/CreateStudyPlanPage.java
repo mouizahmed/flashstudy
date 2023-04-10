@@ -18,17 +18,15 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import Controller.Controller;
 import Models.Deck;
-import Models.DeckList;
 import Models.JDBC;
 import Models.StudyPlan;
 import Models.User;
@@ -39,7 +37,6 @@ public class CreateStudyPlanPage extends JPanel {
     private JFormattedTextField testDateField;
     private JComboBox<String> frequencyComboBox;
     private JComboBox<String> difficultyComboBox;
-    private JTextField studyTimeDaysField;
     private JTextField studyPlanTitleField;
     private JComboBox<String> studyTimeComboBox;
     private ArrayList<Deck> publicDecks = new ArrayList<>();
@@ -158,20 +155,22 @@ public class CreateStudyPlanPage extends JPanel {
 	            String frequency = frequencyComboBox.getSelectedItem().toString();
 	            String difficulty = difficultyComboBox.getSelectedItem().toString();
 	            String studyTime = studyTimeComboBox.getSelectedItem().toString();
-	            int studyTimeDays = Integer.parseInt(studyTimeDaysField.getText());
 	            ArrayList<Deck> selectedDecks = new ArrayList<Deck>();
 	            for (int i = 0; i < deckCheckBoxes.size(); i++) {
 	                if (deckCheckBoxes.get(i).isSelected()) {
 	                    selectedDecks.add(allDecks.get(i));
 	                }
 	            }
-	            mysql_database.createStudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	            mysql_database.createStudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks);
 	            
 	           // Create a new StudyPlan based on the user's inputs
-	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks);
 
 	            // Print the study plan for testing purposes
 	            System.out.println(studyPlan);
+	            
+	            // Display message to user
+	    	    JOptionPane.showMessageDialog(null, "Study Plan: \"" + studyPlanTitle + "\" created successfully! View it in Your Study Plan page.", "Success", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
         submitPanel.add(backButton);
@@ -185,11 +184,6 @@ public class CreateStudyPlanPage extends JPanel {
         studyTimeComboBox = new JComboBox<String>(studyTimes);
         studyTimePanel.add(studyTimeDaysLabel);
         studyTimePanel.add(studyTimeComboBox);
-        
-        JLabel studyTimeLabel = new JLabel("Study Time in total (# of days): ");
-        studyTimeDaysField = new JTextField(10);
-        studyTimePanel.add(studyTimeLabel);
-        studyTimePanel.add(studyTimeDaysField);
         
         // Add title panel to contentPanel
         contentPanel.add(studyPlanTitlePanel);

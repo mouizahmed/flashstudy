@@ -26,7 +26,6 @@ public class StudyPlan {
 	public String frequency;
 	public String difficulty;
 	public String studyTime;
-	public int studyTimeDays;
 	public ArrayList<Deck> selectedDecks;
 	public ArrayList<Deck> allStudyDecks;
 	public ArrayList<Deck> allRepeatDecks;
@@ -38,7 +37,7 @@ public class StudyPlan {
 	private JDBC mysql_database;
 
 	public StudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, 
-			String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
+			String studyTime, ArrayList<Deck> selectedDecks) {
 		this.createdBy = createdBy;
 		this.studyPlanID = studyPlanID;
 		this.studyPlanTitle = studyPlanTitle;
@@ -46,7 +45,6 @@ public class StudyPlan {
 		this.frequency = frequency;
 		this.difficulty = difficulty;
 		this.studyTime = studyTime;
-		this.studyTimeDays = studyTimeDays;
 		this.selectedDecks = selectedDecks;
 		this.allStudyDecks = new ArrayList<>();
 		this.allRepeatDecks = new ArrayList<>();

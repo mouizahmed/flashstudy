@@ -397,9 +397,9 @@ public class JDBC {
 		
 	}
 	
-	public StudyPlan createStudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
+	public StudyPlan createStudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, String studyTime, ArrayList<Deck> selectedDecks) {
 	    StudyPlan studyPlan = null;
-		  String addStudyPlanQuery = "INSERT INTO study_plan (createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		  String addStudyPlanQuery = "INSERT INTO study_plan (createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		  try {
 		        PreparedStatement stmt = conn.prepareStatement(addStudyPlanQuery);
 		        stmt.setString(1, createdBy);
@@ -409,11 +409,10 @@ public class JDBC {
 		        stmt.setString(5, frequency);
 		        stmt.setString(6, difficulty);
 		        stmt.setString(7, studyTime);
-		        stmt.setInt(8, studyTimeDays);
-		        stmt.setString(9, String.join(",", selectedDecks.stream().map(Deck::getDeckID).collect(Collectors.toList())));
+		        stmt.setString(8, String.join(",", selectedDecks.stream().map(Deck::getDeckID).collect(Collectors.toList())));
 		        //stmt.setDate(10, dateCreated);
 		        int rowsInserted = stmt.executeUpdate();
-		        studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+		        studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks);
 		        return studyPlan;
 		    } catch (SQLException e) {
 		        e.printStackTrace();
@@ -435,7 +434,6 @@ public class JDBC {
 	            String frequency = rs.getString("frequency");
 	            String difficulty = rs.getString("difficulty");
 	            String studyTime = rs.getString("studyTime");
-	            int studyTimeDays = rs.getInt("studyTimeDays");
 	            String selectedDecksStr = rs.getString("selectedDecks");
 	            
 	            // Retrieve the selected decks for the study plan
@@ -447,7 +445,7 @@ public class JDBC {
 	            }
 
 	            // Create a new StudyPlan object and add it to the list
-	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks);
 	            allStudyPlans.add(studyPlan);
 	        }
 	        return allStudyPlans;
@@ -471,7 +469,6 @@ public class JDBC {
 	            String frequency = rs.getString("frequency");
 	            String difficulty = rs.getString("difficulty");
 	            String studyTime = rs.getString("studyTime");
-	            int studyTimeDays = rs.getInt("studyTimeDays");
 	            String selectedDecksStr = rs.getString("selectedDecks");
 
 	            // Retrieve the selected decks for the study plan
@@ -483,7 +480,7 @@ public class JDBC {
 	            }
 
 	            // Create a new StudyPlan object and return it
-	            studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
+	            studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks);
 	            return studyPlan;
 	            } else {
 	            return null; // StudyPlan with given ID not found for given user
