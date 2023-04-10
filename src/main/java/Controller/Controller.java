@@ -60,11 +60,11 @@ public class Controller {
 
 //	private UserList userDatabase;
 //	private DeckList deckDatabase;
-private JPanel main;
+	private JPanel main;
 	private CardLayout card;
 	private JDBC mysql_database;
 	private User currentUser;
-  private StudyPlan studyPlan;
+	private StudyPlan studyPlan;
 	private static String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
 	        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
           
@@ -82,6 +82,18 @@ private JPanel main;
 			e.printStackTrace();
 		}
 
+	}
+	
+	protected JDBC getDatabase() {
+		return this.mysql_database;
+	}
+	
+	protected CardLayout getCard() {
+		return this.card;
+	}
+	
+	protected JPanel getMain() {
+		return this.main;
 	}
 
 
@@ -116,7 +128,18 @@ private JPanel main;
 	}
 
 	public boolean login(String username, String password) {
-		currentUser = this.mysql_database.verifyUser(username, password);
+		try {
+			currentUser = this.mysql_database.verifyUser(username, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			return false;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return false;
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+			return false;
+		}
 		if (currentUser == null) {
 			return false;
 		} else {
@@ -185,6 +208,7 @@ private JPanel main;
 		main.add(browsePublicDeckPage, "browsePublicDeckPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
 		card.show(main, "browsePublicDeckPage" + num);
+		
 	}
 
 	public Flashcard createFlashcard(String question, String answer, String deckID) {
@@ -199,7 +223,13 @@ private JPanel main;
 	}
 
 	public void createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, String deckID, String schoolName, String facultyName, String courseName, String description) {
-		Deck deck = mysql_database.createDeck(deckTitle, flashcards, publicDeck, currentUser, deckID, schoolName, facultyName, description, courseName);
+		Deck deck = null;
+		try {
+			deck = mysql_database.createDeck(deckTitle, flashcards, publicDeck, currentUser, deckID, schoolName, facultyName, description, courseName);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.getCurrentUser().getUserDeckList().add(deck);
 
 		deckPage(deck);
@@ -298,7 +328,13 @@ private JPanel main;
 //	}
 
 	public void addDeckToProfile(Deck deck) {
-		Deck deckCopy = this.mysql_database.addDeckToProfile(deck, this.currentUser);
+		Deck deckCopy = null;
+		try {
+			deckCopy = this.mysql_database.addDeckToProfile(deck, this.currentUser);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.currentUser.addDeck(deckCopy);
 	}
 
