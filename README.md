@@ -7,6 +7,7 @@ To Run: Run src/main/java/flashstudy/Main.java
 - Mouiz Ahmed (mouizahmed, 218105536)
 - Sourav Chandhok (souravC01, 218533976)
 - Ojas Taneja (ojastaneja7, #########)
+- Daoud Ali (DaoudAli, 216410672)
 - Hena Patel (henap741, 218109124)
 
 ## Overview
@@ -41,8 +42,5 @@ This folder contains classes that define the underlying data structures used by 
 This folder might contain classes that handle the visual aspects of the application using Java Swing GUI. This includes classes that define the layout and appearance of the user interface, handle user input and display output.
 
 
-
-
-## Iteration 1 Development Tasks
 
 
