@@ -20,17 +20,6 @@ public class UserStudyPlannerPageTest {
     private Controller controller;
     private ArrayList<StudyPlan> studyPlans;
 
-    @Before
-    public void setUp() throws Exception {
-    	User user = new User("testUser", "password123", null, null);
-        ArrayList<Deck> decks = new ArrayList<>();
-        JPanel mainPanel = new JPanel();
-        CardLayout cardLayout = new CardLayout();
-        Controller controller = new Controller(mainPanel, cardLayout);
-        studyPlans = new ArrayList<>();
-        UserStudyPlannerPage page = new UserStudyPlannerPage(user, studyPlans, controller);
-    }
-
     @Test
     public void testUserStudyPlannerPage() {
         User user = new User("testUser", "password123", null, null);
