@@ -1,14 +1,12 @@
 package Views;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class CreateStudyPlanPageTest {
 
