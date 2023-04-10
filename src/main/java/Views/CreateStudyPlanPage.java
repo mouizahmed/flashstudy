@@ -33,7 +33,7 @@ import Models.JDBC;
 import Models.StudyPlan;
 import Models.User;
 
-public class CreateStudyPlanPage extends JPanel implements ActionListener {
+public class CreateStudyPlanPage extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private JFormattedTextField testDateField;
@@ -58,7 +58,6 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         this.decks = decks;
         this.controller = controller;
         deckCheckBoxes = new ArrayList<JCheckBox>();
-       // this.mysql_database = controller.getJdbc();
 
         try {
 			this.mysql_database = new JDBC();
@@ -67,10 +66,8 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
 		}
         
         // Retrieve the public decks and user decks from the database
-        publicDecks = controller.allPublicDecks();//mysql_database.publicDeckList();
-        userDecks = controller.allUserDecks();//mysql_database.userDeckList();
-//        System.out.print(publicDecks);
-//        System.out.print(userDecks);
+        publicDecks = controller.allPublicDecks();
+        userDecks = controller.allUserDecks();
         
         // Combine the public and user decks into a single list
         allDecks = new ArrayList<Deck>();
@@ -100,6 +97,7 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
        
         // Create a panel to input test date
         JPanel testDatePanel = new JPanel(new FlowLayout());
+        
         // Create a label and a formatted text field for the test date
         JLabel testDateLabel = new JLabel("Test date (DD/MM/YYYY): ");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -108,9 +106,6 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         testDateField.setValue(new Date()); // Set the default value to today's date
         testDateField.setToolTipText("Enter the date of your test in the format DD/MM/YYYY");
 
-//        JLabel testDateLabel = new JLabel("Test Date (DD/MM/YYYY): ");
-//        testDateField = new JFormattedTextField(new SimpleDateFormat("dd/MM/yyyy"));
-//        testDateField.setColumns(10);
         testDatePanel.add(testDateLabel);
         testDatePanel.add(testDateField);
 
@@ -170,21 +165,13 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
 	                    selectedDecks.add(allDecks.get(i));
 	                }
 	            }
+	            mysql_database.createStudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 	            
 	           // Create a new StudyPlan based on the user's inputs
 	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
-	            
-	            //String studyPlanID = UUID.randomUUID().toString();
-	            StudyPlan createStudyPlan = mysql_database.createStudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 
 	            // Print the study plan for testing purposes
 	            System.out.println(studyPlan);
-
-                // retrieve the study plan from the database
-                //StudyPlan retrievedStudyPlan = mysql_database.getAllStudyPlansByUser(user.getUsername());
-
-                // display the study plan using the controller
-                //controller.UserStudyPlannerPage(user, retrievedStudyPlan);
 			}
 		});
         submitPanel.add(backButton);
@@ -225,43 +212,4 @@ public class CreateStudyPlanPage extends JPanel implements ActionListener {
         setVisible(true);
 
     }
-
-	@Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton) {
-            String testDate = testDateField.getText();
-            String frequency = frequencyComboBox.getSelectedItem().toString();
-            String difficulty = difficultyComboBox.getSelectedItem().toString();
-            String studyTime = studyTimeComboBox.getSelectedItem().toString();
-            int studyTimeDays = Integer.parseInt(studyTimeDaysField.getText());
-            ArrayList<Deck> selectedDecks = new ArrayList<Deck>();
-            for (int i = 0; i < deckCheckBoxes.size(); i++) {
-                if (deckCheckBoxes.get(i).isSelected()) {
-                    selectedDecks.add(decks.get(i));
-                }
-            }
-            System.out.println(testDate);
-            System.out.println(frequency);
-            System.out.println(difficulty);
-            System.out.println(studyTime);
-            System.out.println(studyTimeDays);
-            System.out.println(selectedDecks);
-
-            // Create a new StudyPlan based on the user's inputs
-            //StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
-            // Print the study plan for testing purposes
-            //System.out.println(studyPlan);
-            
-//            StudyPlan studyPlanList = new StudyPlanList();
-//            studyPlanList.addStudyPlan(studyPlan);
-            
-         // Get the parent JFrame of the JPanel
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-
-            // Call dispose() on the parent JFrame
-            frame.dispose();
-        }
-    }
 }
-
-            
