@@ -1,6 +1,14 @@
 # Flashcard Study System — FlashStudy
 
-To Run: Run src/main/java/flashstudy/Main.java
+## Instructions to Run the Application
+- In Eclipse/IntelliJ, clone the repository from Git using smart import.
+- Ensure you are using JavaSE-15 when building and running the application.
+- In order to utilize the AI Quiz Features, either email mouiza@my.yorku.ca or create a new OpenAI secret key.
+  - Sign up for [OpenAI](https://platform.openai.com/account/api-keys) and get your secret key. Note* This is rotated periodically so this may need to be updated.
+- create a .env file within the root folder, and create an environment variable.
+  - "OPENAI_KEY=*YOUR_KEY" 
+- Navigate to src/main/java/flashstudy/Main.java.
+- Click Run
 
 ## Team 4 Group Members
 
