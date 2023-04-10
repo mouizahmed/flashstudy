@@ -1,11 +1,13 @@
 package Models;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class EmailMessageMaker {
-
+    private static final int delayDays = 10;                 //change to increase or decrease the number of delay days
     private String subject;
     private String to;
     private final String from = "flashstudyhelp@gmail.com";
@@ -41,23 +43,22 @@ public class EmailMessageMaker {
                 "Flash Study Team";
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        int delayDays = 10;                 //change to increase or decrease the number of delay days
         executor.scheduleAtFixedRate(() -> EmailSender.sendEmail(from, toEmail, subject, body), 0, delayDays, TimeUnit.DAYS);
     }
 
 
-//    public void sendStudySessionReminder(String toEmail, String userName, LocalDateTime studySessionDateTime) {
-//        this.to = toEmail;
-//        this.subject = "Study Session Reminder: " + studySessionDateTime.format(DateTimeFormatter.ofPattern("MMM d, yyyy 'at' h:mm a"));
-//        this.body = "Hello " + userName + ",\n\n" +
-//                "Just a quick reminder that you have a study session scheduled on " + studySessionDateTime.format(DateTimeFormatter.ofPattern("MMM d, yyyy 'at' h:mm a")) + ". We hope you're looking forward to it!\n\n" +
-//                "Remember, FlashStudy is here to help you make the most of your study sessions. With features like flashcards, quizzes, and collaborative study tools, you can stay organized, stay focused, and achieve your academic goals.\n\n" +
-//                "If you need any assistance or have any questions, please don't hesitate to reach out to us. We're always here to help.\n\n" +
-//                "Good luck with your studies!\n\n" +
-//                "Best regards,\n" +
-//                "Flash Study Team";
-//        EmailSender.sendEmail(from, to, subject, body);
-//    }
+    public void sendStudySessionReminder(String toEmail, String userName, LocalDateTime studySessionDate, String time) {
+        this.to = toEmail;
+        this.subject = "Study Session Reminder: " + studySessionDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy 'at' h:mm a"));
+        this.body = "Hello " + userName + ",\n\n" +
+                "Just a quick reminder that you have a study session scheduled on " + studySessionDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy 'at' ")) + time + ". We hope you're looking forward to it!\n\n" +
+                "Remember, FlashStudy is here to help you make the most of your study sessions. With features like flashcards, quizzes, and collaborative study tools, you can stay organized, stay focused, and achieve your academic goals.\n\n" +
+                "If you need any assistance or have any questions, please don't hesitate to reach out to us. We're always here to help.\n\n" +
+                "Good luck with your studies!\n\n" +
+                "Best regards,\n" +
+                "Flash Study Team";
+        EmailSender.sendEmail(from, to, subject, body);
+    }
 
     //Emails when New Deck is created
     public void sendNewDeckEmail(String toEmail, String userName, String deckName) {

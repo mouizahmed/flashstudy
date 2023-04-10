@@ -8,14 +8,16 @@ import java.util.Properties;
 
 public class EmailSender {
 
+    private static final String SMTP_PORT = "587";
+
     public static boolean sendEmail(String from, String to, String subject, String body) {
 
-        boolean flag = false;
+        boolean emailSent = false;
         //SMTP properties
         Properties properties = new Properties();
         properties.put("mail.smtp.auth",true);
         properties.put("mail.smtp.starttls.enable",true);
-        properties.put("mail.smtp.port","587");
+        properties.put("mail.smtp.port",SMTP_PORT);
         properties.put("mail.smtp.host","smtp.gmail.com");
 
         String username = "flashstudyhelp";                     //email id username before the @ part
@@ -42,23 +44,11 @@ public class EmailSender {
 
             Transport.send(message);                                                                                //Send Message
 
-            flag = true;
+            emailSent = true;
 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return flag;
+        return emailSent;
     }
-
-
-    //PSVM for testing
-
-//    public static void main(String[] args) {
-//
-//        boolean b = sendEmail("flashstudyhelp@gmail.com","sourav.chandok@outlook.com","Hello","ABVHDDJDAJDIJDI");
-//        if (b)
-//            System.out.println("sent");
-//        else
-//            System.out.println("fail");
-//    }
 }
