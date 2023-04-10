@@ -1,42 +1,47 @@
 package Views;
 
-import Controller.Controller;
-import Models.*;
+import java.util.ArrayList;
+import java.util.Date;
 
-import javax.swing.*;
-import java.awt.*;
+import Models.Deck;
+import Models.JDBC;
+import Models.StudyPlan;
+import Models.User;
+
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
+import javax.swing.*;
+
+import Controller.Controller;
 
 public class UserStudyPlannerPage extends JPanel {
+	private ArrayList<StudyPlan> studyPlans;
 	private StudyPlan studyPlan;
-	private JFrame frame;
 	private JPanel mainPanel;
-	private JLabel titleLabel;
-	private JLabel studyPlanTitleLabel;
-	private JLabel testDateLabel;
 	private JLabel currentDateLabel;
 	private JButton quizButton;
-	private JButton todayButton;
-	private JButton tomorrowButton;
-	private JButton allButton;
 	private JList<String> studyDecksList;
-	private JList<String> repeatDecksList;
 	private JButton backButton;
 	private User user;
 	private Controller controller;
 	private JDBC mysql_database;
+	private JScrollPane studyPlanScrollPane;
+	private JPanel listPanel;
+	private JButton deleteButton;
 
-	public UserStudyPlannerPage(User user, StudyPlan studyPlan, Controller controller) {
+	public UserStudyPlannerPage(User user, ArrayList<StudyPlan> retrievedStudyPlan, Controller controller) {
 		this.user = user;
-		this.studyPlan = studyPlan;
+		this.studyPlans = retrievedStudyPlan;
 		this.controller = controller;
 
 		try {
@@ -51,53 +56,38 @@ public class UserStudyPlannerPage extends JPanel {
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
-		titleLabel = new JLabel("Your Study Plan");
-		titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		mainPanel.add(titleLabel);
-
-		if (studyPlan != null) {
-			studyPlanTitleLabel = new JLabel("Name of Study Plan: " + studyPlan.studyPlanTitle);
-			testDateLabel = new JLabel("Test Date: " + studyPlan.getTestDate());
-		} else {
-			testDateLabel = new JLabel("Test Date: ");
-		}
-		studyPlanTitleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		testDateLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		mainPanel.add(studyPlanTitleLabel);
-		mainPanel.add(testDateLabel);
+		JPanel topPanel = new JPanel(new BorderLayout());
+		JLabel studyPlanLabel = new JLabel("Your Study Plan");
+		studyPlanLabel.setHorizontalAlignment(JLabel.CENTER);
+		topPanel.add(studyPlanLabel, BorderLayout.NORTH);
 
 		LocalDate date = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String formattedDate = date.format(formatter);
 		currentDateLabel = new JLabel("Current Date: " + formattedDate);
-		//System.out.println(formattedDate); // prints something like "28/03/2023"
-
 		currentDateLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		mainPanel.add(currentDateLabel);
+		currentDateLabel.setHorizontalAlignment(JLabel.CENTER);
+		topPanel.add(currentDateLabel, BorderLayout.CENTER);
+		mainPanel.add(topPanel, BorderLayout.CENTER);
 
-		allButton = new JButton("All Study Decks");
-		allButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		allButton.addActionListener(e -> {
-			displayStudyDecksList(studyPlan.selectedDecks);
-			displayRepeatDecksList(studyPlan.getAllRepeatDecks());
+		JButton allStudyPlansButton = new JButton("Get All Your Study Plans");
+		allStudyPlansButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+		allStudyPlansButton.addActionListener(e -> {
+			ArrayList<StudyPlan> studyPlanList = mysql_database.getAllStudyPlansForUser(user.getUsername());
+			if (studyPlanList.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "You don't have any study plans yet. Please create one");
+				return;
+			} else {
+				displayStudyPlanList(studyPlanList, studyPlanLabel);
+			}
 		});
-		mainPanel.add(allButton);
+		mainPanel.add(allStudyPlansButton);
 
-		studyDecksList = new JList<>();
-		repeatDecksList = new JList<>();
-		JScrollPane studyScrollPane = new JScrollPane(studyDecksList);
-		JScrollPane repeatScrollPane = new JScrollPane(repeatDecksList);
-		JPanel listPanel = new JPanel();
-		listPanel.add(studyScrollPane);
-		listPanel.add(repeatScrollPane);
-		mainPanel.add(listPanel);
+		JList studyPlanList = new JList<>();
+		studyPlanScrollPane = new JScrollPane(studyPlanList);
 
-		//send study plan email
-		if(studyPlan != null) {
-			EmailMessageMaker emailMessageMaker = new EmailMessageMaker();
-			emailMessageMaker.sendStudySessionReminder(user.getEmail(), user.getUsername(), LocalDateTime.parse(studyPlan.testDate),studyPlan.studyTime);
-		}
-		quizButton = new JButton("Start Quiz Session"); //new button added
+		quizButton = new JButton("Start Quiz Session for Deck");
 		quizButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		quizButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -110,33 +100,166 @@ public class UserStudyPlannerPage extends JPanel {
 				controller.quiz(selectedDeck);
 			}
 		});
-		mainPanel.add(quizButton);
-		//Changes needed for display!!
+		
 		backButton = new JButton("Back");
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.landingPage();
 			}
 		});
-		mainPanel.add(backButton);
-		add(mainPanel);//, BorderLayout.CENTER);
-		setSize(400, 400);
+		
+		Box buttonBox = Box.createHorizontalBox();
+		buttonBox.add(backButton);
+		buttonBox.add(quizButton);
+		mainPanel.add(buttonBox);
+
+		studyDecksList = new JList<>();
+		JScrollPane studyDeckScrollPane = new JScrollPane(studyDecksList);
+		JLabel AllDecksLabel = new JLabel("All Decks for Study Plan:");
+		listPanel = new JPanel();
+		deleteButton = new JButton("Delete Deck for Study Plan");
+		listPanel.add(AllDecksLabel, BorderLayout.CENTER);
+		listPanel.add(studyDeckScrollPane);
+		listPanel.add(deleteButton, BorderLayout.EAST); 
+		mainPanel.add(listPanel);
+
+		add(mainPanel);
 		setVisible(true);
+	}
+
+	private void displayStudyPlanList(ArrayList<StudyPlan> studyPlans, JLabel studyPlanLabel) {
+		DefaultListModel<String> planListModel = new DefaultListModel<>();
+		for (StudyPlan plan : studyPlans) {
+			planListModel.addElement(plan.getStudyPlanTitle());
+		}
+
+		JList<String> planList = new JList<>(planListModel);
+		JScrollPane planScrollPane = new JScrollPane(planList);
+		JPanel planPanel = new JPanel(new BorderLayout());
+		planPanel.setBorder(BorderFactory.createTitledBorder("Select a Study Plan"));
+		planPanel.add(planScrollPane);
+
+		JButton deleteButton = new JButton("Delete Study Plan");
+		deleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selectedPlanTitle = planList.getSelectedValue();
+				if (selectedPlanTitle != null) {
+					StudyPlan selectedPlan = mysql_database.getStudyPlanByTitle(selectedPlanTitle);
+					String testDateString = selectedPlan.getTestDate();
+					DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+					Date testDate = null;
+					try {
+						testDate = dateFormat.parse(testDateString);
+					} catch (ParseException ex) {
+						ex.printStackTrace();
+					}
+
+					Date currentDate = new Date();
+					if (testDate == null || currentDate.after(testDate)) {
+						int selectedOption = JOptionPane.showConfirmDialog(null,
+								"Are you sure you want to delete this study plan: \"" + selectedPlanTitle + "\" ?",
+								"Confirmation", JOptionPane.YES_NO_OPTION);
+						if (selectedOption == JOptionPane.YES_OPTION) {
+							mysql_database.deleteStudyPlan(selectedPlanTitle, user.getUsername());
+							ArrayList<StudyPlan> updatedPlans = mysql_database.getAllStudyPlansForUser(user.getUsername());
+							displayStudyPlanList(updatedPlans, studyPlanLabel);
+						}
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"You can only delete study plan if the test date is today or has passed.",
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(deleteButton);
+		planPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+		planList.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				if (evt.getClickCount() == 1) {
+					String selectedPlanTitle = planList.getSelectedValue();
+					if (selectedPlanTitle != null) {
+						studyPlan = mysql_database.getStudyPlanByTitle(selectedPlanTitle);
+						displayStudyDecksList(studyPlan.getSelectedDecks());
+						// Update the study plan label with the selected study plan's title and test date
+						studyPlanLabel.setText("<html>Your Study Plan: " + studyPlan.getStudyPlanTitle() + "<br>Test Date: " + studyPlan.getTestDate() + "</html>");
+					}
+				}
+			}
+		});
+
+		studyPlanScrollPane.setViewportView(planPanel);
+		mainPanel.add(studyPlanScrollPane);
+		revalidate();
 
 	}
 
 	private void displayStudyDecksList(ArrayList<Deck> studyDecks) {
 		DefaultListModel<String> studyListModel = new DefaultListModel<>();
+		
 		for (Deck deck : studyDecks) {
 			studyListModel.addElement(deck.getDeckTitle());
-		}
+	    }
+	    
+		deleteButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        int selectedIndex = studyDecksList.getSelectedIndex();
+		        if (selectedIndex == -1 || selectedIndex >= studyListModel.getSize()) {
+		            JOptionPane.showMessageDialog(null, "Please select a valid deck to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        
+		        String selectedDeckTitle = studyListModel.get(selectedIndex);
+		        studyDecksList.setSelectedValue(selectedDeckTitle, true);
+		        Deck selectedDeck = null;
+		        for (Deck deck : studyPlan.getSelectedDecks()) {
+		            if (deck.getDeckTitle().equals(selectedDeckTitle)) {
+		                selectedDeck = deck;
+		                break;
+		            }
+		        }
+		        if (selectedDeck == null) {
+		            JOptionPane.showMessageDialog(null, "Selected deck not found in study plan.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        
+		        int selectedOption = JOptionPane.showConfirmDialog(null,
+		                "Are you sure you want to delete the \"" + selectedDeckTitle + "\" deck?",
+		                "Confirmation", JOptionPane.YES_NO_OPTION);
+		        if (selectedOption == JOptionPane.YES_OPTION) {
+		        	 // Check if the average score is 1
+		        	String deckID = selectedDeck.getDeckID();
+		            double avgScore = mysql_database.getAvgScore(deckID, user.getUsername());
+		            
+		            if (avgScore != 1) {
+		                JOptionPane.showMessageDialog(null, "This deck cannot be deleted as it has an average score of " + avgScore + ". You need to study this deck and get 100%", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+		            
+		            // Delete the selected deck from the study plan and update the display
+		        	mysql_database.deleteSelectedDeckFromStudyPlan(studyPlan, selectedDeckTitle);
+
+		            // Update the list of selected decks in the study plan
+		        	displayStudyDecksList(studyPlan.getSelectedDecks());
+		        	
+		        	// Show success message
+		            JOptionPane.showMessageDialog(null, "The \"" + selectedDeckTitle + "\" deck has been deleted from the study plan.", "Success", JOptionPane.INFORMATION_MESSAGE);
+		        }
+		    }
+		});
+
+	    // Add a mouse listener to the deck list
 		studyDecksList.setModel(studyListModel);
 		studyDecksList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
 					String selectedDeckTitle = studyDecksList.getSelectedValue();
 					if (selectedDeckTitle != null) {
-						//Deck selectedDeck = this.JDBC.getDecksByTitle
 						Deck selectedDeck = mysql_database.getDeckByTitle(selectedDeckTitle);
 						controller.quiz(selectedDeck);
 					}
@@ -144,39 +267,4 @@ public class UserStudyPlannerPage extends JPanel {
 			}
 		});
 	}
-
-	private void displayRepeatDecksList(ArrayList<Deck> repeatDecks) {
-		DefaultListModel<String> repeatListModel = new DefaultListModel<>();
-		for (Deck deck : repeatDecks) {
-			repeatListModel.addElement(deck.getDeckTitle());
-		}
-		repeatDecksList.setModel(repeatListModel);
-		repeatDecksList.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
-				if (evt.getClickCount() == 2) {
-					String selectedDeckTitle = repeatDecksList.getSelectedValue();
-					if (selectedDeckTitle != null) {
-						Deck selectedDeck = mysql_database.getDeckByTitle(selectedDeckTitle);
-						controller.quiz(selectedDeck);
-					}
-				}
-			}
-		});
-	}
-
 }
-//todayButton = new JButton("Today's Study Decks");
-//todayButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-//todayButton.addActionListener(e -> {
-////    displayStudyDecksList(studyPlan.getStudyDecksForToday());
-////    displayRepeatDecksList(studyPlan.getRepeatDecksForToday());
-//});
-//mainPanel.add(todayButton);
-//
-//tomorrowButton = new JButton("Tomorrow's Study Decks");
-//tomorrowButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-//tomorrowButton.addActionListener(e -> {
-////    displayStudyDecksList(studyPlan.getStudyDecksForTomorrow());
-////    displayRepeatDecksList(studyPlan.getRepeatDecksForTomorrow());
-//});
-//mainPanel.add(tomorrowButton);
