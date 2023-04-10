@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class ExamReminderView extends JFrame {
 
@@ -60,7 +61,7 @@ public class ExamReminderView extends JFrame {
                 try {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                     examDate = LocalDate.parse(examDateString, formatter);
-                } catch (Exception ex) {
+                } catch (DateTimeParseException ex) {
                     JOptionPane.showMessageDialog(null, "Invalid date format. Please enter date in dd/mm/yyyy format.");
                     return;
                 }
