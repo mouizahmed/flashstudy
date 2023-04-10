@@ -8,7 +8,7 @@
 - Create a .env file within the root folder, and create an environment variable.
   - It must include `OPENAI_KEY=*YOUR_KEY*`
 - Navigate to src/main/java/flashstudy/Main.java.
-- Click Run
+- Click Run.
 
 ## Team 4 Group Members
 
