@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
-import org.junit.Before;
 import org.junit.Test;
 
 public class StudyPlanTest {
@@ -12,36 +11,48 @@ public class StudyPlanTest {
     private StudyPlan studyPlan;
     private ArrayList<Deck> decks;
 
-    @Before
-    public void setUp() {
-        decks = new ArrayList<>();
+    @Test
+    void testGetStudyPlanTitle() {
+    	decks = new ArrayList<>();
         decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
         decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
         studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
-    }
-
-    @Test
-    public void testGetStudyPlanTitle() {
         assertEquals("My Study Plan", studyPlan.getStudyPlanTitle());
     }
 
     @Test
-    public void testGetStudyPlanID() {
+    void testGetStudyPlanID() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         assertEquals("plan1", studyPlan.getStudyPlanID());
     }
 
     @Test
-    public void testGetSelectedDecks() {
+    void testGetSelectedDecks() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         assertEquals(decks, studyPlan.getSelectedDecks());
     }
 
     @Test
-    public void testGetAllStudyDecks() {
+    void testGetAllStudyDecks() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         assertEquals(decks, studyPlan.getAllStudyDecks());
     }
 
     @Test
-    public void testGetAllRepeatDecks() {
+    void testGetAllRepeatDecks() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         ArrayList<Deck> repeatDecks = studyPlan.getAllRepeatDecks();
         assertTrue(repeatDecks.isEmpty());
         studyPlan.updateStudyDecks();
@@ -50,23 +61,39 @@ public class StudyPlanTest {
     }
 
     @Test
-    public void testGetTestDate() {
+    void testGetTestDate() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         assertEquals("01/04/2023", studyPlan.getTestDate());
     }
 
     @Test
-    public void testSetTestDate() {
+    void testSetTestDate() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         studyPlan.setTestDate("02/04/2023");
         assertEquals("02/04/2023", studyPlan.getTestDate());
     }
 
     @Test
-    public void testGetRepeatThreshold() {
+    void testGetRepeatThreshold() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         assertEquals(5, studyPlan.getRepeatThreshold());
     }
 
     @Test
-    public void testUpdateStudyDecks() {
+    void testUpdateStudyDecks() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         studyPlan.updateStudyDecks();
         ArrayList<Deck> allStudyDecks = studyPlan.getAllStudyDecks();
         ArrayList<Deck> allRepeatDecks = studyPlan.getAllRepeatDecks();
@@ -74,7 +101,11 @@ public class StudyPlanTest {
     }
 
     @Test
-    public void testUpdateStudyDecksWithRepeatDecks() {
+    void testUpdateStudyDecksWithRepeatDecks() {
+    	decks = new ArrayList<>();
+        decks.add(new Deck("deck1", new ArrayList<>(), "user", true, "1", "school", "faculty", "description", "course"));
+        decks.add(new Deck("deck2", new ArrayList<>(), "user", true, "2", "school", "faculty", "description", "course"));
+        studyPlan = new StudyPlan("user", "plan1", "My Study Plan", "01/04/2023", "5", "Medium", "60", decks);
         decks.get(0).setCounter(3);
         decks.get(1).setCounter(5);
         ArrayList<Deck> allStudyDecks = studyPlan.getAllStudyDecks();
