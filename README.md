@@ -6,7 +6,7 @@
 - In order to utilize the AI Quiz Features, either email mouiza@my.yorku.ca or create a new OpenAI secret key.
   - Sign up for [OpenAI](https://platform.openai.com/account/api-keys) and get your secret key. Note* This is rotated periodically so this may need to be updated.
 - Create a .env file within the root folder, and create an environment variable.
-  - It must include `OPENAI_KEY=*YOUR_KEY`
+  - It must include `OPENAI_KEY=*YOUR_KEY*`
 - Navigate to src/main/java/flashstudy/Main.java.
 - Click Run
 
