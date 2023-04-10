@@ -399,7 +399,6 @@ public class JDBC {
 	
 	public StudyPlan createStudyPlan(String createdBy, String studyPlanID, String studyPlanTitle, String testDate, String frequency, String difficulty, String studyTime, int studyTimeDays, ArrayList<Deck> selectedDecks) {
 	    StudyPlan studyPlan = null;
-		  //StudyPlan studyPlan = new StudyPlan(testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
 		  String addStudyPlanQuery = "INSERT INTO study_plan (createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		  try {
 		        PreparedStatement stmt = conn.prepareStatement(addStudyPlanQuery);
@@ -457,53 +456,6 @@ public class JDBC {
 	        return allStudyPlans;
 	    }
 	}
-
-	public StudyPlan getStudyPlanByUser(String createdBy) {
-//NOT
-		StudyPlan studyPlans = null;//new StudyPlan(null, null, null, null, null, null, null, 0, selectedDecks);
-	    String getStudyPlansQuery = "SELECT * FROM study_plan WHERE createdBy=?  LIMIT 1";// + user.getUsername() + "';";
-	    try {
-	        PreparedStatement stmt = conn.prepareStatement(getStudyPlansQuery);
-	        stmt.setString(1, createdBy);
-	        ResultSet rs = stmt.executeQuery();
-	        while (rs.next()) {
-	            String studyPlanID = rs.getString("studyPlanID");
-	            String studyPlanTitle = rs.getString("studyPlanTitle");
-	            String testDate = rs.getString("testDate");
-	            String frequency = rs.getString("frequency");
-	            String difficulty = rs.getString("difficulty");
-	            String studyTime = rs.getString("studyTime");
-	            int studyTimeDays = rs.getInt("studyTimeDays");
-	            String selectedDecksStr = rs.getString("selectedDecks");
-	            ArrayList<String> selectedDecksIDs = new ArrayList<>(Arrays.asList(selectedDecksStr.split(",")));
-	            ArrayList<Deck> selectedDecks = new ArrayList<>();
-	            ArrayList<Deck> AllDecks = new ArrayList<>();
-	            ArrayList<Deck> publicDecks = publicDeckList();
-	            ArrayList<Deck> userDecks = userDeckList();
-	            AllDecks.addAll(publicDecks);
-	            AllDecks.addAll(userDecks);
-
-	            for (String deckID : selectedDecksIDs) {
-	            	//ArrayList<Deck> deckList = new ArrayList<>();
-	                Deck deck = Deck.findDeckByID(deckID, AllDecks); // assumes there is a method to retrieve a Deck by its ID
-	                if (deck != null) {
-	                    System.out.println("Found deck with ID " + deckID + ": " + deck);
-	                    selectedDecks.add(deck);
-	                } else {
-	                    System.out.println("Deck with ID " + deckID + " not found in list " + selectedDecks);
-	                }
-	                System.out.println("Selected decks: " + selectedDecks);
-	                }
-	            
-	            StudyPlan studyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, studyTimeDays, selectedDecks);
-//	            studyPlans.add(studyPlan);
-	        return studyPlan;    
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return studyPlans;
-	}
 	
 	public StudyPlan getStudyPlanByTitle(String studyPlanTitle) {
 		StudyPlan studyPlan = null;
@@ -515,7 +467,6 @@ public class JDBC {
 	        if (rs.next()) {
 	        	String createdBy = rs.getString("createdBy");
 	        	String studyPlanID = rs.getString("studyPlanID");
-	            //String studyPlanTitle = rs.getString("studyPlanTitle");
 	            String testDate = rs.getString("testDate");
 	            String frequency = rs.getString("frequency");
 	            String difficulty = rs.getString("difficulty");
