@@ -34,21 +34,21 @@ import Models.User;
 public class CreateStudyPlanPage extends JPanel {
     private static final long serialVersionUID = 1L;
 
-    private JFormattedTextField testDateField;
-    private JComboBox<String> frequencyComboBox;
-    private JComboBox<String> difficultyComboBox;
-    private JTextField studyPlanTitleField;
-    private JComboBox<String> studyTimeComboBox;
-    private ArrayList<Deck> publicDecks = new ArrayList<>();
-    private ArrayList<Deck> userDecks = new ArrayList<>();
-    private ArrayList<Deck> allDecks;
-    private ArrayList<Deck> decks;
-    private ArrayList<JCheckBox> deckCheckBoxes;
-    private JButton submitButton;
-    private JButton backButton;
-    private User user;
-    private Controller controller;
-    private JDBC mysql_database;
+    public JFormattedTextField testDateField;
+    public JComboBox<String> frequencyComboBox;
+    public JComboBox<String> difficultyComboBox;
+    public JTextField studyPlanTitleField;
+    public JComboBox<String> studyTimeComboBox;
+    public ArrayList<Deck> publicDecks = new ArrayList<>();
+    public ArrayList<Deck> userDecks = new ArrayList<>();
+    public ArrayList<Deck> allDecks;
+    public ArrayList<Deck> decks;
+    public ArrayList<JCheckBox> deckCheckBoxes;
+    public JButton submitButton;
+    public JButton backButton;
+    public User user;
+    public Controller controller;
+    public JDBC mysql_database;
 
     public CreateStudyPlanPage(User user, ArrayList<Deck> decks, Controller controller) {
 		this.user = user;

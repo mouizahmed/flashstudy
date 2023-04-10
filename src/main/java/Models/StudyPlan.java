@@ -63,6 +63,10 @@ public class StudyPlan {
 				allStudyDecks.add(deck);
 				//System.out.print(allStudyDecks);
 			}
+			if(deck == null) {
+				deckRepeatCount.put(null, 0);
+				return;
+			}
 			deckRepeatCount.put(deck, deck.getCounter()); // Add the deck and its counter to the deckRepeatCount HashMap
 		}
 	}

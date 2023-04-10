@@ -25,19 +25,19 @@ import javax.swing.*;
 import Controller.Controller;
 
 public class UserStudyPlannerPage extends JPanel {
-	private ArrayList<StudyPlan> studyPlans;
-	private StudyPlan studyPlan;
-	private JPanel mainPanel;
-	private JLabel currentDateLabel;
-	private JButton quizButton;
-	private JList<String> studyDecksList;
-	private JButton backButton;
-	private User user;
-	private Controller controller;
-	private JDBC mysql_database;
-	private JScrollPane studyPlanScrollPane;
-	private JPanel listPanel;
-	private JButton deleteButton;
+	public ArrayList<StudyPlan> studyPlans;
+	public StudyPlan studyPlan;
+	public JPanel mainPanel;
+	public JLabel currentDateLabel;
+	public JButton quizButton;
+	public JList<String> studyDecksList;
+	public JButton backButton;
+	public User user;
+	public Controller controller;
+	public JDBC mysql_database;
+	public JScrollPane studyPlanScrollPane;
+	public JPanel listPanel;
+	public JButton deleteButton;
 
 	public UserStudyPlannerPage(User user, ArrayList<StudyPlan> retrievedStudyPlan, Controller controller) {
 		this.user = user;
@@ -76,7 +76,7 @@ public class UserStudyPlannerPage extends JPanel {
 		allStudyPlansButton.addActionListener(e -> {
 			ArrayList<StudyPlan> studyPlanList = mysql_database.getAllStudyPlansForUser(user.getUsername());
 			if (studyPlanList.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "You don't have any study plans yet. Please create one");
+				JOptionPane.showMessageDialog(null, "You don't have any study plans yet. Please create one!");
 				return;
 			} else {
 				displayStudyPlanList(studyPlanList, studyPlanLabel);
@@ -100,14 +100,14 @@ public class UserStudyPlannerPage extends JPanel {
 				controller.quiz(selectedDeck);
 			}
 		});
-		
+
 		backButton = new JButton("Back");
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.landingPage();
 			}
 		});
-		
+
 		Box buttonBox = Box.createHorizontalBox();
 		buttonBox.add(backButton);
 		buttonBox.add(quizButton);
@@ -199,61 +199,73 @@ public class UserStudyPlannerPage extends JPanel {
 	}
 
 	private void displayStudyDecksList(ArrayList<Deck> studyDecks) {
+		if (studyDecks.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "You don't have any decks for this Study Plan.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		DefaultListModel<String> studyListModel = new DefaultListModel<>();
-		
-		for (Deck deck : studyDecks) {
-			studyListModel.addElement(deck.getDeckTitle());
-	    }
-	    
-		deleteButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        int selectedIndex = studyDecksList.getSelectedIndex();
-		        if (selectedIndex == -1 || selectedIndex >= studyListModel.getSize()) {
-		            JOptionPane.showMessageDialog(null, "Please select a valid deck to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-		        
-		        String selectedDeckTitle = studyListModel.get(selectedIndex);
-		        studyDecksList.setSelectedValue(selectedDeckTitle, true);
-		        Deck selectedDeck = null;
-		        for (Deck deck : studyPlan.getSelectedDecks()) {
-		            if (deck.getDeckTitle().equals(selectedDeckTitle)) {
-		                selectedDeck = deck;
-		                break;
-		            }
-		        }
-		        if (selectedDeck == null) {
-		            JOptionPane.showMessageDialog(null, "Selected deck not found in study plan.", "Error", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-		        
-		        int selectedOption = JOptionPane.showConfirmDialog(null,
-		                "Are you sure you want to delete the \"" + selectedDeckTitle + "\" deck?",
-		                "Confirmation", JOptionPane.YES_NO_OPTION);
-		        if (selectedOption == JOptionPane.YES_OPTION) {
-		        	 // Check if the average score is 1
-		        	String deckID = selectedDeck.getDeckID();
-		            double avgScore = mysql_database.getAvgScore(deckID, user.getUsername());
-		            
-		            if (avgScore != 1) {
-		                JOptionPane.showMessageDialog(null, "This deck cannot be deleted as it has an average score of " + avgScore + ". You need to study this deck and get 100%", "Error", JOptionPane.ERROR_MESSAGE);
-		                return;
-		            }
-		            
-		            // Delete the selected deck from the study plan and update the display
-		        	mysql_database.deleteSelectedDeckFromStudyPlan(studyPlan, selectedDeckTitle);
 
-		            // Update the list of selected decks in the study plan
-		        	displayStudyDecksList(studyPlan.getSelectedDecks());
-		        	
-		        	// Show success message
-		            JOptionPane.showMessageDialog(null, "The \"" + selectedDeckTitle + "\" deck has been deleted from the study plan.", "Success", JOptionPane.INFORMATION_MESSAGE);
-		        }
-		    }
+		for (Deck deck : studyDecks) {
+			if (deck == null) {
+				JOptionPane.showMessageDialog(null, "You don't have any decks for this Study Plan.", "Error", JOptionPane.ERROR_MESSAGE);
+				studyDecksList.setModel(studyListModel);
+				return;
+			} else {
+				studyListModel.addElement(deck.getDeckTitle());
+			}
+		}
+
+		deleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = studyDecksList.getSelectedIndex();
+				if (selectedIndex == -1 || selectedIndex >= studyListModel.getSize()) {
+					JOptionPane.showMessageDialog(null, "Please select a valid deck to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				String selectedDeckTitle = studyListModel.get(selectedIndex);
+				studyDecksList.setSelectedValue(selectedDeckTitle, true);
+				Deck selectedDeck = null;
+				for (Deck deck : studyPlan.getSelectedDecks()) {
+					if (deck.getDeckTitle().equals(selectedDeckTitle)) {
+						selectedDeck = deck;
+						break;
+					}
+				}
+				if (selectedDeck == null) {
+					JOptionPane.showMessageDialog(null, "Selected deck not found in study plan.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				int selectedOption = JOptionPane.showConfirmDialog(null,
+						"Are you sure you want to delete the \"" + selectedDeckTitle + "\" deck?",
+						"Confirmation", JOptionPane.YES_NO_OPTION);
+				if (selectedOption == JOptionPane.YES_OPTION) {
+					// Check if the average score is 1
+					String deckID = selectedDeck.getDeckID();
+					double avgScore = mysql_database.getAvgScore(deckID, user.getUsername());
+
+					if (avgScore == 1) {
+						// Delete the selected deck from the study plan and update the display
+						mysql_database.deleteSelectedDeckFromStudyPlan(studyPlan, selectedDeckTitle);
+						studyDecksList.clearSelection();
+						studyListModel.remove(selectedIndex);
+						// Show success message
+						JOptionPane.showMessageDialog(null, "The \"" + selectedDeckTitle + "\" deck has been deleted from the study plan.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+						// Update the list of selected decks in the study plan
+						displayStudyDecksList(studyPlan.getSelectedDecks());
+						return;
+					}
+
+					JOptionPane.showMessageDialog(null, "This deck cannot be deleted as it has an average score of " + avgScore + ". You need to study this deck and get 100%", "Error", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
 		});
 
-	    // Add a mouse listener to the deck list
+		// Add a mouse listener to the deck list
 		studyDecksList.setModel(studyListModel);
 		studyDecksList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
