@@ -7,21 +7,16 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import Controller.Controller;
-import Models.Deck;
 import Models.StudyPlan;
 import Models.User;
 
 public class UserStudyPlannerPageTest {
-    private User user;
-    private Controller controller;
-    private ArrayList<StudyPlan> studyPlans;
 
     @Test
-    public void testUserStudyPlannerPage() {
+     void testUserStudyPlannerPage() {
         User user = new User("testUser", "password123", null, null);
         ArrayList<StudyPlan> studyPlans = new ArrayList<>();
         Controller controller = new Controller(new JPanel(), new CardLayout());
