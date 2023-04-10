@@ -11,19 +11,24 @@ import java.awt.*;
 
 public class Main {
 	
-	public static void main (String[] args) {
+	private JPanel container;
+	private CardLayout card;
+	private JFrame main;
+	private Controller controller;
+	private WelcomePage welcomePage;
+	
+	public Main() {
+		main = new JFrame("Flash Study");
 		
-		JFrame main = new JFrame("Flash Study");
 		
-		
-		JPanel container = new JPanel();
+		container = new JPanel();
 		main.add(container);
-		CardLayout card = new CardLayout();
+		card = new CardLayout();
 		container.setLayout(card);
 		// container.setVisible(true);
 		
-		Controller controller = new Controller(container, card);
-		WelcomePage welcomePage = new WelcomePage(controller);
+		controller = new Controller(container, card);
+		welcomePage = new WelcomePage(controller);
 		container.add(welcomePage, "welcomePage");
 		
 		LoginPage loginPage = new LoginPage(controller);
@@ -51,7 +56,32 @@ public class Main {
 		
 		//EmailSender email = new EmailSender();
 		//MiddleTier app = new MiddleTier();
+	}
+	
+	public static void main (String[] args) {
+		Main main = new Main();
 		
 		
+		
+	}
+	
+	public WelcomePage getWelcomePage() {
+		return this.welcomePage;
+	}
+	
+	public JFrame getFrame() {
+		return this.main;
+	}
+	
+	public CardLayout getCard() {
+		return this.card;
+	}
+	
+	public JPanel getContainer() {
+		return this.container;
+	}
+	
+	public Controller getController() {
+		return this.controller;
 	}
 }

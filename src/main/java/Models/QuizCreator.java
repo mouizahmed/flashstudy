@@ -34,14 +34,6 @@ public class QuizCreator {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-//				String[] options = new String[4];
-//				options[0] = flashcards.get(i).getAnswer();
-//				for (int j = 1; j < options.length && j < this.questionsNum; j++) {
-//					String randomAnswer = flashcards.get(new Random().nextInt(flashcards.size())).getAnswer();
-//					options[j] = randomAnswer;
-//				}
-//				question = new MultipleChoiceQuestion(flashcards.get(i).getQuestion(), flashcards.get(i).getAnswer(), options);
-				
 				
 			} else if (randomType == 1) {
 				String randomAnswer = flashcards.get(new Random().nextInt(flashcards.size())).getAnswer();

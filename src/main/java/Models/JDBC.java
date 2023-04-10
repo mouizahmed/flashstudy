@@ -46,6 +46,9 @@ public class JDBC {
 	private static String sql3;
 	private static String query1;
 	private PasswordUtilities passwordUtilities = new PasswordUtilities();
+	public boolean connNull = true;
+	public boolean connIsValid = false;
+	public int rowsInserted = 0;
 
 	public JDBC() throws IOException, InterruptedException {
 		String url = "jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_957a5ec054245a7?reconnect=true";
@@ -57,6 +60,9 @@ public class JDBC {
 			conn = DriverManager.getConnection(url, user, password);
 			if (conn != null) {
 				// initialize();
+				connNull = conn == null;
+				connIsValid = conn.isValid(5);
+				
 				System.out.println("Connected to the database");
 			} else {
 				System.out.println("Failed to make connection!");
@@ -65,38 +71,39 @@ public class JDBC {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Connection getConn() {
+		return conn;
+	}
+	
+	public void setAutoCommit(boolean choice) {
+		try {
+			JDBC.conn.setAutoCommit(choice);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-	public User createNewUser(String username, String email, String password, String confirmPassword) {
+	public User createNewUser(String username, String email, String password, String confirmPassword) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
 		User user = null;
 
-		try {
 			LocalDate currentDate = LocalDate.now();
 			String hashedPassword = PasswordUtilities.hashPassword(password);
 			user = new User(username, email, hashedPassword, currentDate);
 			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO Users (username, email, password, regDate) VALUES ('" + user.getUsername()
+			this.rowsInserted = stmt.executeUpdate("INSERT INTO Users (username, email, password, regDate) VALUES ('" + user.getUsername()
 					+ "', '" + user.getEmail() + "', '" + user.getPassword() + "', '" + currentDate + "');");
+		
 			return user;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-			return null;
-		}
+		
 
 	}
 
-	public User verifyUser(String username, String password) {
+	public User verifyUser(String username, String password) throws SQLException, NoSuchAlgorithmException, InvalidKeySpecException {
 		User user = null;
 		ArrayList<Deck> decks = new ArrayList<>();
-		try {
+	
 			stmt = conn.createStatement();
 			stmt2 = conn.createStatement();
 			stmt3 = conn.createStatement();
@@ -137,25 +144,10 @@ public class JDBC {
 			} else {
 				throw new SQLException("User does not exist");
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return user;
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return user;
-		} catch (InvalidKeySpecException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return user;
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			return user;
-		}
 
 	}
 
-	public Deck addDeckToProfile(Deck deck, User currentUser) {
+	public Deck addDeckToProfile(Deck deck, User currentUser) throws SQLException {
 		// TODO Auto-generated method stub
 		ArrayList<Flashcard> flashcardsCopy = new ArrayList<>();
 		Deck deckCopy = deck;
@@ -178,18 +170,18 @@ public class JDBC {
 	}
 
 	public Deck createDeck(String deckTitle, ArrayList<Flashcard> flashcards, boolean publicDeck, User currentUser,
-			String deckID, String schoolName, String facultyName, String description, String courseName) {
+			String deckID, String schoolName, String facultyName, String description, String courseName) throws SQLException {
 		Deck deck = null;
 
 		String addFlashcardsQuery = "INSERT INTO Flashcards (createdBy, flashcardID, deckID, question, answer, flashCardImg) VALUES (?, ?, ?, ?, ?, ?)";
 		String addDeckQuery = "INSERT INTO Decks (createdBy, deckID, deckTitle, public, school, faculty, description, courseName) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
-		try {
+		
 
 			PreparedStatement stmt1 = conn.prepareStatement(addDeckQuery);
 			stmt1.setString(1, currentUser.getUsername());
 
-			System.out.println(deckID);
+			//System.out.println(deckID);
 			stmt1.setString(2, deckID);
 			stmt1.setString(3, deckTitle);
 			stmt1.setBoolean(4, publicDeck);
@@ -197,7 +189,7 @@ public class JDBC {
 			stmt1.setString(6, facultyName);
 			stmt1.setString(7, description);
 			stmt1.setString(8, courseName);
-			System.out.println(stmt1);
+			//System.out.println(stmt1);
 			int rowsInserted1 = stmt1.executeUpdate();
 
 			PreparedStatement stmt2 = conn.prepareStatement(addFlashcardsQuery);
@@ -215,10 +207,8 @@ public class JDBC {
 			deck = new Deck(deckTitle, flashcards, currentUser.getUsername(), publicDeck, deckID, schoolName,
 					facultyName, description, courseName);
 			return deck;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return deck;
+		
+		
 	}
 
 	public void createQuiz(QuizSession quizSession) {
@@ -338,7 +328,7 @@ public class JDBC {
 			stmt2 = conn.createStatement();
 			rs1 = stmt.executeQuery(sql);
 			while (rs1.next()) {
-				System.out.println(rs1.getString("deckTitle"));
+				//System.out.println(rs1.getString("deckTitle"));
 				ArrayList<Flashcard> flashcards = new ArrayList<>();
 				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
 				rs2 = stmt2.executeQuery(sql2);
@@ -375,7 +365,7 @@ public class JDBC {
 			stmt2 = conn.createStatement();
 			rs1 = stmt.executeQuery(sql);
 			while (rs1.next()) {
-				System.out.println(rs1.getString("deckTitle"));
+				//System.out.println(rs1.getString("deckTitle"));
 				ArrayList<Flashcard> flashcards = new ArrayList<>();
 				sql2 = "SELECT * FROM Flashcards WHERE deckID='" + rs1.getString("deckID") + "'";
 				rs2 = stmt2.executeQuery(sql2);
