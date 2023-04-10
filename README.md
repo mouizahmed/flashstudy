@@ -1,5 +1,13 @@
 # Flashcard Study System — FlashStudy
 
+## Team 4 Group Members
+
+- Mouiz Ahmed (mouizahmed, 218105536)
+- Sourav Chandhok (souravC01, 218533976)
+- Ojas Taneja (ojastaneja7, #########)
+- Daoud Ali (DaoudAli, 216410672)
+- Hena Patel (henap741, 218109124)
+
 ## Instructions to Run the Application
 - In Eclipse/IntelliJ, clone the repository from Git using smart import.
 - Ensure you are using JavaSE-15 when building and running the application.
@@ -9,14 +17,6 @@
   - It must include `OPENAI_KEY=*YOUR_KEY*`
 - Navigate to src/main/java/flashstudy/Main.java.
 - Click Run.
-
-## Team 4 Group Members
-
-- Mouiz Ahmed (mouizahmed, 218105536)
-- Sourav Chandhok (souravC01, 218533976)
-- Ojas Taneja (ojastaneja7, #########)
-- Daoud Ali (DaoudAli, 216410672)
-- Hena Patel (henap741, 218109124)
 
 ## Overview
 This app is a comprehensive study tool that combines various features to help users learn and retain information efficiently. Users can create unique flashcards, either by drawing them out or recording questions and answers. The app also allows users to search for other flashcard decks through a public directory based on school and class. The study planner feature enables users to create a customized study plan based on their study habits and test dates, using spaced repetition to optimize learning. Additionally, the app includes weekly planned email reminders for tests and assignments, an interactive flashcard game, a point-based system, a public leaderboard, and detailed analytics for each study session. This app is suitable for all types of learners and offers valuable feedback to help users improve their study habits.
