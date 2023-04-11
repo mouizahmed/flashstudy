@@ -19,17 +19,19 @@ public class DeckList implements DeckDatabase {
 	
 	@Override
 	public void addDeck(Deck deck) {
-		// TODO Auto-generated method stub
-		// !deckMap.containsKey(deck.getDeckTitle())
-		// NEED TO CHECK IF DECK CREATEDBY HAS A USER WITHIN DATABASE
 		
-		if (userDatabase.getCurrentUser().getUsername().equals(deck.createdBy)) {
-			if (!deckMap.containsKey(deck.getDeckTitle())) {
-				deckMap.put(deck.getDeckTitle(), new ArrayList<Deck>());
-			}
-			
-			deckMap.get(deck.getDeckTitle()).add(deck);
+		if (!(userDatabase.getCurrentUser() == null)) {
+			if (userDatabase.getCurrentUser().getUsername().equals(deck.createdBy)) {
+				if (!deckMap.containsKey(deck.getDeckTitle())) {
+					deckMap.put(deck.getDeckTitle(), new ArrayList<Deck>());
+				}
 				
+				deckMap.get(deck.getDeckTitle()).add(deck);
+				userDatabase.getCurrentUser().addDeck(deck);
+					
+			} else {
+				throw new IllegalArgumentException("User does not exist or isn't logged in to create that deck!");
+			}
 		} else {
 			throw new IllegalArgumentException("User does not exist or isn't logged in to create that deck!");
 		}

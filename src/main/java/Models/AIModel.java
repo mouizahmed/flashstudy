@@ -67,30 +67,13 @@ public class AIModel {
         for (int i = 0; i < options.length; i++) {
             options[i] = options[i].trim();
         }
-        
-//        for (String option: options) {
-//        	System.out.println(option);
-//        }
-        
-     
-        
+       
         MultipleChoiceQuestion mcQ = new MultipleChoiceQuestion(question, options[1], Arrays.copyOfRange(options, 1, 5));
-	        
-	        
-	        
+
 		return mcQ;
 		
 	}
 	
-	public FillInTheBlankQuestion generateFill(String term, String definition) {
-		return null;
-		
-	}
-	
-	public TrueFalseQuestion generateBool(String term, String definition) {
-		return null;
-		
-	}
 	
 	public Verdict verifyFlashcard(String term, String definition) throws IOException, InterruptedException {
 		

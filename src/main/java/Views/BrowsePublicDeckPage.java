@@ -86,42 +86,10 @@ public class BrowsePublicDeckPage extends JPanel {
 		textField = new JTextField();
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//publicDecks = controller.searchPublicDecks(textField.getText());
 				searchedDecks = controller.searchPublicDecks(textField.getText());
 				populatePage(searchedDecks);
 				System.out.println("ENTER");
-//				for (int i = 0; i < publicDecks.size(); i++) {
-//					publicDecks.get(i).getDeckTitle();
-//				}
-//				dynamicPanel.removeAll();
-//				for (int i = 0; i < publicDecks.size(); i++) {
-//					JLabel deckTitle = new JLabel(publicDecks.get(i).getDeckTitle());
-//					JLabel deckCreatedBy = new JLabel("Created by: " + publicDecks.get(i).createdBy);
-//					JPanel deckPanel = new JPanel();
-//					deckPanel.setPreferredSize(new Dimension(150, 50));
-//					deckPanel.setBackground(Color.YELLOW);
-//					deckPanel.add(deckTitle);
-//					deckPanel.add(deckCreatedBy);
-//					Deck current = publicDecks.get(i);
-//					dynamicPanel.add(deckPanel);
-//					
-//					dynamicPanel.addMouseListener(new MouseAdapter() {
-//						public void mousePressed(MouseEvent me) {
-//							controller.deckPage(current);
-//						}
-//						
-//					});
-//					
-//					dynamicPanel.revalidate();
-//					dynamicPanel.repaint();
-//					
-//					
-//					
-//				}
-//			
-//					
-//				dynamicPanel.revalidate();
-//				dynamicPanel.repaint();
+
 			}
 		});
 		textField.setBounds(186, 51, 367, 20);

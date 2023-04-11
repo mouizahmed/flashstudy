@@ -36,33 +36,19 @@ public class Main {
 		RegisterPage registerPage = new RegisterPage(controller);
 		container.add(registerPage, "registerPage");
 		
-//		LandingPage landingPage = new LandingPage(controller);
-//		container.add(landingPage, "landingPage");
-		
-//		CreateDeckPage createDeckPage = new CreateDeckPage(controller);
-//		container.add(createDeckPage, "createDeckPage");
-		
-//		BrowsePublicDeckPage browsePublicDeckPage = new BrowsePublicDeckPage(controller);
-//		container.add(browsePublicDeckPage, "browsePublicDeckPage");
-		
-		
-
 		card.show(container, "1");
 		welcomePage.setVisible(true);
 		
 		main.setSize(750, 500);
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		main.setVisible(true);
-		
-		//EmailSender email = new EmailSender();
-		//MiddleTier app = new MiddleTier();
+	
 	}
 	
 	public static void main (String[] args) {
 		Main main = new Main();
 		
-		
-		
+
 	}
 	
 	public WelcomePage getWelcomePage() {

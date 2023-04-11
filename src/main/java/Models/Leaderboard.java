@@ -31,17 +31,13 @@ public class Leaderboard {
 		return this.deck;
 	}
 
-	public void displayLeaderboard() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	public void removeAllPlayers() {
         players.clear();
     }
 
 	public Player getPlayer(int i) {
-		// TODO Auto-generated method stub
 		return this.getPlayer(i);
 	}
 }
