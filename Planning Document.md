@@ -14,16 +14,12 @@ The system will be considered a success based on four criteria. First, if each t
 
 # Flash Card Study System — Big Stories
 
-- ## Categorize Hard questions into another deck
-    - As a student, viewing questions that were difficult or answered wrong multiple times is essential to fully learn the material or review common mistakes right before the test.
-        - Priority: High 
-        - Cost: 3-4 Days
+- ## Easily Search Public Study Sets (Decks) while maintaining Privacy
+    - This would allow users to quickly search through their classmates' study sets for better accessibility. Only study sets that are marked as 'public' will be able to be searchable, while private study sets can only be viewed by the creator. This ensures user privacy, while maximizing accessibility and collaboration with other students.
 
-- ## Colour code difficult flashcard deck
-    - As a visual learner, this helps me categorize cards and better organize them.
-        - Priority: Medium
-        - Cost: 2-3 Days
-    
+- ## User, Flashcard, and Study Set Analytics
+    - The user should be able to identify their weakpoints, easily guage their learning ability and progress through advanced tracking and visual statistics. Through this, the application can highlight/interpret areas of improvement to help the user study more effectively and efficiently based on time taken, attempts, average score, etc.
+
 - ## Review old cards after the designated time
     - This would allow us to review each set of cards at a specific time and have spaced repetition which maximizes our learning capacity.
         - Priority: Medium
@@ -33,88 +29,45 @@ The system will be considered a success based on four criteria. First, if each t
     - As a user, I need to be able to create a deck of flashcards
         - Priority: High
         - Cost: 3-4 Days
+        - Actual Cost: 5 Days
 
-- ## Answering the flashcards
+- ## Answering the flashcards (Quiz System)
     - I should be able to test myself with the flashcards that I have created
         - Priority: High
         - Cost: 0.5 Day
+        - Actual Cost: 1.5 Days
 
 - ## Sharing the flashcards
     - I should be able to share my decks with other users.
         - Priority: High
         - Cost: 0.5 Day
+        - Actual Cost: 0.5 Day
 
 - ## Create a study plan
     - It should create a personalized study plan based on users' study habits and exam dates.
-        - Priority: High                                                                                                                            
-        - Cost: 2-3 Days
+        - Priority: High                                                           - Cost: 1.5 Day
+        - Actual: 1 Day
 
 - ## Adding reminders
     - Reminders for upcoming tests and assignments. The user should be able to set reminders for their deadlines in the app.
         - Priority: Medium
-        - Cost: 1-2 days
+        - Cost: 3.5 Days
+        - Actual Cost: 4.5 days
 
 - ## Leaderboards
     - Point-based quiz system for users where they score points by completing quizzes with accuracy. The users should be placed in the leaderboards according to the results of that particular quiz.
         - Priority: Medium
-        - Cost:7-9 days
-
-
-## Flash Card Study System – Iteration 1 Detailed User Stories
-
-- ## Create User account
-    - The users should be able to register to the app by creating their login id and password.
-        - Priority: High
-        - Cost: 3 days
- 
-- ## Creating Flashcards
-    - The user should be able to create flashcards for the topics they would like to practice. They should be able to select the type of question and use illustrations/graphs and diagrams where needed.
-        - Priority: High
-        - Cost: 3-4 days
- 
-- ## Answering the Flashcards
-    - The user should be able to create answers for the flashcards that they have created to practice the answers for the questions if they want to test themselves.
-        - Priority: High
-        - Cost: 2-3 days
-
-- ## Creating a search bar
-    - The search bar should allow access to all the users on the platform and be able to see their public flashcard quizzes.
-        - Priority: Medium
-        - Cost: 5-7 days 
-
-- ## Home Section
-    - This is the place to be created in the app where the user can access self-made flashcards along with the flashcards created by other users of the platform.
-        - Priority: High
-        - Cost: 5-6 days
- 
-- ## Importing other user’s flashcards
-    - When viewing other users’ profiles, users should be able to import the visible quizzes to their home section along with the author’s name.
-        - Priority: Medium
-        - Cost: 0.5 day
-
-- ## Reminders
-    - An option for reminder should be available for the user where they can create a customized reminder for the practice of a flash quiz. For an upcoming assignment, exam etc.
-        - Priority: Low
-        - Cost: 1 day
- 
-- ## Flash Card analytics
-    - The user should be able to access the mistakes made by him in an attempt for a particular flash quiz to practice material they are weak on.
-        - Priority: Medium
         - Cost: 3-5 days
- 
-- ## Leaderboards
-    - Each quiz should have a leaderboard to encourage users to practice and learn with their peers.
-        - Priority: Medium
-        - Cost: 3-5 days
- 
-- ## Colour Coding
-    - By colour coding, the final deck can be categorized based on the number of questions that were deemed difficult.
-        - Priority: Medium
-        - Cost: 0.5 day
+        - Actual Cost: 1 Day
 
+- ## Visual Learning Feature
+    - Allow visual learners the option to study and test themselves with images. This will enhance their study progress by catering to their learning style.
+        - Priority: High
+        - Cost: 4 Days
+        - Actual Cost: 4.5 Days
 
-
-
-
-
-
+- ## Built-In Artificial Intelligence for More Efficient Learning
+    - Allow a more efficient mode of learning to learn materials at a faster rate. Gives users more personalized quiz sessions with AI generated questions, quickly generate definitions to complex terms, and fact check other flash cards for more accurate informations.
+        - Priority: High
+        - Cost: 5 Days
+        - Actual Cost: 7 Days
