@@ -49,11 +49,6 @@ public class StudyPlan {
 		this.allStudyDecks = new ArrayList<>();
 		this.allRepeatDecks = new ArrayList<>();
 		this.deckRepeatCount = new HashMap<>(); // Initialize the deckRepeatCount HashMap
-		try {
-			this.mysql_database = new JDBC();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
 		
 		// Loop through all selected decks
 		for (Deck deck : selectedDecks) {
