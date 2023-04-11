@@ -257,10 +257,10 @@ public class UserStudyPlannerPage extends JPanel {
 						// Update the list of selected decks in the study plan
 						displayStudyDecksList(studyPlan.getSelectedDecks());
 						return;
-					}
-
+					} else {
 					JOptionPane.showMessageDialog(null, "This deck cannot be deleted as it has an average score of " + avgScore + ". You need to study this deck and get 100%", "Error", JOptionPane.ERROR_MESSAGE);
-
+					return;
+					}
 				}
 			}
 		});
