@@ -20,8 +20,8 @@ public class EmailSender {
         properties.put("mail.smtp.port",SMTP_PORT);
         properties.put("mail.smtp.host","smtp.gmail.com");
 
-        String username = "flashstudyhelp";                     //email id username before the @ part
-        String password = "ylcxkeqysicdopff";                   // App password to access the email
+        String username = "flashstudyteam";                     //email id username before the @ part
+        String password = "pewqhydyypgsktaq";                   // App password to access the email
 
 
         //Session
