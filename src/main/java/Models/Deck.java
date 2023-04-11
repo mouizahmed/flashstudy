@@ -46,11 +46,6 @@ public class Deck {
 	}
 	
 	public void addFlashcard(Flashcard flashcard) {
-//		if (!flashcard.getDeckID().equals(this.getDeckID())) {
-//			throw new IllegalArgumentException("Flashcard ID does not match Deck ID");
-//		} else {
-//			flashcards.add(flashcard);
-//		}
 		this.flashcards.add(flashcard);
 	}
 	

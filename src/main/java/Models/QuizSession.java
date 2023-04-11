@@ -80,7 +80,7 @@ public class QuizSession {
 	public long getDurationInSeconds(){
 		return this.durationInSeconds;
 	}
-	public Date getDateCreated(){
+	public Date getDateCreated() {
 		return this.dateCreated;
 	}
 

@@ -448,11 +448,6 @@ class JDBCTest {
 			Statement stmt = conn.createStatement();
 			afterPop = connection.publicDeckList();
 			diff = afterPop.size() - originalPop.size();
-//			String sql = "SELECT * FROM Decks WHERE deckTitle='" + "Test Deck'";
-//			ResultSet rs = stmt.executeQuery(sql);
-//			if (rs.next()) {
-//				deckTitle = rs.getString("deckTitle");
-//			}
 			
 			
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
@@ -551,5 +546,7 @@ class JDBCTest {
 		
 		
 	}
+	
+	
 
 }
