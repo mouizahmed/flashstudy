@@ -10,7 +10,7 @@ public class EmailMessageMaker {
     private static final int delayDays = 10;                 //change to increase or decrease the number of delay days
     private String subject;
     private String to;
-    private final String from = "flashstudyhelp@gmail.com";
+    private final String from = "flashstudyteam@gmail.com";
     private String body;
 
     //Call this function when New user is Created

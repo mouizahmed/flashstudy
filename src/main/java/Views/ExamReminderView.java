@@ -74,7 +74,7 @@ public class ExamReminderView extends JFrame {
                         "Don't forget to study! FlashStudy can help you prepare for your exam. Good luck!\n\n" +
                         "Best regards,\n" +
                         "Flash Study Team";
-                EmailSender.sendEmail("flashstudyhelp@gmail.com", email, subject, body);
+                EmailSender.sendEmail("flashstudyteam@gmail.com", email, subject, body);
 
                 // Show success message
                 JOptionPane.showMessageDialog(null, "Reminder email sent successfully.");
