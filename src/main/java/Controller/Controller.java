@@ -313,8 +313,7 @@ public class Controller {
 	}
 	
 	public void UserStudyPlannerPage(User user, StudyPlan studyPlan) {
-		ArrayList<StudyPlan> retrievedStudyPlan = this.mysql_database.getAllStudyPlansForUser(user.getUsername());
-		System.out.print(retrievedStudyPlan);
+		ArrayList<StudyPlan> retrievedStudyPlan = null;//this.mysql_database.getAllStudyPlansForUser(user.getUsername());
 		UserStudyPlannerPage userStudyPlannerPage = new UserStudyPlannerPage(user, retrievedStudyPlan, this); //added
 		main.add(userStudyPlannerPage, "userStudyPlannerPage" + main.getComponentCount());
 		int num = main.getComponentCount() - 1;
