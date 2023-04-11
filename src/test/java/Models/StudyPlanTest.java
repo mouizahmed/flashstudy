@@ -110,4 +110,29 @@ public class StudyPlanTest {
         ArrayList<Deck> allRepeatDecks = studyPlan.getAllRepeatDecks();
         assertFalse(allStudyDecks.isEmpty());
     }
+    
+    @Test
+    void testCreateStudyPlan() {
+        // Mock data
+        String createdBy = "testCreatedBy";
+        String studyPlanID = "testStudyPlanID";
+        String studyPlanTitle = "testStudyPlanTitle";
+        String testDate = "testTestDate";
+        String frequency = "testFrequency";
+        String difficulty = "testDifficulty";
+        String studyTime = "testStudyTime";
+        ArrayList<Deck> selectedDecks = new ArrayList<>();
+        Deck deck = null;
+		selectedDecks.add(deck);
+
+        // Test createStudyPlan method
+        StudyPlan createdStudyPlan = new StudyPlan(createdBy, studyPlanID, studyPlanTitle, testDate, frequency, difficulty, studyTime, selectedDecks);
+
+        // Assert
+        assertNotNull(createdStudyPlan);
+        assertEquals(studyPlanID, createdStudyPlan.getStudyPlanID());
+        assertEquals(studyPlanTitle, createdStudyPlan.getStudyPlanTitle());
+        assertEquals(testDate, createdStudyPlan.getTestDate());
+        assertEquals(selectedDecks, createdStudyPlan.getSelectedDecks());
+    }
 }
